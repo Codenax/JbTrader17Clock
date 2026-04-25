@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JbTradeClock</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0; 
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  background: transparent;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0);
+}
+
+.window {
+  width: 100%;
+  height: 100vh;
+  background: black;
+  backdrop-filter: blur(14px);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border: solid 0.5px #00ffb3;
+  
+
+  
+}
+
+/* TITLE BAR */
+.titlebar {
+  height: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6px;
+  -webkit-app-region: drag;
+
+  background: linear-gradient(90deg, #111, #1a1a1a, #111);
+  border-bottom: 1px solid #333;
+  box-shadow: 0 0 8px rgba(0,195,255,0.15);
+}
+
+.title-text {
+  font-size: 8px;
+  font-weight: bold;
+  color: #00ffb3;
+  text-shadow: 0 0 8px rgba(0,195,255,0.8);
+}
+
+.title-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.close { background: #ff3b3b; }
+.min { background: #ffb300; }
+.full { background: #2bd576; }
+
+.clock-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.time-display {
+  text-align: center;
+  font-size: 16px;
+  color: #00ffb3;
+  margin-bottom: 0px;
+
+  font-weight: bold;
+}
+
+.ruler-wrap {
+  margin-bottom: 6px;
+}
+
+.ruler-title {
+  font-size: 10px;
+  color: #aaa;
+  margin-bottom: 3px;
+   font-weight: bold;
+}
+
+.ruler {
+  position: relative;
+  height: 28px;
+  border-top: 2px solid #666;
+}
+
+.tick {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+}
+
+.label {
+  position: absolute;
+  font-size: 9px;
+  transform: translateX(-50%);
+  bottom: 14px;
+  color: #cccccc;
+   font-weight: bold;
+
+}
+
+.pointer {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+}
+
+.pointer.hour { background: red; }
+.pointer.minute { background: #00c3ff; }
+.pointer.second { background: yellow; }
+
+</style>
+</head>
+
+<body>
+
+<div class="window">
+
+  <div class="titlebar">
+    <div class="title-text">JbTrader17 Clock</div>
+
+    <div class="title-actions">
+      <button class="btn min" onclick="minimize()"></button>
+      <button class="btn full" onclick="toggleFull()"></button>
+      <button class="btn close" onclick="closeApp()"></button>
+    </div>
+  </div>
+
+  <div class="clock-container">
+
+    <div class="time-display" id="digitalTime">00:00:00</div>
+
+    <div class="ruler-wrap">
+      <div class="ruler-title">Hours (8H)</div>
+      <div class="ruler" id="hourRuler">
+        <div class="pointer hour" id="hourPointer"></div>
+      </div>
+    </div>
+
+    <div class="ruler-wrap">
+      <div class="ruler-title">Minutes</div>
+      <div class="ruler" id="minuteRuler">
+        <div class="pointer minute" id="minutePointer"></div>
+      </div>
+    </div>
+
+    <div class="ruler-wrap">
+      <div class="ruler-title">Seconds</div>
+      <div class="ruler" id="secondRuler">
+        <div class="pointer second" id="secondPointer"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+/* WINDOW CONTROLS */
+function closeApp(){ window.close(); }
+
+function minimize(){
+  if(window.require){
+    const { remote } = require("electron");
+    remote.BrowserWindow.getFocusedWindow().minimize();
+  }
+}
+
+function toggleFull(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+/* RULERS */
+function createHourRuler(){
+  const r = document.getElementById("hourRuler");
+
+  for(let h=0; h<=8; h++){
+    const pos = (h/8)*100;
+
+    const tick = document.createElement("div");
+    tick.className="tick";
+
+    tick.style.cssText =
+      h%4===0 ? `height:16px;background:red;left:${pos}%`
+      : h%2===0 ? `height:12px;background:purple;left:${pos}%`
+      : `height:8px;background:#aaa;left:${pos}%`;
+
+    r.appendChild(tick);
+
+    const label = document.createElement("div");
+    label.className="label";
+    label.style.left=pos+"%";
+    label.innerText=h;
+    r.appendChild(label);
+  }
+}
+
+function createMinuteRuler(){
+  const r = document.getElementById("minuteRuler");
+
+  for(let m=0; m<=60; m++){
+    const pos=(m/60)*100;
+
+    const tick=document.createElement("div");
+    tick.className="tick";
+
+    let color="#555";
+    let height=6;
+
+    if(m%30===0){ color="red"; height=14; }
+    else if(m%15===0){ color="purple"; height=12; }
+    else if(m%5===0){ color="#aaa"; height=10; }
+
+    tick.style.cssText=`height:${height}px;background:${color};left:${pos}%`;
+    r.appendChild(tick);
+
+    if(m%5===0){
+      const label=document.createElement("div");
+      label.className="label";
+      label.style.left=pos+"%";
+      label.innerText=m;
+      r.appendChild(label);
+    }
+  }
+}
+
+function createSecondRuler(){
+  const r=document.getElementById("secondRuler");
+
+  for(let s=0;s<=60;s++){
+    const pos=(s/60)*100;
+
+    const tick=document.createElement("div");
+    tick.className="tick";
+
+    let color="#555";
+    let height=6;
+
+    if(s%30===0){ color="red"; height=14; }
+    else if(s%15===0){ color="purple"; height=12; }
+    else if(s%5===0){ color="#aaa"; height=10; }
+
+    tick.style.cssText=`height:${height}px;background:${color};left:${pos}%`;
+    r.appendChild(tick);
+
+    if(s%5===0){
+      const label=document.createElement("div");
+      label.className="label";
+      label.style.left=pos+"%";
+      label.innerText=s;
+      r.appendChild(label);
+    }
+  }
+}
+
+/* SMOOTH CLOCK (UPDATED) */
+function updateClockSmooth(){
+  const now = new Date();
+
+  const ms = now.getMilliseconds();
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const s = now.getSeconds() + ms / 1000;
+
+  document.getElementById("digitalTime").innerText =
+    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(Math.floor(s)).padStart(2,'0')}`;
+
+  const h8 = (h % 8) + m / 60 + s / 3600;
+
+  document.getElementById("hourPointer").style.left = (h8 / 8 * 100) + "%";
+  document.getElementById("minutePointer").style.left = ((m + s / 60) / 60 * 100) + "%";
+  document.getElementById("secondPointer").style.left = (s / 60 * 100) + "%";
+
+  requestAnimationFrame(updateClockSmooth);
+}
+
+/* INIT */
+createHourRuler();
+createMinuteRuler();
+createSecondRuler();
+
+updateClockSmooth();
+
+</script>
+
+</body>
+</html>
