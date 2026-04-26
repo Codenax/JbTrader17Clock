@@ -1,315 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JbTradeClock</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JbTradeClock</title>
 
-<style>
-* {
-  margin: 0;
-  padding: 0; 
-  box-sizing: border-box;
-  user-select: none;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
 
-body {
-  background: transparent;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  color: rgba(0, 0, 0, 0);
-}
+    body {
+      background: transparent;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-.window {
-  width: 100%;
-  height: 100vh;
-  background: black;
-  backdrop-filter: blur(14px);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  border: solid 0.5px #00ffb3;
-  
+    .window {
+      width: 100%;
+      height: 100vh;
+      background: black;
+      backdrop-filter: blur(14px);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border: solid 0.5px #00ffb3;
+      -webkit-app-region: drag;
+    }
 
-  
-}
+    /* TITLE BAR */
+    .titlebar {
+      height: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+      -webkit-app-region: drag;
+    }
 
-/* TITLE BAR */
-.titlebar {
-  height: 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 6px;
-  -webkit-app-region: drag;
+    .titlebar::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      top: 13px;
+      left: 0;
+      width: 100%;
+      height: 1rem;
 
-  background: linear-gradient(90deg, #111, #1a1a1a, #111);
-  border-bottom: 1px solid #333;
-  box-shadow: 0 0 8px rgba(0,195,255,0.15);
-}
+      background: linear-gradient(to right,
+          transparent,
+          #00ffb3,
+          transparent);
 
-.title-text {
-  font-size: 8px;
-  font-weight: bold;
-  color: #00ffb3;
-  text-shadow: 0 0 8px rgba(0,195,255,0.8);
-}
+      box-shadow: 0 0 3px #00ffb3;
+    }
 
-.title-actions {
-  display: flex;
-  gap: 4px;
-}
 
-.btn {
-  width: 16px;
-  height: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  -webkit-app-region: no-drag;
-}
+    .title-text {
+      font-size: 8px;
+      font-weight: bold;
+      color: #00ffb3;
+    }
 
-.close { background: #ff3b3b; }
-.min { background: #ffb300; }
-.full { background: #2bd576; }
+    .title-actions {
+      display: flex;
+      gap: 4px;
+    }
 
-.clock-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+    .btn {
+      width: 16px;
+      height: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+    }
 
-.time-display {
-  text-align: center;
-  font-size: 16px;
-  color: #00ffb3;
-  margin-bottom: 0px;
+    .close {
+      background: #ff3b3b;
+    }
 
-  font-weight: bold;
-}
+    .min {
+      background: #ffb300;
+    }
 
-.ruler-wrap {
-  margin-bottom: 6px;
-}
+    .full {
+      background: #2bd576;
+    }
 
-.ruler-title {
-  font-size: 10px;
-  color: #aaa;
-  margin-bottom: 3px;
-   font-weight: bold;
-}
+    .clock-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-.ruler {
-  position: relative;
-  height: 28px;
-  border-top: 2px solid #666;
-}
+    .time-display {
+      text-align: center;
+      font-size: 17px;
+      color: #00ffb3;
+      font-weight: bold;
 
-.tick {
-  position: absolute;
-  bottom: 0;
-  width: 1px;
-}
+    }
 
-.label {
-  position: absolute;
-  font-size: 9px;
-  transform: translateX(-50%);
-  bottom: 14px;
-  color: #cccccc;
-   font-weight: bold;
+    #sessionStatus {
+      text-align: center;
+      font-size: 9px;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #888;
+    }
 
-}
+    /* RULERS */
+    .ruler-wrap {
+      margin-bottom: 6px;
+    }
 
-.pointer {
-  position: absolute;
-  top: 0;
-  width: 2px;
-  height: 100%;
-}
+    .ruler-title {
+      font-size: 10px;
+      color: #00ffb3;
+      margin-bottom: 3px;
+      font-weight: bold;
+    }
 
-.pointer.hour { background: red; }
-.pointer.minute { background: #00c3ff; }
-.pointer.second { background: yellow; }
+    .ruler {
+      position: relative;
+      height: 30px;
+    }
 
-</style>
+    /* ✅ ONLY BORDER TOP EFFECT */
+    .ruler::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 0.05rem;
+
+      background: linear-gradient(to right,
+          transparent,
+          #00ffb3,
+          transparent);
+
+      box-shadow: 0 0 3px #00ffb3;
+    }
+
+
+
+    .tick {
+      position: absolute;
+      bottom: 0;
+      width: 1px;
+    }
+
+    .label {
+      position: absolute;
+      font-size: 9px;
+      transform: translateX(-50%);
+      bottom: 14px;
+      color: #ccc;
+      font-weight: bold;
+    }
+
+    /* SESSION LABELS */
+    .label-top {
+      position: absolute;
+      font-size: 9px;
+      transform: translateX(-50%);
+      bottom: 16px;
+      color: #aaa;
+      font-weight: bold;
+    }
+
+    .label-bottom {
+      position: absolute;
+      font-size: 9px;
+      transform: translateX(-50%);
+      bottom: -12px;
+      /* FIXED LOWER */
+      font-weight: bold;
+    }
+
+    /* POINTERS */
+    .pointer {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+    }
+
+    .pointer.hour {
+      background: yellow;
+    }
+
+    .pointer.minute {
+      background: yellow;
+    }
+
+    .pointer.second {
+      background: yellow;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="window">
+  <div class="window">
 
-  <div class="titlebar">
-    <div class="title-text">JbTrader17 Clock</div>
+    <div class="titlebar">
+      <div class="title-text">JbTrader17 Clock</div>
 
-    <div class="title-actions">
-      <button class="btn min" onclick="minimize()"></button>
-      <button class="btn full" onclick="toggleFull()"></button>
-      <button class="btn close" onclick="closeApp()"></button>
+      <div class="title-actions">
+        <button class="btn min" onclick="minimize()"></button>
+        <button class="btn full" onclick="toggleFull()"></button>
+        <button class="btn close" onclick="closeApp()"></button>
+      </div>
+    </div>
+
+    <div class="clock-container">
+
+      <div class="time-display" id="digitalTime">00:00:00</div>
+      <div id="sessionStatus">Loading session...</div>
+
+      <!-- HOURS -->
+      <div class="ruler-wrap">
+        <div class="ruler-title">Hours (8H)</div>
+        <div class="ruler" id="hourRuler">
+          <div class="pointer hour" id="hourPointer"></div>
+        </div>
+      </div>
+
+      <!-- MINUTES -->
+      <div class="ruler-wrap">
+        <div class="ruler-title">Minutes</div>
+        <div class="ruler" id="minuteRuler">
+          <div class="pointer minute" id="minutePointer"></div>
+        </div>
+      </div>
+
+      <!-- SECONDS -->
+      <div class="ruler-wrap">
+        <div class="ruler-title">Seconds</div>
+        <div class="ruler" id="secondRuler">
+          <div class="pointer second" id="secondPointer"></div>
+        </div>
+      </div>
+
+      <!-- SESSION -->
+      <div class="ruler-wrap">
+        <div class="ruler-title" style="color: yellow;">New York + London Session</div>
+        <div class="ruler" id="sessionRuler">
+          <div class="pointer" id="sessionPointer" style="background:yellow;"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <div class="clock-container">
+  <script>
 
-    <div class="time-display" id="digitalTime">00:00:00</div>
+    /* WINDOW */
+    function closeApp() { window.close(); }
 
-    <div class="ruler-wrap">
-      <div class="ruler-title">Hours (8H)</div>
-      <div class="ruler" id="hourRuler">
-        <div class="pointer hour" id="hourPointer"></div>
-      </div>
-    </div>
-
-    <div class="ruler-wrap">
-      <div class="ruler-title">Minutes</div>
-      <div class="ruler" id="minuteRuler">
-        <div class="pointer minute" id="minutePointer"></div>
-      </div>
-    </div>
-
-    <div class="ruler-wrap">
-      <div class="ruler-title">Seconds</div>
-      <div class="ruler" id="secondRuler">
-        <div class="pointer second" id="secondPointer"></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-
-/* WINDOW CONTROLS */
-function closeApp(){ window.close(); }
-
-function minimize(){
-  if(window.require){
-    const { remote } = require("electron");
-    remote.BrowserWindow.getFocusedWindow().minimize();
-  }
-}
-
-function toggleFull(){
-  if(!document.fullscreenElement){
-    document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-/* RULERS */
-function createHourRuler(){
-  const r = document.getElementById("hourRuler");
-
-  for(let h=0; h<=8; h++){
-    const pos = (h/8)*100;
-
-    const tick = document.createElement("div");
-    tick.className="tick";
-
-    tick.style.cssText =
-      h%4===0 ? `height:16px;background:red;left:${pos}%`
-      : h%2===0 ? `height:12px;background:purple;left:${pos}%`
-      : `height:8px;background:#aaa;left:${pos}%`;
-
-    r.appendChild(tick);
-
-    const label = document.createElement("div");
-    label.className="label";
-    label.style.left=pos+"%";
-    label.innerText=h;
-    r.appendChild(label);
-  }
-}
-
-function createMinuteRuler(){
-  const r = document.getElementById("minuteRuler");
-
-  for(let m=0; m<=60; m++){
-    const pos=(m/60)*100;
-
-    const tick=document.createElement("div");
-    tick.className="tick";
-
-    let color="#555";
-    let height=6;
-
-    if(m%30===0){ color="red"; height=14; }
-    else if(m%15===0){ color="purple"; height=12; }
-    else if(m%5===0){ color="#aaa"; height=10; }
-
-    tick.style.cssText=`height:${height}px;background:${color};left:${pos}%`;
-    r.appendChild(tick);
-
-    if(m%5===0){
-      const label=document.createElement("div");
-      label.className="label";
-      label.style.left=pos+"%";
-      label.innerText=m;
-      r.appendChild(label);
+    function minimize() {
+      if (window.require) {
+        const { remote } = require("electron");
+        remote.BrowserWindow.getFocusedWindow().minimize();
+      }
     }
-  }
-}
 
-function createSecondRuler(){
-  const r=document.getElementById("secondRuler");
-
-  for(let s=0;s<=60;s++){
-    const pos=(s/60)*100;
-
-    const tick=document.createElement("div");
-    tick.className="tick";
-
-    let color="#555";
-    let height=6;
-
-    if(s%30===0){ color="red"; height=14; }
-    else if(s%15===0){ color="purple"; height=12; }
-    else if(s%5===0){ color="#aaa"; height=10; }
-
-    tick.style.cssText=`height:${height}px;background:${color};left:${pos}%`;
-    r.appendChild(tick);
-
-    if(s%5===0){
-      const label=document.createElement("div");
-      label.className="label";
-      label.style.left=pos+"%";
-      label.innerText=s;
-      r.appendChild(label);
+    function toggleFull() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
     }
-  }
-}
 
-/* SMOOTH CLOCK (UPDATED) */
-function updateClockSmooth(){
-  const now = new Date();
+    /* BASIC RULERS (same as before) */
+    function createHourRuler() {
+      const r = document.getElementById("hourRuler");
+      for (let h = 0; h <= 8; h++) {
+        const pos = (h / 8) * 100;
+        const tick = document.createElement("div");
+        tick.className = "tick";
+        tick.style.cssText =
+          h % 4 === 0 ? `height:16px;background:red;left:${pos}%`
+            : h % 2 === 0 ? `height:12px;background:purple;left:${pos}%`
+              : `height:8px;background:#aaa;left:${pos}%`;
+        r.appendChild(tick);
 
-  const ms = now.getMilliseconds();
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const s = now.getSeconds() + ms / 1000;
+        const label = document.createElement("div");
+        label.className = "label";
+        label.style.left = pos + "%";
+        label.innerText = h;
+        r.appendChild(label);
+      }
+    }
 
-  document.getElementById("digitalTime").innerText =
-    `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(Math.floor(s)).padStart(2,'0')}`;
+    function createMinuteRuler() {
+      const r = document.getElementById("minuteRuler");
+      for (let m = 0; m <= 60; m++) {
+        const pos = (m / 60) * 100;
+        const tick = document.createElement("div");
+        tick.className = "tick";
 
-  const h8 = (h % 8) + m / 60 + s / 3600;
+        let color = "#555", height = 6;
+        if (m % 30 === 0) { color = "red"; height = 14; }
+        else if (m % 15 === 0) { color = "purple"; height = 12; }
+        else if (m % 5 === 0) { color = "#aaa"; height = 10; }
 
-  document.getElementById("hourPointer").style.left = (h8 / 8 * 100) + "%";
-  document.getElementById("minutePointer").style.left = ((m + s / 60) / 60 * 100) + "%";
-  document.getElementById("secondPointer").style.left = (s / 60 * 100) + "%";
+        tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
+        r.appendChild(tick);
 
-  requestAnimationFrame(updateClockSmooth);
-}
+        if (m % 5 === 0) {
+          const label = document.createElement("div");
+          label.className = "label";
+          label.style.left = pos + "%";
+          label.innerText = m;
+          r.appendChild(label);
+        }
+      }
+    }
 
-/* INIT */
-createHourRuler();
-createMinuteRuler();
-createSecondRuler();
+    function createSecondRuler() {
+      const r = document.getElementById("secondRuler");
+      for (let s = 0; s <= 60; s++) {
+        const pos = (s / 60) * 100;
+        const tick = document.createElement("div");
+        tick.className = "tick";
 
-updateClockSmooth();
+        let color = "#555", height = 6;
+        if (s % 30 === 0) { color = "red"; height = 14; }
+        else if (s % 15 === 0) { color = "purple"; height = 12; }
+        else if (s % 5 === 0) { color = "#aaa"; height = 10; }
 
-</script>
+        tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
+        r.appendChild(tick);
+
+        if (s % 5 === 0) {
+          const label = document.createElement("div");
+          label.className = "label";
+          label.style.left = pos + "%";
+          label.innerText = s;
+          r.appendChild(label);
+        }
+      }
+    }
+
+    /* SESSION RULER WITH 30 MIN TICKS */
+    function createSessionRuler() {
+      const r = document.getElementById("sessionRuler");
+
+      for (let h = 17; h < 23; h++) {
+
+        let pos = ((h - 17) / 6) * 100;
+
+        // main tick
+        const tick = document.createElement("div");
+        tick.className = "tick";
+
+        let color = "#555", height = 8;
+        if (h >= 18 && h <= 22) { color = "#00ffb3"; height = 16; }
+
+        tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
+        r.appendChild(tick);
+
+        // 30 min tick
+        let midPos = ((h - 17 + 0.5) / 6) * 100;
+        const midTick = document.createElement("div");
+        midTick.className = "tick";
+        midTick.style.cssText = `height:6px;background:#777;left:${midPos}%`;
+        r.appendChild(midTick);
+
+        // top label
+        const top = document.createElement("div");
+        top.className = "label-top";
+        top.style.left = pos + "%";
+        let displayHour = h > 12 ? h - 12 : h;
+        top.innerText = displayHour + "PM";
+        r.appendChild(top);
+
+        // bottom label
+        const bottom = document.createElement("div");
+        bottom.className = "label-bottom";
+        bottom.style.left = pos + "%";
+
+        if (h === 18) {
+          bottom.innerText = "NY Start";
+          bottom.style.color = "#00ffb3";
+        }
+        else if (h === 22) {
+          bottom.innerText = "LDN End";
+          bottom.style.color = "#00ffb3";
+        }
+        else if (h > 18 && h < 22) {
+          bottom.innerText = "NY+LDN";
+          bottom.style.color = "#00ffb3";
+        }
+
+        r.appendChild(bottom);
+      }
+
+      // 11PM label
+      const last = document.createElement("div");
+      last.className = "label-top";
+      last.style.left = "100%";
+      last.innerText = "11PM";
+      r.appendChild(last);
+    }
+
+    /* CLOCK */
+    function updateClockSmooth() {
+      const now = new Date();
+
+      const ms = now.getMilliseconds();
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds() + ms / 1000;
+
+      const h12 = h % 12 || 12;
+      const ampm = h >= 12 ? "PM" : "AM";
+
+      digitalTime.innerText =
+        `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(Math.floor(s)).padStart(2, '0')} ${ampm}`;
+
+      const h8 = (h % 8) + m / 60 + s / 3600;
+
+      hourPointer.style.left = (h8 / 8 * 100) + "%";
+      minutePointer.style.left = ((m + s / 60) / 60 * 100) + "%";
+      secondPointer.style.left = (s / 60 * 100) + "%";
+
+      let sessionHour = h + m / 60 + s / 3600;
+
+      if (sessionHour >= 17 && sessionHour <= 23) {
+        sessionPointer.style.left = ((sessionHour - 17) / 6 * 100) + "%";
+      } else {
+        sessionPointer.style.left = "-10%";
+      }
+
+      requestAnimationFrame(updateClockSmooth);
+      /* SESSION DETECTION */
+      let text = "Loading session...";
+      let color = "#888";
+
+      const t = h + m / 60;
+
+      const tokyo = (t >= 6 && t < 15);
+      const london = (t >= 13 && t < 22);
+      const ny = (t >= 18 || t < 3);
+
+      if (london && ny) {
+        text = "🔥 London + New York (High Volatility)";
+        color = "#ffd400";
+      }
+      else if (tokyo && london) {
+        text = "Tokyo + London";
+        color = "#00c3ff";
+      }
+      else if (tokyo) {
+        text = "Tokyo Session";
+        color = "#00c3ff";
+      }
+      else if (london) {
+        text = "London Session";
+        color = "#8a5cff";
+      }
+      else if (ny) {
+        text = "New York Session";
+        color = "#ff3b3b";
+      }
+
+      const el = document.getElementById("sessionStatus");
+      el.innerText = text;
+      el.style.color = color;
+      el.style.textShadow = `0 0 6px ${color}`;
+    }
+
+    /* INIT */
+    createHourRuler();
+    createMinuteRuler();
+    createSecondRuler();
+    createSessionRuler();
+    updateClockSmooth();
+
+  </script>
 
 </body>
+
 </html>
