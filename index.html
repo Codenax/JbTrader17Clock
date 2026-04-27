@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JbTradeClock</title>
+  <title>JbTrader17 Clock</title>
 
   <style>
     * {
@@ -72,8 +72,8 @@
     }
 
     .btn {
-      width: 16px;
-      height: 16px;
+      width: 12px;
+      height: 12px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
@@ -180,7 +180,7 @@
       position: absolute;
       font-size: 9px;
       transform: translateX(-50%);
-      bottom: -12px;
+      bottom: -13px;
       /* FIXED LOWER */
       font-weight: bold;
     }
@@ -188,9 +188,11 @@
     /* POINTERS */
     .pointer {
       position: absolute;
-      top: 0;
+      top: 16px;
       width: 2px;
-      height: 100%;
+      height: 50%;
+      z-index: +1;
+
     }
 
     .pointer.hour {
@@ -203,6 +205,8 @@
 
     .pointer.second {
       background: yellow;
+      z-index: +1;
+
     }
   </style>
 </head>
@@ -226,9 +230,16 @@
       <div class="time-display" id="digitalTime">00:00:00</div>
       <div id="sessionStatus">Loading session...</div>
 
+      <!-- FUNDING -->
+      <div class="ruler-wrap">
+        <div class="ruler-title" style="color:#00c3ff;">Funding Fee (8H)</div>
+        <div class="ruler" id="fundingRuler">
+          <div class="pointer" id="fundingPointer" style="background:yellow;"></div>
+        </div>
+      </div>
       <!-- HOURS -->
       <div class="ruler-wrap">
-        <div class="ruler-title">Hours (8H)</div>
+        <div class="ruler-title">Hours (24H) Candle Interval</div>
         <div class="ruler" id="hourRuler">
           <div class="pointer hour" id="hourPointer"></div>
         </div>
@@ -252,9 +263,9 @@
 
       <!-- SESSION -->
       <div class="ruler-wrap">
-        <div class="ruler-title" style="color: yellow;">New York + London Session</div>
+        <div class="ruler-title" style="color: rgb(241, 119, 205);">New York + London Session</div>
         <div class="ruler" id="sessionRuler">
-          <div class="pointer" id="sessionPointer" style="background:yellow;"></div>
+          <div class="pointer" id="sessionPointer" style="background:yellow;z-index: +1;"></div>
         </div>
       </div>
 
@@ -267,10 +278,8 @@
     function closeApp() { window.close(); }
 
     function minimize() {
-      if (window.require) {
-        const { remote } = require("electron");
-        remote.BrowserWindow.getFocusedWindow().minimize();
-      }
+      const { ipcRenderer } = require("electron");
+      ipcRenderer.send("minimize-window");
     }
 
     function toggleFull() {
@@ -281,17 +290,26 @@
       }
     }
 
-    /* BASIC RULERS (same as before) */
-    function createHourRuler() {
-      const r = document.getElementById("hourRuler");
+    function createFundingRuler() {
+      const r = document.getElementById("fundingRuler");
+
       for (let h = 0; h <= 8; h++) {
         const pos = (h / 8) * 100;
+
         const tick = document.createElement("div");
         tick.className = "tick";
-        tick.style.cssText =
-          h % 4 === 0 ? `height:16px;background:red;left:${pos}%`
-            : h % 2 === 0 ? `height:12px;background:purple;left:${pos}%`
-              : `height:8px;background:#aaa;left:${pos}%`;
+
+        let color = "#555", height = 8;
+
+        if (h === 0 || h === 4 || h === 8) {
+          color = "red";
+          height = 12;
+        } else if (h % 2 === 0) {
+          color = "#888";
+          height = 12;
+        }
+
+        tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
         r.appendChild(tick);
 
         const label = document.createElement("div");
@@ -301,6 +319,54 @@
         r.appendChild(label);
       }
     }
+    /* BASIC RULERS (same as before) */
+
+
+    function createHourRuler() {
+      const r = document.getElementById("hourRuler");
+      r.innerHTML = '<div class="pointer hour" id="hourPointer"></div>';
+
+      for (let i = 0; i <= 24; i++) {
+
+        const pos = (i / 24) * 100;
+
+        const tick = document.createElement("div");
+        tick.className = "tick";
+
+        let color = "#555", height = 6;
+
+        if (i % 8 === 0) {
+          color = "red";
+          height = 12;
+        } else {
+          color = "#aaa";
+          height = 8;
+        }
+
+        tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
+        r.appendChild(tick);
+
+        // 🔥 CORRECT LABEL LOGIC
+        if (i % 2 === 0) {
+          const label = document.createElement("div");
+          label.className = "label";
+          label.style.left = pos + "%";
+
+          let labelValue;
+
+          if (i === 24) {
+            labelValue = 24; // ✅ last fix
+          } else {
+            labelValue = (i + 24) % 24;
+          }
+
+          label.innerText = labelValue;
+
+          r.appendChild(label);
+        }
+      }
+    }
+
 
     function createMinuteRuler() {
       const r = document.getElementById("minuteRuler");
@@ -310,7 +376,7 @@
         tick.className = "tick";
 
         let color = "#555", height = 6;
-        if (m % 30 === 0) { color = "red"; height = 14; }
+        if (m % 30 === 0) { color = "red"; height = 12; }
         else if (m % 15 === 0) { color = "purple"; height = 12; }
         else if (m % 5 === 0) { color = "#aaa"; height = 10; }
 
@@ -335,7 +401,7 @@
         tick.className = "tick";
 
         let color = "#555", height = 6;
-        if (s % 30 === 0) { color = "red"; height = 14; }
+        if (s % 30 === 0) { color = "red"; height = 12; }
         else if (s % 15 === 0) { color = "purple"; height = 12; }
         else if (s % 5 === 0) { color = "#aaa"; height = 10; }
 
@@ -365,7 +431,7 @@
         tick.className = "tick";
 
         let color = "#555", height = 8;
-        if (h >= 18 && h <= 22) { color = "#00ffb3"; height = 16; }
+        if (h >= 18 && h <= 22) { color = "#00ffb3"; height = 13; }
 
         tick.style.cssText = `height:${height}px;background:${color};left:${pos}%`;
         r.appendChild(tick);
@@ -391,16 +457,16 @@
         bottom.style.left = pos + "%";
 
         if (h === 18) {
-          bottom.innerText = "NY Start";
+          bottom.innerText = "N Start";
           bottom.style.color = "#00ffb3";
         }
         else if (h === 22) {
-          bottom.innerText = "LDN End";
-          bottom.style.color = "#00ffb3";
+          bottom.innerText = "L End";
+          bottom.style.color = "#ff3b3b";
         }
         else if (h > 18 && h < 22) {
-          bottom.innerText = "NY+LDN";
-          bottom.style.color = "#00ffb3";
+          bottom.innerText = "N+L";
+          bottom.style.color = "#aaa";
         }
 
         r.appendChild(bottom);
@@ -429,9 +495,16 @@
       digitalTime.innerText =
         `${String(h12).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(Math.floor(s)).padStart(2, '0')} ${ampm}`;
 
-      const h8 = (h % 8) + m / 60 + s / 3600;
 
-      hourPointer.style.left = (h8 / 8 * 100) + "%";
+      // 6AM base shift
+      let base = 6;
+      let hourNow = h + m / 60 + s / 3600;
+      let dif = hourNow - base;
+      if (dif < 0) dif += 24;
+
+      hourPointer.style.left = (dif / 24 * 100) + "%";
+
+
       minutePointer.style.left = ((m + s / 60) / 60 * 100) + "%";
       secondPointer.style.left = (s / 60 * 100) + "%";
 
@@ -479,14 +552,28 @@
       el.innerText = text;
       el.style.color = color;
       el.style.textShadow = `0 0 6px ${color}`;
+
+      // FUNDING (6AM start, 8H cycle)
+      let fundingBase = 6;
+      let currentHour = h + m / 60 + s / 3600;
+
+      let diff = currentHour - fundingBase;
+      if (diff < 0) diff += 24;
+
+      let fundingPos = diff % 8;
+
+      document.getElementById("fundingPointer").style.left =
+        (fundingPos / 8 * 100) + "%";
     }
 
     /* INIT */
+    createFundingRuler();
     createHourRuler();
     createMinuteRuler();
     createSecondRuler();
     createSessionRuler();
     updateClockSmooth();
+
 
   </script>
 

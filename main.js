@@ -1,32 +1,198 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain, Tray, Menu } = require("electron");
 
-function createWindow () {
-  const win = new BrowserWindow({
-    width: 400,
-    height: 600,
+let win;
+let tray = null;
+let store;
+
+/* =========================
+   SINGLE INSTANCE LOCK
+========================= */
+const gotLock = app.requestSingleInstanceLock();
+
+if (!gotLock) {
+  app.quit();
+} else {
+  app.on("second-instance", () => {
+    if (win) {
+      if (win.isMinimized()) win.restore();
+      win.show();
+      win.focus();
+    }
+  });
+}
+
+/* =========================
+   CREATE WINDOW
+========================= */
+async function createWindow() {
+
+  const Store = (await import("electron-store")).default;
+  store = new Store();
+
+  const savedBounds = store.get("windowBounds");
+
+  win = new BrowserWindow({
+    width: savedBounds?.width || 260,
+    height: savedBounds?.height || 360,
+    x: savedBounds?.x,
+    y: savedBounds?.y,
+
+    minWidth: 180,
+    minHeight: 340,
+
     frame: false,
     alwaysOnTop: true,
     transparent: true,
     resizable: true,
+
+    show: false,
+
+    skipTaskbar: true,
+
+    icon: require("path").join(__dirname, "icon10.ico"),
+
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false
-    }
+      contextIsolation: false,
+    },
   });
 
   win.loadFile("index.html");
+
+  win.once("ready-to-show", () => {
+    win.show();
+  });
+
+  const saveBounds = () => {
+    store.set("windowBounds", win.getBounds());
+  };
+
+  win.on("resize", saveBounds);
+  win.on("move", saveBounds);
+
+  win.on("close", (e) => {
+    if (!app.isQuiting) {
+      e.preventDefault();
+      win.hide();
+    }
+    saveBounds();
+  });
+
+  win.on("minimize", (e) => {
+    e.preventDefault();
+    win.hide();
+  });
 }
 
-app.whenReady().then(() => {
+/* =========================
+   MINIMIZE FROM UI BUTTON
+========================= */
+ipcMain.on("minimize-window", () => {
+  if (win) win.hide();
+});
 
-  // ✅ AUTO START FIX (WORKING)
+/* =========================
+   APP START
+========================= */
+app.whenReady().then(async () => {
+
+  const Store = (await import("electron-store")).default;
+  store = new Store();
+
+  /* =========================
+     ⭐ AUTO START DEFAULT TRUE (FIRST TIME ONLY)
+  ========================= */
+  let autoStart = store.get("autoStart");
+
+  if (autoStart === undefined) {
+    autoStart = true; // FIRST TIME DEFAULT ON
+    store.set("autoStart", true);
+  }
+
+  function setAutoStart(value) {
+    autoStart = value;
+
+    store.set("autoStart", value);
+
+    app.setLoginItemSettings({
+      openAtLogin: value,
+      path: process.execPath,
+      args: [],
+    });
+  }
+
+  // apply saved state on startup
   app.setLoginItemSettings({
-    openAtLogin: true,
+    openAtLogin: autoStart,
     path: process.execPath,
-    args: []
+    args: [],
   });
 
   createWindow();
+
+  /* =========================
+     SYSTEM TRAY
+  ========================= */
+  const path = require("path");
+
+  tray = new Tray(path.join(__dirname, "icon10.ico"));
+
+  function buildMenu() {
+    return Menu.buildFromTemplate([
+      {
+        label: "Show",
+        click: () => win.show(),
+      },
+      {
+        label: "Hide",
+        click: () => win.hide(),
+      },
+
+      {
+        type: "separator",
+      },
+
+      // ⭐ START WITH WINDOWS TOGGLE
+      {
+        label: "Start with Windows",
+        type: "checkbox",
+        checked: autoStart,
+        click: (item) => {
+          setAutoStart(item.checked);
+        },
+      },
+
+      {
+        type: "separator",
+      },
+
+      {
+        label: "Exit",
+        click: () => {
+          app.isQuiting = true;
+          app.quit();
+        },
+      },
+    ]);
+  }
+
+  tray.setToolTip("JbTrader Clock");
+  tray.setContextMenu(buildMenu());
+
+  tray.on("click", () => {
+    if (win.isVisible()) {
+      win.hide();
+    } else {
+      win.show();
+    }
+  });
+});
+
+/* =========================
+   SAFE EXIT
+========================= */
+app.on("before-quit", () => {
+  app.isQuiting = true;
 });
 
 app.on("window-all-closed", () => {
