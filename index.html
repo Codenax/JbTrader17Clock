@@ -523,16 +523,12 @@
     ========================= */
 
     function getIndex(t) {
-      for (let i = 0; i < displays.length; i++) {
-        const d = displays[i];
-
-        if (d.t1 < d.t2) {
-          if (t >= d.t1 && t < d.t2) return i;
-        } else {
-          if (t >= d.t1 || t < d.t2) return i;
-        }
-      }
-      return 0;
+      // use ONLY t2 for switching
+      if (t < 6) return 0;      // before Sydney+Tokyo start
+      if (t < 14) return 1;     // after first switch
+      if (t < 19) return 2;
+      if (t < 23) return 3;
+      return 3; // রাতের জন্য last display
     }
 
     /* =========================
