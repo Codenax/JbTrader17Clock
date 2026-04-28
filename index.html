@@ -293,6 +293,8 @@
     function createFundingRuler() {
       const r = document.getElementById("fundingRuler");
 
+      r.innerHTML = '<div id="fundingPointer" class="pointer" style="position:absolute;width:2px;background:yellow;z-index:2;"></div>';
+
       for (let h = 0; h <= 8; h++) {
         const pos = (h / 8) * 100;
 
@@ -319,6 +321,23 @@
         r.appendChild(label);
       }
     }
+
+    function updateFundingPointer() {
+      const now = new Date();
+
+      const hours = now.getUTCHours();
+      const minutes = now.getUTCMinutes();
+      const seconds = now.getUTCSeconds();
+
+      const totalHours = (hours % 8) + minutes / 60 + seconds / 3600;
+
+      const pos = (totalHours / 8) * 100;
+
+      document.getElementById("fundingPointer").style.left = pos + "%";
+    }
+
+    createFundingRuler();
+    setInterval(updateFundingPointer, 1000);
     /* BASIC RULERS (same as before) */
 
 
