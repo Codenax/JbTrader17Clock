@@ -534,7 +534,7 @@
 
       { l1: "Tokyo + London End", t1: 15, l2: "London + New York Start", t2: 19 },
 
-      { l1: "London + New York End", t1: 23, l2: "New York end,Sydney Start", t2: 4 }
+      { l1: "London + New York End", t1: 23, l2: "New York End,Sydney Start", t2: 4 }
     ];
 
     /* =========================
@@ -556,8 +556,9 @@
 
     function getColor(text) {
       if (text.includes("Start")) return "#00ff00";   // green
-      if (text.includes("End")) return "#ffd400";     // yellow
-      return "#ffd400";                                // overlap yellow
+      if (text.includes("End")) return "#ffd400";  // yello
+
+      return "#ffd400"; // default
     }
 
     /* 🔥 overlap mark */
@@ -614,13 +615,29 @@
 
       const d = displays[getIndex(t)];
 
-      let line1 = `${d.l1} (${formatCountdown(t, d.t1)})`;
+      /* detect if line1 finished */
+      function isTimeUp(now, target) {
+        let diff = target - now;
+        if (diff < 0) diff += 24;
+        return diff < (1 / 3600); // less than 1 second
+      }
+
+      let line1, line1Color;
+
+      if (isTimeUp(t, d.t1)) {
+        line1 = "Next Loading...";
+        line1Color = "#ccc"; // light white
+      } else {
+        line1 = `${d.l1} (${formatCountdown(t, d.t1)})`;
+        line1Color = getColor(line1);
+      }
+
       let line2 = `${d.l2} (${formatCountdown(t, d.t2)})`;
 
       const el = document.getElementById("sessionStatus");
 
       el.innerHTML =
-        `<span style="color:${getColor(line1)}">${addFire(line1)}</span><br>` +
+        `<span style="color:${line1Color}">${addFire(line1)}</span><br>` +
         `<span style="color:${getColor(line2)}">${addFire(line2)}</span>`;
 
 
