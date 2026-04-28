@@ -46,7 +46,7 @@
       content: "";
       position: absolute;
       z-index: -1;
-      top: 13px;
+      top: auto;
       left: 0;
       width: 100%;
       height: 1rem;
@@ -208,6 +208,71 @@
       z-index: +1;
 
     }
+
+    /* MULTI SESSION RULER */
+    /* 🔥 taller for multiple lines */
+
+
+    .multi-ruler {
+      position: relative;
+      height: 70px;
+      /* 🔥 increased height */
+      margin-top: 5px;
+    }
+
+    /* 24 tick lines */
+    .multi-ruler .tick {
+      position: absolute;
+      top: 20px;
+      width: 1px;
+      height: 100%;
+      background: #222;
+    }
+
+    /* TOP LABEL (0,2,4...) */
+    .top-label {
+      position: absolute;
+      top: 5px;
+      font-size: 9px;
+      color: #ffffff;
+      transform: translateX(-50%);
+      font-weight: bold;
+    }
+
+    /* SESSION LINE (DEEP COLOR + BIG HEIGHT) */
+    .session-line {
+      position: absolute;
+      height: 14px;
+      /* 🔥 bigger */
+      border-radius: 3px;
+      z-index: 5;
+    }
+
+    /* TEXT INSIDE LINE */
+    .session-label {
+      position: absolute;
+      font-size: 7px;
+      color: #fff;
+      /* 🔥 white */
+      font-weight: bolder;
+      left: 3px;
+      /* 🔥 start of line */
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .jbname {
+      position: absolute;
+      right: 10px;
+      margin-top: 10px;
+      font-size: 8px;
+      color: #fce518;
+      
+      font-style: italic;
+    }
+
+    /* 🔥 taller for multiple lines end */
   </style>
 </head>
 
@@ -227,8 +292,8 @@
 
     <div class="clock-container">
 
-      <div class="time-display" id="digitalTime">00:00:00</div>
-      <div id="sessionStatus" style="font-size: 10px;">Loading session...</div>
+      <div class="time-display" id="digitalTime" style="margin-top:3px;">00:00:00</div>
+      <div id="sessionStatus" style="font-size: 10px; ">Loading session...</div>
 
       <!-- FUNDING -->
       <div class="ruler-wrap">
@@ -266,6 +331,19 @@
         <div class="ruler-title" style="color: rgb(241, 119, 205);">New York + London Session</div>
         <div class="ruler" id="sessionRuler">
           <div class="pointer" id="sessionPointer" style="background:yellow;z-index: +1;"></div>
+        </div>
+      </div>
+      <!-- 24H SESSION MULTI LINE -->
+      <div class="ruler-wrap" style="margin-top:10px">
+        <div class="ruler-title" style="color:rgb(229, 255, 0);">24H Market Sessions</div>
+        <div class="multi-ruler ruler" id="multiSessionRuler">
+          <div class="pointer" id="multiPointer" style="background:yellow;"></div>
+        </div>
+      </div>
+      <div class="ruler-wrap" style="margin-top: 15px">
+        <div class="ruler-title jbname">&copy; Jahangir Alam</div>
+        <div class="multi-ruler ruler" id="multiSessionRuler">
+
         </div>
       </div>
 
@@ -524,47 +602,396 @@
     }
 
     /* =========================
-       SESSION FLOW DATA
-    ========================= */
-
-    const displays = [
-      { l1: "Sydney End", t1: 13, l2: "Sydney + Tokyo Start", t2: 6 },
-
-      { l1: "Sydney + Tokyo End", t1: 13, l2: "Tokyo + London Start", t2: 14 },
-
-      { l1: "Tokyo + London End", t1: 15, l2: "London + New York Start", t2: 19 },
-
-      { l1: "London + New York End", t1: 23, l2: "New York End,Sydney Start", t2: 4 }
+   SESSIONS status dispay start
+========================= */
+    const sessions = [
+      { name: "Sydney", start: 4, end: 13 },
+      { name: "Tokyo", start: 6, end: 15 },
+      { name: "London", start: 14, end: 23 },
+      { name: "New York", start: 19, end: 4 }
     ];
 
-    /* =========================
-       GET ACTIVE DISPLAY
-    ========================= */
+    function isActiveSession(t, s, e) {
+      if (e > s) return t >= s && t < e;
+      return (t >= s && t < 24) || (t >= 0 && t < e);
+    }
 
-    function getIndex(t) {
-      // use ONLY t2 for switching
-      if (t < 6) return 0;      // before Sydney+Tokyo start
-      if (t < 14) return 1;     // after first switch
-      if (t < 19) return 2;
-      if (t < 23) return 3;
-      return 3; // রাতের জন্য last display
+    function getCD(end, t) {
+      let d = end - t;
+      if (d < 0) d += 24;
+      let sec = Math.floor(d * 3600);
+      let h = Math.floor(sec / 3600);
+      let m = Math.floor((sec % 3600) / 60);
+      let s = sec % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
     /* =========================
-       COLOR RULES
+       DYNAMIC STATUS + OVERLAP
+    ========================= */
+    function updateStatus(t) {
+
+      let active = [];
+
+      sessions.forEach(s => {
+        if (isActiveSession(t, s.start, s.end)) {
+          active.push(s);
+        }
+      });
+
+      active.sort((a, b) => a.start - b.start);
+
+      let lines = [];
+
+      /* =========================
+         COLOR BY POSITION (SIMPLE RULE)
+      ========================= */
+      function getColor(index, isOverlap = false) {
+
+        // overlap always red
+        if (isOverlap) return "#ff3b3b";
+
+        // normal lines
+        if (index === 0) return "#ffd400"; // yellow
+        if (index === 1) return "#00ffb3"; // sky blue
+        return "#aaa";
+      }
+
+      /* =========================
+         BUILD LINES
+      ========================= */
+      for (let i = 0; i < active.length; i++) {
+
+        let cd = getCD(active[i].end, t);
+
+        /* MAIN LINE */
+        lines.push({
+          text: `${active[i].name} End (${cd})`,
+          color: getColor(i, false)
+        });
+
+        /* =========================
+           OVERLAP LINE (ALWAYS RED)
+        ========================= */
+        if (i < active.length - 1) {
+
+          let endA = active[i].end;
+          let endB = active[i + 1].end;
+
+          if (endA < active[i].start) endA += 24;
+          if (endB < active[i + 1].start) endB += 24;
+
+          let overlapEnd = endA < endB ? active[i].end : active[i + 1].end;
+
+          let ocd = getCD(overlapEnd, t);
+
+          lines.push({
+            text: `${active[i].name} + ${active[i + 1].name} 🔥 (${ocd})`,
+            color: getColor(i, true)
+          });
+
+        }
+
+      }
+
+      /* =========================
+         RENDER
+      ========================= */
+      document.getElementById("sessionStatus").innerHTML =
+        lines.map(l => `<div style="color:${l.color}">${l.text}</div>`).join("")
+        || `<div style="color:#888">No Active Session</div>`;
+
+    }
+
+    /* =========================
+       CLOCK LOOP
+    ========================= */
+    function tick() {
+
+      const now = new Date();
+
+      const h = now.getHours();
+      const m = now.getMinutes();
+      const s = now.getSeconds() + now.getMilliseconds() / 1000;
+
+      document.getElementById("digitalTime").innerText =
+        `${String(h % 12 || 12).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(Math.floor(s)).padStart(2, '0')}`;
+
+      let t = h + m / 60 + s / 3600;
+
+      updateStatus(t);
+
+      requestAnimationFrame(tick);
+    }
+
+    tick();
+
+
+
+    /* =========================
+      SESSIONS status dispay end
     ========================= */
 
-    function getColor(text) {
-      if (text.includes("Start")) return "#00ff00";   // green
-      if (text.includes("End")) return "#ffd400";  // yello
 
-      return "#ffd400"; // default
+
+
+
+    function formatCountdown(hoursLeft) {
+      const total = Math.max(0, Math.floor(hoursLeft * 3600));
+
+      const hh = Math.floor(total / 3600);
+      const mm = Math.floor((total % 3600) / 60);
+      const ss = total % 60;
+
+      return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
     }
 
-    /* 🔥 overlap mark */
-    function addFire(text) {
-      return text.includes("+") ? text + " 🔥" : text;
+    /* ========================= Multi session ruler start ========================= */
+
+
+
+    function createMultiSessionRuler() {
+      const r = document.getElementById("multiSessionRuler");
+
+      r.innerHTML = '<div class="pointer" id="multiPointer" style="top:20px;height:100%;width:2px;background:yellow;"></div>';
+
+      // 🔥 24 ticks + TOP LABELS
+      for (let h = 0; h <= 24; h++) {
+        let pos = (h / 24) * 100;
+
+        // tick
+        const tick = document.createElement("div");
+        tick.className = "tick";
+        tick.style.left = pos + "%";
+        r.appendChild(tick);
+
+        // label every 2 hours
+        if (h % 2 === 0) {
+          const lbl = document.createElement("div");
+          lbl.className = "top-label";
+          lbl.style.left = pos + "%";
+
+          let hour = h % 24;
+
+          let display;
+
+          if (hour === 0) display = "12";
+          else if (hour === 12) display = "12";
+          else if (hour > 12) display = (hour - 12);
+          else display = hour;
+
+          // 🔥 COLOR LOGIC
+          if (hour < 12) {
+            lbl.style.color = "#00c3ff"; // AM → sky blue
+          } else {
+            lbl.style.color = "#ff7b00"; // PM → orange
+          }
+
+          // 24 case
+          if (h === 24) {
+            display = "12";
+            lbl.style.color = "#00c3ff"; // AM
+          }
+
+          lbl.innerText = display;
+
+          r.appendChild(lbl);
+        }
+
+      }
+
+      // helper
+      function addSession(start, end, top, color, label) {
+
+        function draw(s, e, showLabel = false, isNYBottom = false) {
+          const left = (s / 24) * 100;
+          const width = ((e - s) / 24) * 100;
+
+          const line = document.createElement("div");
+          line.className = "session-line";
+          line.style.cssText = `
+      left:${left}%;
+      width:${width}%;
+      top:${top}px;
+      background:${color};
+      position:absolute;
+      opacity:0.25;
+      transition:0.3s;
+    `;
+
+          line._session = {
+            start: s,
+            end: e,
+            label,
+            isNY: (label === "New York"),
+            isNYBottom
+          };
+
+          // 🔴 LABEL ONLY WHEN showLabel = true
+          if (showLabel) {
+            const txt = document.createElement("div");
+            txt.className = "session-label";
+            txt.innerText = label;
+            line.appendChild(txt);
+          }
+
+          r.appendChild(line);
+        }
+
+        if (end > start) {
+          draw(start, end, true);
+        } else {
+          // 🔥 New York split
+          draw(start, 24, true, false);   // 19–24 → LABEL ONLY
+          draw(0, end, false, true);      // 0–4 → COUNTDOWN ONLY
+        }
+      }
+
+      // helper
+      /* ========================= Sessions ========================= */
+
+      addSession(4, 13, 24, "#007ea7", "Sydney", true);
+      addSession(6, 15, 41, "#5a189a", "Tokyo", true);
+      addSession(14, 23, 58, "#c9184a", "London", true);
+      addSession(19, 4, 75, "#2b9348", "New York", true);
     }
+    /* ========================= Multi session ruler end ========================= */
+
+
+
+    function updateSessionHighlight() {
+      const now = new Date();
+      const t = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+
+      // NY state
+      const nyActive =
+        (t >= 19 && t < 24) || (t >= 0 && t < 4);
+
+      document.querySelectorAll(".session-line").forEach(line => {
+
+        let s = line._session.start;
+        let e = line._session.end;
+
+        let isNYTop = line._session.isNYTop;
+        let isNYBottom = line._session.isNYBottom;
+
+        let active = false;
+
+        // =========================
+        // ACTIVE CHECK
+        // =========================
+        if (line._session.label === "New York") {
+          active = nyActive;
+        } else {
+          if (e > s) {
+            active = (t >= s && t < e);
+          } else {
+            active = (t >= s && t < 24) || (t >= 0 && t < e);
+          }
+        }
+
+        // =========================
+        // GLOW (ALL ACTIVE CAN STACK)
+        // =========================
+        if (active) {
+          line.style.opacity = "1";
+          line.style.boxShadow = `0 0 3px ${line.style.backgroundColor}`;
+        } else {
+          line.style.opacity = "0.25";
+          line.style.boxShadow = "none";
+        }
+
+        // =========================
+        // COUNTDOWN LOGIC
+        // =========================
+        let cd = line.querySelector(".cd");
+
+        // 🔥 NEW YORK
+        if (line._session.isNY) {
+
+          // ❌ TOP PART → NO countdown
+          if (!line._session.isNYBottom) {
+            if (cd) cd.remove();
+            return;
+          }
+
+          // ✅ BOTTOM PART ONLY
+          if (active) {
+            if (!cd) {
+              cd = document.createElement("div");
+              cd.className = "session-label cd";
+              cd.style.right = "4px";
+              cd.style.left = "auto";
+              line.appendChild(cd);
+            }
+
+            cd.innerText = getCountdown(e, t);
+          } else {
+            if (cd) cd.remove();
+          }
+
+          return;
+        }
+
+
+        // =========================
+        // OTHER SESSIONS (NORMAL)
+        // =========================
+
+        if (active) {
+          if (!cd) {
+            cd = document.createElement("div");
+            cd.className = "session-label cd";
+            cd.style.right = "4px";
+            cd.style.left = "auto";
+            line.appendChild(cd);
+          }
+
+          cd.innerText = getCountdown(e, t);
+        } else {
+          if (cd) cd.remove();
+        }
+
+      });
+    }
+    setInterval(updateSessionHighlight, 1000);
+
+    function updateSessionCountdown() {
+      const now = new Date();
+      const t = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+
+      document.querySelectorAll(".session-line").forEach(line => {
+        if (!line._cd) return;
+
+        let end = line._cd.end;
+        let diff = end - t;
+        if (diff < 0) diff += 24;
+
+        const total = Math.floor(diff * 3600);
+        const hh = Math.floor(total / 3600);
+        const mm = Math.floor((total % 3600) / 60);
+        const ss = total % 60;
+
+        line._cd.el.innerText =
+          `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+      });
+    }
+
+    function getCountdown(end, t) {
+      let diff = end - t;
+      if (diff < 0) diff += 24;
+
+      const total = Math.floor(diff * 3600);
+      const hh = Math.floor(total / 3600);
+      const mm = Math.floor((total % 3600) / 60);
+      const ss = total % 60;
+
+      return `${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+    }
+
+
+
+
 
 
     /* CLOCK */
@@ -609,41 +1036,15 @@
 
 
 
-      /* SESSION DETECTION (ONLY CURRENT + NEXT 2 LINE SYSTEM) */
 
-      const t = h + m / 60 + s / 3600;
+      // multi session pointer
+      let fullHour = h + m / 60 + s / 3600;
+      multiPointer.style.left = (fullHour / 24 * 100) + "%";
+      /* ========================= */
 
-      const d = displays[getIndex(t)];
-
-      /* detect if line1 finished */
-      function isTimeUp(now, target) {
-        let diff = target - now;
-        if (diff < 0) diff += 24;
-        return diff < (1 / 3600); // less than 1 second
-      }
-
-      let line1, line1Color;
-
-      if (isTimeUp(t, d.t1)) {
-        line1 = "Next Loading...";
-        line1Color = "#ccc"; // light white
-      } else {
-        line1 = `${d.l1} (${formatCountdown(t, d.t1)})`;
-        line1Color = getColor(line1);
-      }
-
-      let line2 = `${d.l2} (${formatCountdown(t, d.t2)})`;
-
-      const el = document.getElementById("sessionStatus");
-
-      el.innerHTML =
-        `<span style="color:${line1Color}">${addFire(line1)}</span><br>` +
-        `<span style="color:${getColor(line2)}">${addFire(line2)}</span>`;
-
-
-
-
+      updateSessionCountdown();
       requestAnimationFrame(updateClockSmooth);
+
     }
 
 
@@ -654,6 +1055,7 @@
     createMinuteRuler();
     createSecondRuler();
     createSessionRuler();
+    createMultiSessionRuler();
     updateClockSmooth();
 
 
