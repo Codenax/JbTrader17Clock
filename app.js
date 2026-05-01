@@ -13,7 +13,10 @@
         document.exitFullscreen();
       }
     }
-
+function toggleMenu() {
+  const menu = document.getElementById("sideMenu");
+  menu.classList.toggle("open");
+}
     function createFundingRuler() {
       const r = document.getElementById("fundingRuler");
 

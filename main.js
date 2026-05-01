@@ -167,7 +167,7 @@ app.whenReady().then(async () => {
       },
 
       {
-        label: "Exit",
+        label: "Uninstall Clock",
         click: () => {
           app.isQuiting = true;
           app.quit();
