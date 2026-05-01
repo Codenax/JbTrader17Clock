@@ -26,7 +26,7 @@
       <div class="title">JbTrader17 Clock</div>
 
       <!-- WINDOW CONTROLS -->
-     <div class="title-actions">
+      <div class="title-actions">
         <button class="btn min" onclick="minimize()"></button>
         <button class="btn full" onclick="toggleFull()"></button>
         <button class="btn close" onclick="closeApp()"></button>
@@ -95,13 +95,13 @@
       <!-- 24H SESSION MULTI LINE -->
       <div class="ruler-wrap" style="margin-top:10px">
         <div class="ruler-title" style="color:rgb(229, 255, 0);">24H Market Sessions</div>
-        <div class="multi-ruler ruler" id="multiSessionRuler">
+        <div class="multi-ruler ruler forexRuler" id="forexRuler">
           <div class="pointer" id="multiPointer" style="background:yellow;"></div>
         </div>
       </div>
       <div class="ruler-wrap" style="margin-top: 15px">
         <div class="ruler-title jbname">&copy; Jahangir Alam</div>
-        <div class="multi-ruler ruler" id="multiSessionRuler">
+        <div class="multi-ruler ruler" style="height: 0px;">
 
         </div>
       </div>
@@ -109,6 +109,12 @@
     </div>
   </div>
 
+
+  <script src="forexSessionRuler.js"></script>
+  <script>
+    createForexSessionRuler("forexRuler");
+  </script>
+  <script src="sessionRuler.js"></script>
   <script src="app.js"></script>
 
 </body>

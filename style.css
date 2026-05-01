@@ -152,7 +152,7 @@
       font-size: 9px;
       transform: translateX(-50%);
       bottom: 14px;
-      color: #ccc;
+       color: white !important;
       font-weight: bold;
     }
 
@@ -162,7 +162,7 @@
       font-size: 9px;
       transform: translateX(-50%);
       bottom: 16px;
-      color: #aaa;
+     
       font-weight: bold;
     }
 
@@ -182,6 +182,7 @@
       width: 2px;
       height: 50%;
       z-index: +1;
+      box-shadow:0 0 2px yellow;
 
     }
 
@@ -198,6 +199,7 @@
       z-index: +1;
 
     }
+   
 
     /* MULTI SESSION RULER */
     /* 🔥 taller for multiple lines */
@@ -325,4 +327,11 @@
 .menu-btn:hover {
 color: #ffd900;
  transition: smooth 0.3s;
+}
+
+.forexRuler {
+  position: relative;
+  width: 100%;
+  height: 62px;
+
 }
