@@ -19,26 +19,26 @@ function createSessionRuler() {
   const total = endUTC - startUTC;
 
   // =========================
-  // TICKS + LABELS
+  // TICKS + LABELS (LOCAL TIME)
   // =========================
   for (let utc = startUTC; utc <= endUTC; utc++) {
     const pos = ((utc - startUTC) / total) * 100;
 
     // TICK
     const tick = document.createElement("div");
-    tick.className = "tick";
     tick.style.cssText = `
       position:absolute;
       left:${pos}%;
+      top:18px;
       width:2px;
       height:12px;
       background:${utc >= 13 && utc <= 17 ? "#00ffb3" : "#555"};
     `;
     r.appendChild(tick);
 
-    // LABEL
+    // ✅ LOCAL TIME LABEL
     const label = document.createElement("div");
-    label.className = "label";
+    label.classList.add("label");
 
     const offset = -new Date().getTimezoneOffset() / 60;
     const localHour = (utc + offset + 24) % 24;
@@ -53,7 +53,6 @@ function createSessionRuler() {
       left:${pos}%;
       top:5px;
       transform:translateX(-50%);
-      font-size:9px;
       color:#fff;
     `;
 
@@ -78,15 +77,13 @@ function createSessionRuler() {
     } else if (utc === 17) {
       bottom.innerText = "L End";
       bottom.style.color = "#ff3b3b";
-    } else {
-      bottom.innerText = "";
     }
 
     r.appendChild(bottom);
   }
 
   // =========================
-  // LIVE POINTER UPDATE
+  // POINTER UPDATE (STRICT UTC CONTROL)
   // =========================
   function update() {
     const now = new Date();
@@ -96,13 +93,16 @@ function createSessionRuler() {
       now.getUTCMinutes() / 60 +
       now.getUTCSeconds() / 3600;
 
-    let progress = ((t - startUTC) / total) * 100;
+    // 👉 ONLY SHOW INSIDE 12–18 UTC
+    if (t >= startUTC && t <= endUTC) {
+      let progress = ((t - startUTC) / total) * 100;
+      progress = Math.max(0, Math.min(100, progress));
 
-    // clamp inside 0–100
-    progress = Math.max(0, Math.min(100, progress));
-
-    pointer.style.left = progress + "%";
-    pointer.style.display = "block";
+      pointer.style.left = progress + "%";
+      pointer.style.display = "block";
+    } else {
+      pointer.style.display = "none";
+    }
 
     requestAnimationFrame(update);
   }
