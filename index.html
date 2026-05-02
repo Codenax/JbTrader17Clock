@@ -34,20 +34,61 @@
 
     </div>
 
-    <!-- SIDE MENU -->
+    <!-- SIDE MENU  start-->
     <div id="sideMenu" class="side-menu">
-      <div class="menu-item">Dashboard</div>
-      <div class="menu-item">Sessions</div>
-      <div class="menu-item">Settings</div>
-      <div class="menu-item">About</div>
+      <div class="close-btn" onclick="toggleMenu()"></div>
+
+      <!-- SETTINGS TITLE -->
+      <div class="menu-item-title">Settings</div>
+
+      <!-- FUNDING -->
+
+
+
+
+      <div class="setting-row">
+        <span>Funding Fee Ruler</span>
+
+        <label class="switch-text">
+          <input type="checkbox" id="fundingToggle" checked>
+          <span class="slider">
+            <span class="on">ON</span>
+            <span class="off">OFF</span>
+          </span>
+        </label>
+
+      </div>
+
+      <!-- NY LONDON -->
+      <div class="setting-row">
+        <span>New York London Ruler</span>
+
+        <label class="switch-text">
+          <input type="checkbox" id="nylondonToggle" checked>
+          <span class="slider">
+            <span class="on">ON</span>
+            <span class="off">OFF</span>
+          </span>
+        </label>
+
+      </div>
+
+      <!-- 24H MARKET -->
+      <div class="setting-row">
+        <span>24H Market Ruler</span>
+
+        <label class="switch-text">
+          <input type="checkbox" id="market24Toggle" checked>
+          <span class="slider">
+            <span class="on">ON</span>
+            <span class="off">OFF</span>
+          </span>
+        </label>
+
+      </div>
+
     </div>
-    <!-- SIDE MENU -->
-    <div id="sideMenu" class="side-menu">
-      <div class="menu-item">Dashboard</div>
-      <div class="menu-item">Sessions</div>
-      <div class="menu-item">Settings</div>
-      <div class="menu-item">About</div>
-    </div>
+    <!-- SIDE MENU  end-->
 
     <div class="clock-container">
 
@@ -55,7 +96,7 @@
       <div id="sessionStatus" style="font-size: 10px; ">Loading session...</div>
 
       <!-- FUNDING -->
-      <div class="ruler-wrap">
+      <div class="ruler-wrap" id="jbFundingRullar">
         <div class="ruler-title" style="color:#00c3ff;">Funding Fee (8H) <Span style="color: yellow;">(Crypto)</Span>
         </div>
         <div class="ruler" id="fundingRuler">
@@ -87,15 +128,16 @@
       </div>
 
       <!-- SESSION -->
-      <div class="ruler-wrap">
+      <div class="ruler-wrap" id="jbNyLondonRullar">
         <div class="ruler-title" style="color: rgb(241, 119, 205);">New York + London Session</div>
-        <div class="ruler" id="sessionRuler">
+        <div class="ruler" id="sessionRuler" style="height: 35px !important;">
           <div class="pointer" id="sessionPointer" style="background:yellow;z-index: +1;"></div>
         </div>
       </div>
       <!-- 24H SESSION MULTI LINE -->
-      <div class="ruler-wrap" style="margin-top:10px">
-        <div class="ruler-title" style="color:#00ffb3;">24H Market Sessions <span style="color: white;"> (UTC 0)</span><Span style="color: yellow;"> (Local)</Span></div>
+      <div class="ruler-wrap" id="jb24hMarketRullar" style="margin-top:2px">
+        <div class="ruler-title" style="color:#00ffb3;">24H Market Sessions <span style="color: white;"> (UTC
+            0)</span><Span style="color: yellow;"> (Local)</Span></div>
         <div class="multi-ruler ruler forexRuler" id="forexRuler">
           <div class="pointer" id="multiPointer" style="background:yellow;"></div>
         </div>
@@ -117,6 +159,8 @@
   </script>
   <script src="sessionRuler.js"></script>
   <script src="app.js"></script>
+  <script src="sideMenu-Modal.js"></script>
+
 
 </body>
 

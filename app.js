@@ -19,9 +19,7 @@ function toggleFull() {
   }
 }
 
-function toggleMenu() {
-  document.getElementById("sideMenu").classList.toggle("open");
-}
+
 
 /* =========================
    FUNDING RULER

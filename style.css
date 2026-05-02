@@ -108,6 +108,7 @@
     /* RULERS */
     .ruler-wrap {
       margin-bottom: 6px;
+      transition: all 0.3s;
     }
 
     .ruler-title {
@@ -265,26 +266,6 @@
     }
 
     /* 🔥 taller for multiple lines end */
-
-
-    /*side menu*/
-
-
-
-
-
-/* MENU BUTTON */
-.menu-btn {
-  width: 40px;
- 
-  text-align: left;
-  font-size: 15px;
-  cursor: pointer;
-  -webkit-app-region: no-drag;
-  color: #00ffb3;
-  z-index: 1000;
-}
-
 /* TITLE */
 
 .title{
@@ -292,22 +273,23 @@
       font-weight: bold;
       color: #076d4b;
 }
-/* WINDOW BUTTONS */
 
+  /*side menu start*/
 
 
 /* SIDE MENU */
 .side-menu {
   position: fixed;
-  top: 40px;
+  top: 20px;
   left: 0;
   width: 200px;
-  height: 100%;
+  height:90%;
   background: #1a1a1a;
   transform: translateX(-101%);
   transition: 0.3s;
   padding: 10px;
-  z-index: 999;
+  z-index: 9999;
+    -webkit-app-region: no-drag;
 }
 
 /* OPEN STATE */
@@ -317,17 +299,157 @@
 
 /* MENU ITEMS */
 .menu-item {
-  padding: 10px;
+  font-size: 10px;
+  padding: 5px;
   color: #ccc;
   cursor: pointer;
 }
 .menu-btn{
-    color: #00ffb3;
+  width: 40px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  color: #00ffb3;
+  z-index: 1000;
+
 }
 .menu-btn:hover {
 color: #ffd900;
  transition: smooth 0.3s;
 }
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background: #ff3b3b;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255, 59, 59, 0.6);
+  transition: 0.2s;
+  z-index: 1000;
+    -webkit-app-region: no-drag;
+}
+
+.close-btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.9);
+}
+
+
+.menu-item-title {
+  font-size: 10px;
+  color: #00ffb3;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  padding-left: 5px;
+  opacity: 0.8;
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 5px;
+  font-size: 9px;
+  color: #ccc;
+}
+
+.setting-row input {
+  accent-color: #00ffb3;
+  cursor: pointer;
+}
+
+
+.switch-text {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 18px;
+}
+
+.switch-text input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 20px;
+  transition: 0.3s;
+  overflow: hidden;
+}
+
+/* ON OFF TEXT */
+.slider .on,
+.slider .off {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 7px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.slider .on {
+  left: 6px;
+  color: #00ffb3;
+  opacity: 0;
+}
+
+.slider .off {
+  right: 6px;
+  color: yellow;
+  opacity: 1;
+}
+
+/* knob */
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  top: 2px;
+  background: #666;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* ON STATE */
+.switch-text input:checked + .slider {
+  background: #002b22;
+  border-color: #00ffb3;
+}
+
+.switch-text input:checked + .slider::before {
+  transform: translateX(22px);
+  background: #00ffb3;
+}
+
+.switch-text input:checked + .slider .on {
+  opacity: 1;
+}
+
+.switch-text input:checked + .slider .off {
+  opacity: 0;
+}
+
+
+
+
+/*side menu end*/
 
 .forexRuler {
   position: relative;
@@ -335,3 +457,11 @@ color: #ffd900;
   height: 95px;
 
 }
+
+/*day night mode switch Start*/
+/* ROW */
+/* ===== DEFAULT (DARK MODE - তোমার current UI) ===== */
+
+
+
+/*day night mode switch end*/
