@@ -37,6 +37,10 @@
     <!-- SIDE MENU  start-->
     <div id="sideMenu" class="side-menu">
       <div class="close-btn" onclick="toggleMenu()"></div>
+      <!-- MAIN ITEMS -->
+      <div class="menu-item" onclick="openModal('instructionModal')">Instruction</div>
+      <div class="menu-item" onclick="openModal('donateModal')">Donate</div>
+      <div class="menu-item" onclick="openModal('aboutModal')">About</div>
 
       <!-- SETTINGS TITLE -->
       <div class="menu-item-title">Settings</div>
@@ -89,6 +93,8 @@
 
     </div>
     <!-- SIDE MENU  end-->
+
+
 
     <div class="clock-container">
 
@@ -151,6 +157,50 @@
 
     </div>
   </div>
+
+  <!-- MODALS START -->
+
+  <!-- INSTRUCTION MODAL -->
+  <div id="instructionModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>Instruction</span>
+        <div class="modal-close" onclick="closeModal('instructionModal')"></div>
+      </div>
+      <div class="modal-body">
+        <!-- your content -->
+        Instruction content here...
+      </div>
+    </div>
+  </div>
+
+  <!-- DONATE MODAL -->
+  <div id="donateModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>Donate</span>
+        <div class="modal-close" onclick="closeModal('donateModal')"></div>
+      </div>
+      <div class="modal-body">
+        Donate content here...
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT MODAL -->
+  <div id="aboutModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>About</span>
+        <div class="modal-close" onclick="closeModal('aboutModal')"></div>
+      </div>
+      <div class="modal-body">
+        About content here...
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS END -->
 
 
   <script src="forexSessionRuler.js"></script>

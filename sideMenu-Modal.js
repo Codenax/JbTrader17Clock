@@ -1,57 +1,80 @@
-/* SIDE MENU TOGGLE & Modal js */
+/* =========================
+   SIDE MENU
+========================= */
 
 function toggleMenu() {
   document.getElementById("sideMenu").classList.toggle("open");
 }
 
+/* ❗ OUTSIDE CLICK → ONLY SIDE MENU CLOSE (MODAL SAFE) */
 document.addEventListener("click", function (e) {
   const menu = document.getElementById("sideMenu");
-  if (!menu.contains(e.target) && !e.target.classList.contains("menu-btn")) {
+
+  const clickedMenu = menu.contains(e.target);
+  const clickedMenuBtn = e.target.classList.contains("menu-btn");
+  const clickedModal = e.target.closest(".modal");
+
+  // ❗ ignore modal clicks completely
+  if (clickedModal) return;
+
+  // close only if not menu and not button
+  if (!clickedMenu && !clickedMenuBtn) {
     menu.classList.remove("open");
   }
 });
 
-document.addEventListener("click", function (e) {
-  const menu = document.getElementById("sideMenu");
-  const button = document.querySelector(".menu-btn");
 
-  const clickedInsideMenu = menu.contains(e.target);
-  const clickedButton = button && button.contains(e.target);
-
-  if (!clickedInsideMenu && !clickedButton) {
-    menu.classList.remove("open");
-  }
-});
-
+/* =========================
+   TOGGLES (RULERS)
+========================= */
 
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("fundingToggle").dispatchEvent(new Event("change"));
-  document.getElementById("nylondonToggle").dispatchEvent(new Event("change"));
-  document.getElementById("market24Toggle").dispatchEvent(new Event("change"));
+  ["fundingToggle", "nylondonToggle", "market24Toggle"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.dispatchEvent(new Event("change"));
+  });
 });
 
-document.getElementById("fundingToggle").addEventListener("change", (e) => {
+document.getElementById("fundingToggle")?.addEventListener("change", (e) => {
   const el = document.getElementById("jbFundingRullar");
   if (el) el.style.display = e.target.checked ? "block" : "none";
 });
 
-document.getElementById("nylondonToggle").addEventListener("change", (e) => {
+document.getElementById("nylondonToggle")?.addEventListener("change", (e) => {
   const el = document.getElementById("jbNyLondonRullar");
   if (el) el.style.display = e.target.checked ? "block" : "none";
 });
 
-document.getElementById("market24Toggle").addEventListener("change", (e) => {
+document.getElementById("market24Toggle")?.addEventListener("change", (e) => {
   const el = document.getElementById("jb24hMarketRullar");
   if (el) el.style.display = e.target.checked ? "block" : "none";
 });
 
 
+/* =========================
+   MODAL SYSTEM
+========================= */
 
+function openModal(id) {
+  document.getElementById(id).classList.add("show");
+}
 
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+}
 
-/*daynight toggle*/
+/* stop modal click bubbling */
+document.querySelectorAll(".modal-box").forEach((box) => {
+  box.addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
+});
 
-/*daynight toggle end*/
-
+/* outside click closes ONLY modal */
+document.querySelectorAll(".modal").forEach((modal) => {
+  modal.addEventListener("click", function () {
+    modal.classList.remove("show");
+  });
+});
 
 
