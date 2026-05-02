@@ -76,7 +76,7 @@ function createSessionRuler() {
       bottom.style.color = "#00ffb3";
     } else if (utc === 17) {
       bottom.innerText = "L End";
-      bottom.style.color = "#ff3b3b";
+      bottom.style.color = "yellow";
     }
 
     r.appendChild(bottom);

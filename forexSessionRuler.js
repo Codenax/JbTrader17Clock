@@ -5,6 +5,7 @@ function ForexSessionRuler(containerId) {
   container.innerHTML = "";
   container.style.position = "relative";
   container.style.width = "100%";
+    
   
 
   const sessions = [
@@ -40,7 +41,7 @@ function ForexSessionRuler(containerId) {
     tick.style.position = "absolute";
     tick.style.left = left + "%";
     tick.style.top = "18px";
-    tick.style.height = "100%";
+    tick.style.height = "70%";
     tick.style.width = "1px";
     tick.style.background = "#1a1a1a";
     container.appendChild(tick);
@@ -57,7 +58,34 @@ function ForexSessionRuler(containerId) {
       container.appendChild(label);
     }
   }
+// =========================
+// BOTTOM LOCAL TIME LABELS
+// =========================
+for (let i = 0; i <= 24; i++) {
+  if (i % 2 === 0) {
+    const localLabel = document.createElement("div");
 
+    // convert UTC hour to LOCAL hour
+    const now = new Date();
+    const offset = now.getTimezoneOffset() / -60; // local offset
+    let localHour = (i + offset) % 24;
+    if (localHour < 0) localHour += 24;
+
+    localLabel.innerText = Math.floor(localHour);
+
+    localLabel.style.position = "absolute";
+    localLabel.style.left = (i / 24) * 100 + "%";
+    localLabel.style.bottom = "-2px"; // 👈 bottom position
+    localLabel.style.transform = "translateX(-50%)";
+    localLabel.style.fontSize = "9px";
+    localLabel.style.color = "yellow";
+
+    // ✅ add class
+    localLabel.classList.add("label");
+
+    container.appendChild(localLabel);
+  }
+}
   const bars = [];
 
   function createBar(session, rowIndex, start, end, type) {
@@ -73,14 +101,11 @@ function ForexSessionRuler(containerId) {
     bar.style.borderLeft = `2px solid ${session.color}`;
     bar.style.borderRight = `2px solid ${session.color}`;
     bar.style.borderRadius = "4px";
-      bar.style.zIndex = 5;
+    bar.style.zIndex = 5;
 
     bar.dataset.session = session.name;
-    bar.dataset.part = type; // "none" or "label"
+    bar.dataset.part = type;
 
-    // =========================
-    // LABEL (ONLY 0–7 Sydney)
-    // =========================
     if (type === "label") {
       const label = document.createElement("div");
       label.innerText = session.name;
@@ -95,9 +120,6 @@ function ForexSessionRuler(containerId) {
 
       bar.appendChild(label);
 
-      // =========================
-      // COUNTDOWN (ONLY label bar)
-      // =========================
       const countdown = document.createElement("div");
       countdown.className = "countdown";
       countdown.dataset.end = end;
@@ -123,8 +145,8 @@ function ForexSessionRuler(containerId) {
   // =========================
   sessions.forEach((session, index) => {
     if (session.name === "Sydney") {
-      createBar(session, index, 22, 24, "none");   // NO TEXT
-      createBar(session, index, 0, 7, "label");    // LABEL + COUNTDOWN
+      createBar(session, index, 22, 24, "none");
+      createBar(session, index, 0, 7, "label");
     } else {
       if (session.start < session.end) {
         createBar(session, index, session.start, session.end, "label");
@@ -145,7 +167,7 @@ function ForexSessionRuler(containerId) {
   pointer.style.width = "2px";
   pointer.style.background = "yellow";
   pointer.style.boxShadow = "0 0 3px yellow";
-  pointer.style.height = "100%";
+  pointer.style.height = "70%";
   pointer.style.zIndex = "1";
   
   container.appendChild(pointer);
@@ -172,9 +194,6 @@ function ForexSessionRuler(containerId) {
 
       let active = false;
 
-      // =========================
-      // SESSION ACTIVE LOGIC
-      // =========================
       if (session === "Sydney") {
         active = sydneyActive;
       } else {
@@ -188,9 +207,7 @@ function ForexSessionRuler(containerId) {
       bar.style.transform = "scale(1)";
       bar.style.zIndex = "1";
 
-      // =========================
       // ACTIVE STYLE
-      // =========================
       if (active) {
         const sessionData = sessions.find(s => s.name === session);
 
@@ -201,17 +218,21 @@ function ForexSessionRuler(containerId) {
       }
 
       // =========================
-      // COUNTDOWN LOGIC (ONLY 0–7)
+      // COUNTDOWN (ALL SESSIONS)
       // =========================
-      if (
-        session === "Sydney" &&
-        part === "label" &&
-        countdown
-      ) {
-        if (sydneyActive) {
+      if (countdown) {
+        if (active) {
           countdown.style.display = "block";
 
-          let end = parseFloat(countdown.dataset.end);
+          let end;
+
+          if (session === "Sydney") {
+            end = parseFloat(countdown.dataset.end);
+          } else {
+            const sData = sessions.find(s => s.name === session);
+            end = sData.end;
+          }
+
           let diff = end - utc;
           if (diff < 0) diff += 24;
 
@@ -225,6 +246,7 @@ function ForexSessionRuler(containerId) {
             `${String(h).padStart(2, "0")}:` +
             `${String(m).padStart(2, "0")}:` +
             `${String(s).padStart(2, "0")}`;
+
         } else {
           countdown.style.display = "none";
         }
