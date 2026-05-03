@@ -2,7 +2,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      user-select: none;
+      
     }
 
     body {
@@ -31,6 +31,7 @@ html, body {
       border: solid 0.5px #00ffb3;
       -webkit-app-region: drag;
        z-index: 1;
+           user-select: none !important;
     }
 
     /* TITLE BAR */
@@ -468,7 +469,9 @@ color: #ffd900;
 
 }
 
-/*modal start*/
+/* =========================
+   MODAL START
+========================= */
 
 .modal {
   position: fixed;
@@ -485,7 +488,8 @@ color: #ffd900;
   pointer-events: none;
 
   transition: opacity 0.25s ease, visibility 0.25s ease;
--webkit-app-region: no-drag;
+
+  -webkit-app-region: no-drag;
   z-index: 999999;
 }
 
@@ -495,8 +499,9 @@ color: #ffd900;
   pointer-events: auto;
 }
 
-/*-webkit-app-region: no-drag;
-/* BOX */
+/* =========================
+   MODAL BOX
+========================= */
 
 .modal-box {
   width: 90%;
@@ -519,6 +524,7 @@ color: #ffd900;
   opacity: 0;
 
   transition: transform 0.25s ease, opacity 0.25s ease;
+
   -webkit-app-region: no-drag;
   z-index: 999999;
 }
@@ -527,7 +533,11 @@ color: #ffd900;
   transform: scale(1);
   opacity: 1;
 }
-/* HEADER */
+
+/* =========================
+   HEADER
+========================= */
+
 .modal-header {
   height: 28px;
   display: flex;
@@ -535,36 +545,101 @@ color: #ffd900;
   align-items: center;
 
   padding: 0 8px;
-  font-size: 10px;
-  color: #ccc;
-
+  font-size: 12px;
+  color: yellow;
+font-weight: bold;
   background: #151515;
   border-bottom: 1px solid #222;
 }
 
-/* CLOSE */
+/* =========================
+   CLOSE BUTTON
+========================= */
+
 .modal-close {
   width: 10px;
   height: 10px;
   background: #ff3b3b;
   border-radius: 50%;
   cursor: pointer;
+
+  transition: transform 0.2s ease;
 }
 
 .modal-close:hover {
   transform: scale(1.2);
 }
 
-/* BODY */
+/* =========================
+   BODY (SCROLL ENABLED)
+========================= */
 .modal-body {
   flex: 1;
-  padding: 10px;
-  font-size: 10px;
-  color: #ccc;
+  padding: 12px;
+  font-size: 11px;
+  color: #d6d6d6;
   overflow-y: auto;
+  line-height: 1.5;
+  user-select: text !important;
+    -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+
 }
 
-/* ANIMATION */
+/* Headings */
+.modal-body h3 {
+  font-size: 11px;
+  color: #00ffb3;
+  margin: 8px 0 6px;
+  font-weight: 500;
+}
+
+/* Paragraph */
+.modal-body p {
+  margin: 0 0 10px;
+  color: #bbb;
+}
+
+/* List */
+.modal-body ul {
+  margin: 0 0 10px;
+  padding-left: 14px;
+}
+
+.modal-body li {
+  margin-bottom: 4px;
+  color: #ccc;
+}
+
+/* Separator */
+.modal-body hr {
+  border: none;
+  height: 1px;
+  background: #222;
+  margin: 10px 0;
+}
+
+/* Scrollbar */
+.modal-body::-webkit-scrollbar {
+  width: 8px;   /* 🔥 thicker than default */
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #00ffb3;
+  border-radius: 10px;
+  border: 2px solid #1a1a1a; /* keeps it clean inside dark UI */
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 10px;
+}
+
+/* =========================
+   OPTIONAL ANIMATION (unused but safe)
+========================= */
+
 @keyframes modalFade {
   from {
     opacity: 0;
@@ -576,7 +651,9 @@ color: #ffd900;
   }
 }
 
-/*modal end */
+/* =========================
+   MODAL END
+========================= */
 
 /*right side panal*/
 /* =========================

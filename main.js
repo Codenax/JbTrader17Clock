@@ -198,3 +198,25 @@ app.on("before-quit", () => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+
+
+
+app.on("browser-window-created", (_, window) => {
+  window.webContents.on("context-menu", (e, params) => {
+    const menu = Menu.buildFromTemplate([
+      {
+        label: "Copy",
+        role: "copy"
+      },
+      {
+        type: "separator"
+      },
+      {
+        label: "Select All",
+        role: "selectAll"
+      }
+    ]);
+
+    menu.popup();
+  });
+});
