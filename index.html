@@ -39,16 +39,12 @@
       <div class="close-btn" onclick="toggleMenu()"></div>
       <!-- MAIN ITEMS -->
       <div class="menu-item" onclick="openModal('instructionModal')">Instruction</div>
-      <div class="menu-item" onclick="openModal('donateModal')">Donate</div>
-      <div class="menu-item" onclick="openModal('aboutModal')">About</div>
+
 
       <!-- SETTINGS TITLE -->
       <div class="menu-item-title">Settings</div>
 
       <!-- FUNDING -->
-
-
-
 
       <div class="setting-row">
         <span>Funding Fee Ruler</span>
@@ -91,6 +87,11 @@
 
       </div>
 
+      <!-- SETTINGS TITLE end -->
+      <div class="menu-item" onclick="openModal('donateModal')">Donate</div>
+      <div class="menu-item" onclick="openModal('aboutModal')">About</div>
+      <div class="menu-item" onclick="openModal('disclaimerModal')">Disclaimer</div>
+      <!-- MAIN ITEMS end-->
     </div>
     <!-- SIDE MENU  end-->
 
@@ -199,7 +200,22 @@
       </div>
     </div>
   </div>
+  <!-- DISCLAIMER MODAL -->
+  <div id="disclaimerModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>Disclaimer</span>
+        <div class="modal-close" onclick="closeModal('disclaimerModal')"></div>
+      </div>
+      <div class="modal-body">
+        This tool is for educational and informational purposes only.
 
+        Trading involves risk, and you should not rely solely on this application for financial decisions.
+
+        Use at your own risk.
+      </div>
+    </div>
+  </div>
   <!-- MODALS END -->
 
 
