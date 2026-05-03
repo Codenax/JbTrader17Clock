@@ -88,7 +88,7 @@
       </div>
 
       <!-- SETTINGS TITLE end -->
-      <div class="menu-item" onclick="openModal('donateModal')">Donate</div>
+      <div class="menu-item" onclick="openModal('donateModal')">💖Support💖</div>
       <div class="menu-item" onclick="openModal('aboutModal')">About</div>
       <div class="menu-item" onclick="openModal('disclaimerModal')">Disclaimer</div>
       <!-- MAIN ITEMS end-->
@@ -265,11 +265,22 @@
       <div class="modal-body">
 
         <h3>📌 Overview</h3>
-        <p>
+        <p class="jbParagraphs">
           JbTrader17 is an all-in-one forex trading utility designed for timing, risk management,
           and execution in a single lightweight system.
         </p>
+        <hr>
 
+        <h3>💸 Funding Fee Ruler</h3>
+        <ul>
+          <li>Track exact funding fee timing in real-time</li>
+          <li>Countdown to next funding interval</li>
+          <li>Avoid entering trades before funding charges</li>
+          <li>Plan exits before high funding cost hits</li>
+          <li>Helps decide long vs short based on timing</li>
+          <li>Supports scalping vs holding strategy</li>
+          <li>Improves overall cost efficiency in futures trading</li>
+        </ul>
         <hr>
 
         <h3>📊 Trader Benefits</h3>
@@ -323,7 +334,13 @@
           <li>Fast restore from tray icon</li>
           <li>Background running for continuous market tracking</li>
         </ul>
+        <hr>
 
+        <p style="font-size:9px; color:#888; text-align:center;">
+          © <span class="year"></span> JbTrader17. All rights reserved.<br>
+          Unauthorized reproduction, distribution, modification, or reverse engineering
+          of this software is strictly prohibited.
+        </p>
       </div>
     </div>
   </div>
@@ -332,11 +349,59 @@
   <div id="donateModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
-        <span>Donate</span>
+        <span>💖Support💖</span>
         <div class="modal-close" onclick="closeModal('donateModal')"></div>
       </div>
       <div class="modal-body">
-        Donate content here...
+      
+
+        <h3>💖 Support Development</h3>
+
+        <p class="jbParagraphs">
+          If JbTrader17 has helped you in your trading journey, even in a small way, your support means a lot.
+          Every contribution directly helps improve the app, add better features, and keep the project growing for all
+          traders.
+        </p>
+
+
+        <h4>📱 Mobile Banking</h4>
+
+        <ul>
+          <li>
+            <span style="color: #d12053;"><strong>bKash: 01XXXXXXXX1</strong></span>
+            <span class="copy-icon" onclick="copyText(this, 'bkash',event)">⧉</span>
+          </li>
+
+          <li>
+            <span style="color:yellow;"><strong>Nagad: 01XXXXXXXX2</strong></span>
+            <span class="copy-icon" onclick="copyText(this, 'nagad',event)">⧉</span>
+          </li>
+
+          <li>
+            <span style="color: violet;"><strong>Rocket: 01XXXXXXXX3</strong></span>
+            <span class="copy-icon" onclick="copyText(this, 'rocket',event)">⧉</span>
+          </li>
+        </ul>
+
+        <h4>💰 Crypto (USDT - BEP20)</h4>
+
+        <ul>
+          <li>
+            <strong>Network:</strong> BNB Smart Chain (BEP20)
+          </li>
+
+          <li>
+            <strong>Address: </strong>
+            <span
+              style="word-break: break-all; font-size:10px; color:#ffffff; margin-top:4px;">0xa2931e62f7715603938c45a377f1b70afa8b4438<span
+                class="copy-icon" onclick="copyText(this, 'crypto',event)"> ⧉</span>
+            </span>
+          </li>
+        </ul>
+
+        <p style="font-size:10px; color:yellow; text-align:center; margin-top:10px;">
+          ⚠️ Please double-check network and address before sending.
+        </p>
       </div>
     </div>
   </div>
@@ -348,8 +413,35 @@
         <span>About</span>
         <div class="modal-close" onclick="closeModal('aboutModal')"></div>
       </div>
-      <div class="modal-body">
-        About content here...
+      <div class="modal-body jbParagraphs">
+
+        <h3>ℹ️ About JbTrader17</h3>
+
+        <p>
+          JbTrader17 is a lightweight desktop trading utility designed to help forex and
+          futures traders improve timing, risk management, and execution efficiency.
+        </p>
+
+        <p>
+          The application combines real-time market session tracking, funding fee timing,
+          and a built-in trading calculator to provide a clear and structured trading workflow.
+        </p>
+
+        <p>
+          It is built with a focus on simplicity, speed, and usability — allowing traders
+          to access essential tools quickly without relying on multiple platforms.
+        </p>
+
+
+        <p>Optimized for fast decision-making</p>
+        <p>Designed for both scalpers and intraday traders</p>
+        <p>Minimal, distraction-free trading interface</p>
+
+
+        <p style="font-size:9px; color:#777; text-align:center; margin-top:10px;">
+          Version 1.0.0<br>
+          © <span class="year"></span> JbTrader17
+        </p>
       </div>
     </div>
   </div>
@@ -360,12 +452,36 @@
         <span>Disclaimer</span>
         <div class="modal-close" onclick="closeModal('disclaimerModal')"></div>
       </div>
-      <div class="modal-body">
-        This tool is for educational and informational purposes only.
+      <div class="modal-body jbParagraphs">
+        <h3>⚠️ Disclaimer</h3>
+        <p>
+          JbTrader17 is provided for <strong>educational and informational purposes only</strong>.
+          It does not constitute financial, investment, or trading advice.
+        </p>
 
-        Trading involves risk, and you should not rely solely on this application for financial decisions.
+        <p>
+          Trading in forex, cryptocurrencies, and leveraged markets involves a <strong>high level of risk</strong>
+          and may not be suitable for all traders. You are solely responsible for your trading decisions,
+          risk management, and any resulting profit or loss.
+        </p>
 
-        Use at your own risk.
+        <p>
+          While this tool provides calculations, timing data, and market insights, it should be used
+          as a <strong>supporting utility only</strong> and not as a primary decision-making system.
+        </p>
+
+        <p>
+          By using this application, you agree that the developer is <strong>not liable</strong> for any
+          financial losses, damages, or consequences arising from its use.
+        </p>
+
+        <hr>
+
+        <p style="font-size:9px; color:#888; text-align:center;">
+          © <span class="year"></span> JbTrader17. All rights reserved.<br>
+          Unauthorized reproduction, distribution, modification, or reverse engineering
+          of this software is strictly prohibited.
+        </p>
       </div>
     </div>
   </div>
@@ -395,7 +511,7 @@
   </div>
   <!-- MODALS END -->
 
-
+  <div id="cursorToast" class="cursor-toast">Copied!</div>
   <script src="forexSessionRuler.js"></script>
   <script>
     createForexSessionRuler("forexRuler");

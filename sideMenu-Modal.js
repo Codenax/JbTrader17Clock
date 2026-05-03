@@ -118,3 +118,47 @@ document.querySelectorAll(".modal-box").forEach((box) => {
 });
 
 
+/*copyright 2024 JbTrader17. All rights reserved. Unauthorized reproduction, distribution, modification, reverse engineering, or use of this software without explicit permission is strictly prohibited.*/
+document.querySelectorAll(".year").forEach(el => {
+  el.textContent = new Date().getFullYear();
+});
+
+/* copyright end */
+
+
+/*support start*/
+const donationData = {
+  bkash: "01XXXXXXXX1",
+  nagad: "01XXXXXXXX2",
+  rocket: "01XXXXXXXX3",
+  crypto: "0xa2931e62f7715603938c45a377f1b70afa8b4438"
+};
+
+
+function copyText(el, type, event) {
+  navigator.clipboard.writeText(donationData[type]);
+
+  // change icon to tick
+  el.textContent = "✔";
+
+  setTimeout(() => {
+    el.textContent = "⧉";
+  }, 1500);
+
+  // show near cursor
+  showCursorToast(event.pageX, event.pageY);
+}
+
+function showCursorToast(x, y) {
+  const toast = document.getElementById("cursorToast");
+
+  toast.style.left = x + "px";
+  toast.style.top = y + "px";
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1000);
+}
+/*support end*/
