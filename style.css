@@ -30,6 +30,7 @@ html, body {
     
       border: solid 0.5px #00ffb3;
       -webkit-app-region: drag;
+       z-index: 1;
     }
 
     /* TITLE BAR */
@@ -279,7 +280,7 @@ html, body {
 
 .title{
      font-size: 9px;
-      font-weight: bold;
+      font-weight: bolder;
       color: #076d4b;
 }
 
@@ -519,6 +520,7 @@ color: #ffd900;
 
   transition: transform 0.25s ease, opacity 0.25s ease;
   -webkit-app-region: no-drag;
+  z-index: 999999;
 }
 
 .modal.show .modal-box {
@@ -604,14 +606,17 @@ color: #ffd900;
 ========================= */
 .right-menu {
   position: fixed;
+top: 51px;
 
-  top: 50%;
   left: 50%;
 
-  transform: translate(-50%, -50%) scale(0.9);
+  transform: translateX(-50%) scale(0.9);
 
-  width: 90%;
+  width: 98%;
   height: 90%;
+
+ max-width: 420px;
+  max-height: 350px;
 
   background: #111;
   border: 1px solid #00ffb3;
@@ -634,7 +639,7 @@ color: #ffd900;
   top: auto;
   left: 0;
   width: 100%;
-  height: 1.8rem;
+  height: 20px;
   border-radius: 8px 8px 0px 0px;
   background: linear-gradient(to right, transparent, #00ffb3, transparent);
 
@@ -647,21 +652,32 @@ color: #ffd900;
   opacity: 1;
   visibility: visible;
 
-  transform: translate(-50%, -50%) scale(1);
+  transform: translateX(-50%) scale(1);
 }
 
 /* HEADER */
 .right-header {
-  height: 30px;
+    position: relative;
+  height: 20px;
   display: flex;
-  justify-content: space-between;
+   justify-content: flex-end;
   align-items: center;
 
   padding: 0 10px;
   font-size: 10px;
-  color: #00ffb3;
+   
 -webkit-app-region: no-drag;
-  border-bottom: 1px solid #222;
+
+}
+.jbRightTital {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+     font-size: 9px;
+    font-weight: bolder;
+    color: #076d4b;
+  z-index: 99999;
+  white-space: nowrap;
 }
 
 /* CLOSE BUTTON */
@@ -671,6 +687,7 @@ color: #ffd900;
   background: #ff3b3b;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 100000;
 }
 
 /* BODY */
@@ -681,18 +698,7 @@ color: #ffd900;
   font-size: 10px;
 }
 
-.right-header {
-  height: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
-  padding: 0 10px;
-  font-size: 10px;
-  color: #00ffb3;
-
-  border-bottom: 1px solid #222;
-}
 
 /* 🔴 RED ROUND CLOSE */
 .right-close {
@@ -747,8 +753,13 @@ color: #ffd900;
    /*clacultor panal*/
 /* ROOT WRAPPER */
 .jbcalc {
+  position: absolute;
+width: 98%;
   font-family: Arial;
   color: #00ffb3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* PANEL */
@@ -870,3 +881,51 @@ color: #ffd900;
 }
 
 /* CALCULATOR END */
+/*blur bg when side menu open*/
+/* BACKDROP */
+.jbcalc-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease;
+  z-index: 999;
+}
+
+/* ACTIVE STATE */
+.jbcalc-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+/*blur bg when side menu open end*/
+/* GLOBAL BACKDROP */
+.app-backdrop {
+  position: fixed;
+  inset: 0;
+ 
+
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s ease;
+
+   z-index: 99998;
+}
+
+/* ACTIVE STATE */
+.app-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal,
+.right-menu,
+.side-menu {
+  z-index: 100000;
+}

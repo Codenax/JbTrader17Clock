@@ -163,88 +163,89 @@
     </div>
   </div>
 
-
+<div class="jbcalc-backdrop" id="jbcalcBackdrop"></div>
   /*right side panal*/
+<div class="app-backdrop" id="appBackdrop"></div>
 
-
-
+ 
   <!-- RIGHT SIDE MENU -->
   <div id="rightMenu" class="right-menu">
     <div class="right-header">
-      <span>Trading Calculator</span>
+      <span class="jbRightTital">Trading Calculator</span>
       <div class="right-close" onclick="toggleRightMenu()"></div>
     </div>
-
+   
+    
     <div class="right-body">
-     <div class="jbcalc">
+      <div class="jbcalc">
 
-  <!-- INPUT PANEL -->
-  <div class="jbcalc-panel">
-    <h3>Inputs <span class="jbcalc-accent">exness</span></h3>
+        <!-- INPUT PANEL -->
+        <div class="jbcalc-panel">
+          <h3>Inputs <span class="jbcalc-accent">exness</span></h3>
 
-    <div class="jbcalc-input-grid">
+          <div class="jbcalc-input-grid">
 
-      <select id="pair">
-        <option value="Gold">Gold</option>
-        <option value="BTC" selected>BTC</option>
-      </select>
+            <select id="pair">
+              <option value="Gold">Gold</option>
+              <option value="BTC" selected>BTC</option>
+            </select>
 
-      <select id="account">
-        <option value="Standard" selected>Standard</option>
-        <option value="Pro">Pro</option>
-        <option value="Raw Spread">Raw Spread</option>
-        <option value="Zero">Zero</option>
-      </select>
+            <select id="account">
+              <option value="Standard" selected>Standard</option>
+              <option value="Pro">Pro</option>
+              <option value="Raw Spread">Raw Spread</option>
+              <option value="Zero">Zero</option>
+            </select>
 
-      <input id="balance" placeholder="Account Balance">
-      <input id="entry" placeholder="Entry Price">
+            <input id="balance" placeholder="Account Balance">
+            <input id="entry" placeholder="Entry Price">
 
-      <input id="profit" placeholder="Target Profit">
-      <select id="lot"></select>
+            <input id="profit" placeholder="Target Profit">
+            <select id="lot"></select>
 
-    </div>
-  </div>
+          </div>
+        </div>
 
-  <!-- RESULT + FEE -->
-  <div class="jbcalc-row">
+        <!-- RESULT + FEE -->
+        <div class="jbcalc-row">
 
-    <!-- RESULT -->
-    <div class="jbcalc-panel">
+          <!-- RESULT -->
+          <div class="jbcalc-panel">
 
-      <div class="jbcalc-entry">
-        <span>Entry Price:</span>
-        <span id="entryShow">0</span>
+            <div class="jbcalc-entry">
+              <span>Entry Price:</span>
+              <span id="entryShow">0</span>
+            </div>
+
+            <h3>For Buy</h3>
+            <div>TP Price: <span id="tp">0</span></div>
+            <div>SO Price: <span id="sl">0</span></div>
+
+            <h3 class="jbcalc-sell">For Sale</h3>
+            <div>TP Price: <span id="tpSell">0</span></div>
+            <div>SO Price: <span id="slSell">0</span></div>
+
+          </div>
+
+          <!-- FEE PANEL -->
+          <div class="jbcalc-panel jbcalc-highlight">
+            <div>Commission: <span id="commission">0</span></div>
+            <div>Spread Fee: <span id="btcValue">0</span></div>
+
+            <div class="jbcalc-sub">TP Distance: <span id="tpd">0</span></div>
+            <div class="jbcalc-sub">SO Distance: <span id="sld">0</span></div>
+
+            <h3>After Spread Fee</h3>
+            <div>TP Distance: <span id="tpAfterFee">0</span></div>
+            <div>SO Distance: <span id="slAfterFee">0</span></div>
+          </div>
+
+        </div>
+
+        <!-- FOOTER -->
+
+
       </div>
-
-      <h3>For Buy</h3>
-      <div>TP Price: <span id="tp">0</span></div>
-      <div>SO Price: <span id="sl">0</span></div>
-
-      <h3 class="jbcalc-sell">For Sale</h3>
-      <div>TP Price: <span id="tpSell">0</span></div>
-      <div>SO Price: <span id="slSell">0</span></div>
-
-    </div>
-
-    <!-- FEE PANEL -->
-    <div class="jbcalc-panel jbcalc-highlight">
-      <div>Commission: <span id="commission">0</span></div>
-      <div>Spread Fee: <span id="btcValue">0</span></div>
-
-      <div class="jbcalc-sub">TP Distance: <span id="tpd">0</span></div>
-      <div class="jbcalc-sub">SO Distance: <span id="sld">0</span></div>
-
-      <h3>After Spread Fee</h3>
-      <div>TP Distance: <span id="tpAfterFee">0</span></div>
-      <div>SO Distance: <span id="slAfterFee">0</span></div>
-    </div>
-
-  </div>
-
-  <!-- FOOTER -->
- 
-
-</div>
     </div>
   </div>
 

@@ -51,33 +51,70 @@ document.getElementById("market24Toggle")?.addEventListener("change", (e) => {
 });
 
 
+
+function toggleRightMenu() {
+  const menu = document.getElementById("rightMenu");
+  const backdrop = document.getElementById("appBackdrop");
+
+  menu.classList.toggle("open");
+
+  if (menu.classList.contains("open")) {
+    backdrop.classList.add("active");
+  } else {
+    // only close if no modal open
+    const anyModal = document.querySelector(".modal.show");
+    if (!anyModal) backdrop.classList.remove("active");
+  }
+}
 /* =========================
    MODAL SYSTEM
 ========================= */
 
+/* =========================
+   MODAL + BACKDROP SYSTEM
+========================= */
+
+const backdrop = document.getElementById("appBackdrop");
+
+/* OPEN MODAL */
 function openModal(id) {
-  document.getElementById(id).classList.add("show");
+  const modal = document.getElementById(id);
+
+  modal.classList.add("show");
+  if (backdrop) backdrop.classList.add("active");
 }
 
+/* CLOSE MODAL */
 function closeModal(id) {
-  document.getElementById(id).classList.remove("show");
+  const modal = document.getElementById(id);
+
+  modal.classList.remove("show");
+
+  // check if any modal still open
+  const anyOpen = document.querySelector(".modal.show");
+
+  if (!anyOpen && backdrop) {
+    backdrop.classList.remove("active");
+  }
 }
 
-/* stop modal click bubbling */
+/* OUTSIDE CLICK CLOSE */
+document.querySelectorAll(".modal").forEach((modal) => {
+  modal.addEventListener("click", () => {
+    modal.classList.remove("show");
+
+    const anyOpen = document.querySelector(".modal.show");
+    if (!anyOpen && backdrop) {
+      backdrop.classList.remove("active");
+    }
+  });
+});
+
+/* STOP MODAL INNER CLICK */
 document.querySelectorAll(".modal-box").forEach((box) => {
-  box.addEventListener("click", function (e) {
+  box.addEventListener("click", (e) => {
     e.stopPropagation();
   });
 });
 
-/* outside click closes ONLY modal */
-document.querySelectorAll(".modal").forEach((modal) => {
-  modal.addEventListener("click", function () {
-    modal.classList.remove("show");
-  });
-});
-/*right side panal*/
-function toggleRightMenu() {
-  document.getElementById("rightMenu").classList.toggle("open");
-}
-/*right panal end*/
+
