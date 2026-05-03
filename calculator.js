@@ -11,7 +11,7 @@ select.addEventListener("change", function () {
 // ===== LOT GENERATION =====
 const lotSelect = document.getElementById("lot");
 
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= 1000; i++) {
   let val = (i / 100).toFixed(2);
   let opt = document.createElement("option");
   opt.value = val;

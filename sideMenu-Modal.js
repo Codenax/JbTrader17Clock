@@ -162,3 +162,106 @@ function showCursorToast(x, y) {
   }, 1000);
 }
 /*support end*/
+
+
+/*download page start*/
+
+
+
+document.getElementById("jbDownload-btn").addEventListener("click", openDownload);
+
+async function openDownload() {
+
+  // 🔥 Unique download ID
+  const downloadId = "J17-" + Math.random().toString(36).substr(2, 6) + "-" + Date.now();
+
+  // 💻 Device info
+  const deviceInfo = getDeviceInfo();
+
+  // 🌍 Geo info (ip-api.com)
+  const geo = await getGeoData();
+
+  // 📊 Send to Google Sheet
+  await fetch("https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      downloadId: downloadId,
+      app: "JbTrader17",
+      device: deviceInfo,
+      ip: geo.ip,
+      country: geo.country,
+      city: geo.city,
+      isp: geo.isp
+    })
+  });
+
+  // 📦 GitHub release download
+  const url = "https://github.com/USERNAME/REPO/releases/download/v1.0.0/JbTrader17.zip";
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "JbTrader17.zip";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+
+/* =========================
+   🌍 GEO FUNCTION (IP-API)
+========================= */
+
+async function getGeoData() {
+  try {
+    const res = await fetch("http://ip-api.com/json/");
+    const data = await res.json();
+
+    return {
+      ip: data.query || "unknown",
+      country: data.country || "unknown",
+      city: data.city || "unknown",
+      isp: data.isp || "unknown"
+    };
+
+  } catch (e) {
+    console.log("Geo error:", e);
+
+    return {
+      ip: "unknown",
+      country: "unknown",
+      city: "unknown",
+      isp: "unknown"
+    };
+  }
+}
+
+
+/* =========================
+   💻 DEVICE INFO
+========================= */
+
+function getDeviceInfo() {
+  const ua = navigator.userAgent;
+
+  let browser = "Unknown";
+  if (ua.includes("Chrome")) browser = "Chrome";
+  else if (ua.includes("Firefox")) browser = "Firefox";
+  else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
+  else if (ua.includes("Edge")) browser = "Edge";
+
+  let os = "Unknown";
+  if (ua.includes("Windows")) os = "Windows";
+  else if (ua.includes("Mac")) os = "Mac";
+  else if (ua.includes("Linux")) os = "Linux";
+  else if (ua.includes("Android")) os = "Android";
+  else if (ua.includes("iPhone")) os = "iOS";
+
+  return os + " / " + browser;
+}
+
+
+
+/*download page end*/
