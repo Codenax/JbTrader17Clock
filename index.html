@@ -150,14 +150,39 @@
         </div>
       </div>
       <div class="ruler-wrap" style="margin-top: 0; padding: 0;">
-        <div class="ruler-title jbname">&copy; Jahangir Alam</div>
         <div class="multi-ruler ruler" style="height: 0px; margin-top: 0px;">
-
         </div>
       </div>
 
     </div>
+    <div class="trading-btn" onclick="toggleRightMenu()">
+      Trading Calculator
+    </div>
+    <div class="download-btn" onclick="openModal('downloadModal')">
+      Download Desktop Widget
+    </div>
   </div>
+
+
+  /*right side panal*/
+
+
+
+  <!-- RIGHT SIDE MENU -->
+  <div id="rightMenu" class="right-menu">
+    <div class="right-header">
+      <span>Trading Calculator</span>
+      <div class="right-close" onclick="toggleRightMenu()"></div>
+    </div>
+
+    <div class="right-body">
+      <!-- Empty content (future use) -->
+    </div>
+  </div>
+
+
+  /*right side panal end*?
+
 
   <!-- MODALS START -->
 
@@ -213,6 +238,30 @@
         Trading involves risk, and you should not rely solely on this application for financial decisions.
 
         Use at your own risk.
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD MODAL -->
+  <div id="downloadModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span>Download Desktop Widget</span>
+        <div class="modal-close" onclick="closeModal('downloadModal')"></div>
+      </div>
+
+      <div class="modal-body">
+        Download the desktop version of this trading clock.
+
+        <br><br>
+
+        • Lightweight<br>
+        • Always on top<br>
+        • Real-time session tracking<br>
+
+        <br>
+
+        Coming soon...
       </div>
     </div>
   </div>

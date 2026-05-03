@@ -76,5 +76,8 @@ document.querySelectorAll(".modal").forEach((modal) => {
     modal.classList.remove("show");
   });
 });
-
-
+/*right side panal*/
+function toggleRightMenu() {
+  document.getElementById("rightMenu").classList.toggle("open");
+}
+/*right panal end*/
