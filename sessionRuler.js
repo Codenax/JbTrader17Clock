@@ -11,7 +11,7 @@ function createSessionRuler() {
   const pointer = document.createElement("div");
   pointer.id = "sessionPointer";
   pointer.style.cssText =
-    "position:absolute;top:16px;height:50%;width:2px;background:yellow;z-index:999;box-shadow:0 0 3px yellow;";
+    "position:absolute;top:14px;height:50%;width:2px;background:yellow;z-index:999;box-shadow:0 0 3px yellow;";
   r.appendChild(pointer);
 
   const startUTC = 12;
@@ -65,7 +65,7 @@ function createSessionRuler() {
     bottom.style.cssText = `
       position:absolute;
       left:${pos}%;
-      top:30px;
+      top:33px;
       transform:translateX(-50%);
       font-size:9px;
       color:#888;
