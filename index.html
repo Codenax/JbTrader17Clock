@@ -176,7 +176,75 @@
     </div>
 
     <div class="right-body">
-      <!-- Empty content (future use) -->
+     <div class="jbcalc">
+
+  <!-- INPUT PANEL -->
+  <div class="jbcalc-panel">
+    <h3>Inputs <span class="jbcalc-accent">exness</span></h3>
+
+    <div class="jbcalc-input-grid">
+
+      <select id="pair">
+        <option value="Gold">Gold</option>
+        <option value="BTC" selected>BTC</option>
+      </select>
+
+      <select id="account">
+        <option value="Standard" selected>Standard</option>
+        <option value="Pro">Pro</option>
+        <option value="Raw Spread">Raw Spread</option>
+        <option value="Zero">Zero</option>
+      </select>
+
+      <input id="balance" placeholder="Account Balance">
+      <input id="entry" placeholder="Entry Price">
+
+      <input id="profit" placeholder="Target Profit">
+      <select id="lot"></select>
+
+    </div>
+  </div>
+
+  <!-- RESULT + FEE -->
+  <div class="jbcalc-row">
+
+    <!-- RESULT -->
+    <div class="jbcalc-panel">
+
+      <div class="jbcalc-entry">
+        <span>Entry Price:</span>
+        <span id="entryShow">0</span>
+      </div>
+
+      <h3>For Buy</h3>
+      <div>TP Price: <span id="tp">0</span></div>
+      <div>SO Price: <span id="sl">0</span></div>
+
+      <h3 class="jbcalc-sell">For Sale</h3>
+      <div>TP Price: <span id="tpSell">0</span></div>
+      <div>SO Price: <span id="slSell">0</span></div>
+
+    </div>
+
+    <!-- FEE PANEL -->
+    <div class="jbcalc-panel jbcalc-highlight">
+      <div>Commission: <span id="commission">0</span></div>
+      <div>Spread Fee: <span id="btcValue">0</span></div>
+
+      <div class="jbcalc-sub">TP Distance: <span id="tpd">0</span></div>
+      <div class="jbcalc-sub">SO Distance: <span id="sld">0</span></div>
+
+      <h3>After Spread Fee</h3>
+      <div>TP Distance: <span id="tpAfterFee">0</span></div>
+      <div>SO Distance: <span id="slAfterFee">0</span></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+ 
+
+</div>
     </div>
   </div>
 
@@ -275,6 +343,7 @@
   <script src="sessionRuler.js"></script>
   <script src="app.js"></script>
   <script src="sideMenu-Modal.js"></script>
+  <script src="calculator.js"></script>
 
 
 </body>

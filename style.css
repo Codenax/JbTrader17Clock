@@ -627,6 +627,20 @@ color: #ffd900;
 -webkit-app-region: no-drag;
   transition: 0.25s ease;
 }
+.right-menu::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: auto;
+  left: 0;
+  width: 100%;
+  height: 1.8rem;
+  border-radius: 8px 8px 0px 0px;
+  background: linear-gradient(to right, transparent, #00ffb3, transparent);
+
+  box-shadow: 0 0 3px #00ffb3;
+}
+
 
 /* OPEN */
 .right-menu.open {
@@ -729,3 +743,130 @@ color: #ffd900;
 }
 /* =========================
    DOWNLOAD panel END */
+
+   /*clacultor panal*/
+/* ROOT WRAPPER */
+.jbcalc {
+  font-family: Arial;
+  color: #00ffb3;
+}
+
+/* PANEL */
+.jbcalc-panel {
+  background: #111;
+  border: 1px solid #333;
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 255, 179, 0.08);
+}
+
+/* HIGHLIGHT */
+.jbcalc-highlight {
+  border: 1px solid #ffd400;
+  color: #ffd400;
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.15);
+}
+
+/* GRID */
+.jbcalc-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* INPUT */
+.jbcalc input,
+.jbcalc select {
+  width: 100%;
+  padding: 8px;
+  background: #000;
+  border: 1px solid #333;
+  color: #00ffb3;
+  font-size: 10px;
+  box-sizing: border-box;
+}
+
+/* GOLD MODE */
+.jbcalc select.gold-mode {
+  border-color: #ffd400;
+  color: #ffd400;
+}
+
+/* HEADINGS */
+.jbcalc h3 {
+  margin: 0;
+  font-size: 11px;
+  color: #00ff62;
+  text-transform: uppercase;
+}
+
+/* SELL COLOR */
+.jbcalc-sell {
+  color: #ffd400;
+}
+
+/* TEXT */
+.jbcalc-panel div {
+  margin: 3px 0;
+  font-size: 11px;
+}
+
+/* ROW */
+.jbcalc-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.jbcalc-row .jbcalc-panel {
+  flex: 1;
+}
+
+/* ENTRY TEXT */
+.jbcalc-entry {
+  color: yellow;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+/* SUB TEXT */
+.jbcalc-sub {
+  color: wheat;
+}
+
+/* FOOTER */
+.jbcalc-name {
+  display: flex;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.jbcalc h5 {
+  font-size: 9px;
+  color: #ffd400;
+  font-style: italic;
+  margin: 0;
+}
+
+/* BUTTON */
+.jbcalc-btn {
+  background: #493d02;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: bold;
+  color: #f5e17c;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.jbcalc-atag {
+  flex: 1;
+}
+
+/* ACCENT */
+.jbcalc-accent {
+  color: yellow;
+}
+
+/* CALCULATOR END */
