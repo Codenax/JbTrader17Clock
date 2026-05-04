@@ -291,14 +291,18 @@ html, body {
 /* SIDE MENU */
 .side-menu {
   position: fixed;
-  top: 20px;
+  top: 0;
   left: 0;
-  width: 200px;
-  height:90%;
-  background: #1a1a1a;
-  transform: translateX(-101%);
-  transition: 0.3s;
-  padding: 10px;
+  width: 218px;
+  height: 100%;
+
+  backdrop-filter: blur(10px);
+   background: #0000007a;
+  border: 1px solid #222;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+
+  padding-top: 30px;
   z-index: 9999;
     -webkit-app-region: no-drag;
 }
@@ -310,10 +314,23 @@ html, body {
 
 /* MENU ITEMS */
 .menu-item {
+    display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 5px;
+  margin: 5px 5px;
+  border-radius: 10px;
+  color: #ffffff;
   font-size: 10px;
-  padding: 5px;
-  color: #ccc;
   cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+.menu-item:hover {
+  background: rgba(0, 255, 179, 0.08);
+  color: #00ffb3;
+  box-shadow: 0 0 10px rgba(0, 255, 179, 0.2);
+  transform: translateX(4px);
 }
 .menu-btn{
   width: 40px;
@@ -323,11 +340,14 @@ html, body {
   -webkit-app-region: no-drag;
   color: #00ffb3;
   z-index: 1000;
+   cursor: pointer;
+   transition: 0.25s;
 
 }
 .menu-btn:hover {
-color: #ffd900;
- transition: smooth 0.3s;
+ 
+  color: yellow;
+  
 }
 
 .close-btn {
@@ -352,21 +372,32 @@ color: #ffd900;
 
 
 .menu-item-title {
-  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 5px;
+  padding-bottom:0px;
+  margin: 5px 5px;
+  margin-bottom:  0px;
+  border-radius: 10px;
   color: #00ffb3;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  padding-left: 5px;
-  opacity: 0.8;
+  font-size: 10px;
+
+  transition: all 0.25s ease;
+  position: relative;
 }
 
 .setting-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 5px;
+   padding-left:15px;
+   padding-right: 5px;
+   padding-top: 2px;
+   padding-bottom: 2px;
+ 
   font-size: 9px;
-  color: #ccc;
+  color: #00ffb3;
 }
 
 .setting-row input {
@@ -506,10 +537,10 @@ color: #ffd900;
 .modal-box {
   width: 90%;
   height: 70%;
-  max-width: 420px;
-  max-height: 280px;
+  max-width: 520px;
+  max-height: 380px;
 
-  background: #1a1a1a;
+  background: #000000d3;
   border: 1px solid #222;
   border-radius: 8px;
 
@@ -539,13 +570,13 @@ color: #ffd900;
 ========================= */
 
 .modal-header {
-  height: 28px;
+  height: 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   padding: 0 8px;
-  font-size: 12px;
+  font-size: 10px;
   color: yellow;
 font-weight: bold;
   background: #151515;
