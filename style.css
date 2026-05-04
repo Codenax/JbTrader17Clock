@@ -1083,3 +1083,49 @@ width: 98%;
 }
 /*support end*/
 
+/*feedback start*/
+.contact-title{
+  color: #00ffb3;
+  font-size: 11px;
+}
+.contact-desc {
+  font-size: 9px;
+  color: #fff;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.contact-item{
+  font-size: 9px;
+  color: #00ffb3;
+  text-decoration: none;
+  margin: 5px 0px;
+  
+}
+
+
+.fb-btn {
+  margin-top: 5px;
+  padding: 2px 3px;
+  font-size: 8px;
+  text-align: center;
+
+  background: #001a2b;
+  color: #00c3ff;
+
+  border: 1px solid #00c3ff;
+  border-radius: 6px;
+text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.fb-btn:hover {
+  background: #00c3ff;
+  color: #000;
+
+  box-shadow: 0 0 8px rgba(0, 195, 255, 0.7);
+}
+
+
+
+/*feedback end*/

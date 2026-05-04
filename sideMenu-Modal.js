@@ -127,16 +127,26 @@ document.querySelectorAll(".year").forEach(el => {
 
 
 /*support start*/
+/* =========================
+   DONATION + CONTACT DATA
+========================= */
 const donationData = {
   bkash: "01XXXXXXXX1",
   nagad: "01XXXXXXXX2",
   rocket: "01XXXXXXXX3",
-  crypto: "0xa2931e62f7715603938c45a377f1b70afa8b4438"
+  crypto: "0xa2931e62f7715603938c45a377f1b70afa8b4438",
+  whatsapp: "+8801XXXXXXXXX"
 };
 
 
+/* =========================
+   COPY FUNCTION (ALL)
+========================= */
 function copyText(el, type, event) {
-  navigator.clipboard.writeText(donationData[type]);
+  const text = donationData[type];
+  if (!text) return;
+
+  navigator.clipboard.writeText(text);
 
   // change icon to tick
   el.textContent = "✔";
@@ -145,12 +155,19 @@ function copyText(el, type, event) {
     el.textContent = "⧉";
   }, 1500);
 
-  // show near cursor
-  showCursorToast(event.pageX, event.pageY);
+  // show toast near cursor
+  if (event) {
+    showCursorToast(event.pageX, event.pageY);
+  }
 }
 
+
+/* =========================
+   CURSOR TOAST
+========================= */
 function showCursorToast(x, y) {
   const toast = document.getElementById("cursorToast");
+  if (!toast) return;
 
   toast.style.left = x + "px";
   toast.style.top = y + "px";
@@ -161,6 +178,15 @@ function showCursorToast(x, y) {
     toast.classList.remove("show");
   }, 1000);
 }
+
+
+/* =========================
+   OPTIONAL AUTO SET TEXT
+========================= */
+window.addEventListener("DOMContentLoaded", () => {
+  const wa = document.getElementById("waText");
+  if (wa) wa.innerText = donationData.whatsapp;
+});
 /*support end*/
 
 
@@ -265,3 +291,29 @@ function getDeviceInfo() {
 
 
 /*download page end*/
+
+/*facebook group start*/
+function copyWhatsApp() {
+  const text = document.getElementById("waNumber").innerText;
+  navigator.clipboard.writeText(text);
+  alert("WhatsApp number copied!");
+}
+
+let shell;
+
+try {
+  shell = require("electron").shell;
+} catch (e) {
+  shell = null;
+}
+
+function openFacebook() {
+  const url = "https://web.facebook.com/profile.php?id=61583165673209";
+
+  if (shell) {
+    shell.openExternal(url);   // Electron
+  } else {
+    window.open(url, "_blank"); // Browser fallback
+  }
+}
+/*facebook group end*/
