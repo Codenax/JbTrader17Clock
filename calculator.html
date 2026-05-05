@@ -1,0 +1,210 @@
+<div id="rightMenu" class="right-menu">
+
+  <div class="right-header">
+    <span class="jbRightTital">Trading Calculator</span>
+    <div class="right-close" onclick="toggleRightMenu()"></div>
+  </div>
+
+
+  <div class="right-body">
+    <div class="jbcalc">
+
+      <!-- INPUT PANEL -->
+      <div class="jbcalc-panel">
+        <h3>Inputs <span class="jbcalc-accent">exness</span></h3>
+
+        <div class="jbcalc-input-grid">
+          <div class="jbclass-margin"><label class="jbcalc-label" for="pair">PAIR</label>
+            <select id="pair">
+              <option value="Gold">Gold</option>
+              <option value="BTC" selected>BTC</option>
+            </select>
+          </div>
+          <div class="jbclass-margin"><label class="jbcalc-label" for="account">ACCOUNT TYPE</label>
+            <select id="account">
+              <option value="Standard" selected>Standard</option>
+              <option value="Pro">Pro</option>
+              <option value="Raw Spread">Raw Spread</option>
+              <option value="Zero">Zero</option>
+            </select>
+          </div>
+          <div class="jbclass-margin">
+            <label class="jbcalc-label" for="balance">ACCOUNT BALANCE ($)</label>
+
+            <input id="balance" placeholder="Account Balance ($)">
+          </div>
+          <div class="jbclass-margin"><label class="jbcalc-label" for="entry">ENTRY PRICE</label>
+            <div class="entry-box">
+              <input id="entry" placeholder="Entry Price">
+              <div id="liveBox" class="jb-live-box">
+
+                <span class="jb-live-label">LIVE</span>
+
+                <div class="jb-toggle" id="liveToggleBtn">
+
+                  <span class="jb-toggle-text on">ON</span>
+                  <div class="jb-toggle-knob"></div>
+                  <span class="jb-toggle-text off">OFF</span>
+
+                </div>
+
+                <!-- 🌐 SYSTEM STATUS -->
+                <span id="netStatus" class="jb-net-status">ONLINE</span>
+
+              </div>
+
+            </div>
+          </div>
+          <div class="jbclass-margin">
+
+            <label class="jbcalc-label" for="risk">TARGET PROFIT ($)</label>
+            <input id="profit" placeholder="Target Profit ($)">
+          </div>
+          <div class="jbclass-margin">
+            <label class="jbcalc-label" for="lot">LOT SIZE</label>
+
+            <select id="lot"></select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RESULT + FEE -->
+      <div class="jbcalc-row">
+
+        <!-- RESULT -->
+        <div class="jbcalc-panel">
+
+          <div class="jbcalc-entry">
+            <span>Entry Price:</span>
+            <span id="entryShow">0</span>
+          </div>
+
+          <h3>For Buy</h3>
+          <div>TP Price: <span id="tp">0</span></div>
+          <div>SO Price: <span id="sl">0</span></div>
+
+          <h3 class="jbcalc-sell">For Sale</h3>
+          <div>TP Price: <span id="tpSell">0</span></div>
+          <div>SO Price: <span id="slSell">0</span></div>
+
+        </div>
+
+        <!-- FEE PANEL -->
+        <div class="jbcalc-panel jbcalc-highlight">
+          <div>Commission: <span id="commission">0</span></div>
+          <div>Spread Fee: <span id="btcValue">0</span></div>
+
+          <div class="jbcalc-sub">TP Distance: <span id="tpd">0</span></div>
+          <div class="jbcalc-sub">SO Distance: <span id="sld">0</span></div>
+
+          <h3>After Spread Fee</h3>
+          <div>TP Distance: <span id="tpAfterFee">0</span></div>
+          <div>SO Distance: <span id="slAfterFee">0</span></div>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <!-- RISK & REWARD PANEL -->
+      <div class="jbcalc-panel jbcalc-risk">
+
+        <h3>Risk Management</h3>
+
+        <div class="jbcalc-input-grid">
+
+          <!-- Risk of Balance -->
+          <div class="jbclass-margin">
+            <label class="jbcalc-label" for="riskBalance">RISK OF BALANCE</label>
+            <select id="riskBalance">
+              <option value="1">1%</option>
+              <option value="2">2%</option>
+              <option value="3">3%</option>
+              <option value="4">4%</option>
+              <option value="5">5%</option>
+              <option value="6">6%</option>
+              <option value="7">7%</option>
+              <option value="8">8%</option>
+              <option value="9">9%</option>
+              <option value="10">10%</option>
+              <option value="11">11%</option>
+              <option value="12">12%</option>
+              <option value="13">13%</option>
+              <option value="14">14%</option>
+              <option value="15">15%</option>
+              <option value="16">16%</option>
+              <option value="17">17%</option>
+              <option value="18">18%</option>
+              <option value="19">19%</option>
+              <option value="20" selected>20%</option>
+              <option value="21">21%</option>
+              <option value="22">22%</option>
+              <option value="23">23%</option>
+              <option value="24">24%</option>
+              <option value="25">25%</option>
+              <option value="26">26%</option>
+              <option value="27">27%</option>
+              <option value="28">28%</option>
+              <option value="29">29%</option>
+              <option value="30">30%</option>
+            </select>
+          </div>
+          <!-- Reward Ratio -->
+          <div class="jbclass-margin">
+            <label class="jbcalc-label" for="rewardRatio">REWARD</label>
+            <select id="rewardRatio">
+              <option value="1">1:1</option>
+              <option value="1.5">1:1.5</option>
+              <option value="2">1:2</option>
+              <option value="3">1:3</option>
+              <option value="4">1:4</option>
+              <option value="5">1:5</option>
+              <option value="6">1:6</option>
+              <option value="7">1:7</option>
+              <option value="8">1:8</option>
+              <option value="9">1:9</option>
+              <option value="10">1:10</option>
+              <option value="15">1:15</option>
+              <option value="20">1:20</option>
+            </select>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- TRADE SUMMARY PANELS -->
+      <div class="jbcalc-summary">
+
+        <!-- LEFT PANEL -->
+        <div class="jbcalc-panel jbcalc-summary-left">
+
+          <h3>Trade Info</h3>
+
+          <div>Account Balance: <span id="sumBalance">0</span></div>
+          <div>Risk: <span id="sumRisk">0</span>%</div>
+          <div>Risk Of Balance: <span id="sumRiskAmount">0</span></div>
+          <div>Entry Price: <span id="sumEntry">0</span></div>
+          <div>Target Reward: <span id="sumRewardRatio">1:0</span></div>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="jbcalc-panel jbcalc-summary-right">
+
+          <h3>Trade Result</h3>
+
+          <div>Lot Size: <span id="sumLot">0</span></div>
+          <div>Target Reward: <span id="sumRewardUSD">0 $</span></div>
+          <div>Breakeven Price: <span id="sumBreakeven">0</span></div>
+          <div>Take Profit Price: <span id="sumTP">0</span></div>
+          <div>Stop Loss Price: <span id="sumSL">0</span></div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+</div>

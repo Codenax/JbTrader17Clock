@@ -213,3 +213,140 @@ document.querySelectorAll("input, select").forEach(el => {
 
 // ===== AUTO INIT =====
 window.addEventListener("load", calculate);
+
+/*live price start*/
+
+
+
+// =========================
+// LIVE PRICE ENGINE
+// =========================
+
+
+// ======================
+// 🟣 BTC PRICE
+// ======================
+async function getBTCPrice() {
+   try {
+      const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT");
+      const data = await res.json();
+      return parseFloat(data.price);
+   } catch (err) {
+      return 0;
+   }
+}
+
+
+// ======================
+// STATE
+// ======================
+let liveInterval = null;
+
+const toggleBtn = document.getElementById("liveToggleBtn");
+const liveBox = document.getElementById("liveBox");
+
+
+// ======================
+// START LIVE
+// ======================
+function startLiveBTC() {
+
+   stopLiveBTC();
+
+   liveInterval = setInterval(async () => {
+
+      const price = await getBTCPrice();
+
+      if (price > 0) {
+         document.getElementById("entry").value = price.toFixed(2);
+         calculate();
+      }
+
+   }, 2000);
+}
+
+
+// ======================
+// STOP LIVE
+// ======================
+function stopLiveBTC() {
+
+   if (liveInterval) {
+      clearInterval(liveInterval);
+      liveInterval = null;
+   }
+
+   document.getElementById("entry").value = "";
+   calculate();
+}
+
+
+// ======================
+// CLICK TOGGLE
+// ======================
+toggleBtn.addEventListener("click", function () {
+
+   if (pair.value !== "BTC") return;
+
+   this.classList.toggle("active");
+
+   if (this.classList.contains("active")) {
+      startLiveBTC();
+   } else {
+      stopLiveBTC();
+   }
+});
+
+
+// ======================
+// PAIR CONTROL
+// ======================
+pair.addEventListener("change", function () {
+
+   if (this.value === "BTC") {
+      liveBox.style.display = "flex";
+   } else {
+      liveBox.style.display = "none";
+
+      toggleBtn.classList.remove("active");
+      stopLiveBTC();
+   }
+});
+
+
+// ======================
+// 🌐 NETWORK STATUS
+// ======================
+const netStatus = document.getElementById("netStatus");
+
+function updateNetworkStatus() {
+
+   if (navigator.onLine) {
+      netStatus.innerText = "ONLINE";
+      netStatus.classList.remove("jb-net-offline");
+      netStatus.classList.add("jb-net-online");
+   } else {
+      netStatus.innerText = "OFFLINE";
+      netStatus.classList.remove("jb-net-online");
+      netStatus.classList.add("jb-net-offline");
+   }
+}
+
+
+// initial check
+updateNetworkStatus();
+
+// listen system changes
+window.addEventListener("online", updateNetworkStatus);
+window.addEventListener("offline", updateNetworkStatus);
+// ======================
+
+/*live price end*/
+
+function openCalcModal(){
+  document.getElementById("calcModal").style.display = "block";
+}
+
+function closeCalcModal(){
+  document.getElementById("calcModal").style.display = "none";
+}
