@@ -359,7 +359,7 @@ width: 98%;
   transform: translate(-50%, -120%);
 
   transition: 0.2s ease;
-  z-index: 999999;
+  z-index: 99999999;
 }
 
 .cursor-toast.show {
