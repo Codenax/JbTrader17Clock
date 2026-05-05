@@ -1110,6 +1110,9 @@ font-weight: bold;
   border:1px solid #ffd400;
   border-radius:6px;
   cursor:pointer;
+ 
+   transition:0.2s;
+   -webkit-app-region: no-drag !important;
 }
 
 .download-btn:hover{
