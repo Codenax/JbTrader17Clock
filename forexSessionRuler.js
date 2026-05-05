@@ -61,27 +61,50 @@ function ForexSessionRuler(containerId) {
 // =========================
 // BOTTOM LOCAL TIME LABELS
 // =========================
+ // =========================
+ // BOTTOM LOCAL TIME LABELS (12H FORMAT)
+ // =========================
 for (let i = 0; i <= 24; i++) {
   if (i % 2 === 0) {
     const localLabel = document.createElement("div");
 
-    // convert UTC hour to LOCAL hour
     const now = new Date();
-    const offset = now.getTimezoneOffset() / -60; // local offset
+    const offset = now.getTimezoneOffset() / -60;
     let localHour = (i + offset) % 24;
     if (localHour < 0) localHour += 24;
 
-    localLabel.innerText = Math.floor(localHour);
+    // 12H conversion
+    let hour12 = localHour % 12;
+    if (hour12 === 0) hour12 = 12;
 
+    const ampm = localHour >= 12 ? "PM" : "AM";
+
+    // container style
     localLabel.style.position = "absolute";
     localLabel.style.left = (i / 24) * 100 + "%";
-    localLabel.style.bottom = "-2px"; // 👈 bottom position
+    localLabel.style.bottom = "2px";
     localLabel.style.transform = "translateX(-50%)";
     localLabel.style.fontSize = "9px";
-    localLabel.style.color = "yellow";
-
-    // ✅ add class
+    localLabel.style.color = "#ffffff";
     localLabel.classList.add("label");
+
+    // main hour
+    const hourSpan = document.createElement("span");
+    hourSpan.innerText = hour12;
+
+    // small AM/PM
+    const ampmSpan = document.createElement("span");
+    ampmSpan.innerText = ampm;
+    ampmSpan.style.fontSize = "6px";   // 👈 smaller
+    ampmSpan.style.marginLeft = "2px";
+   if (ampm === "AM") {
+  ampmSpan.style.color = "#00c3ff"; // blue (your system sky blue)
+} else {
+  ampmSpan.style.color = "#ff7b00"; // orange (your warning color)
+}
+
+    localLabel.appendChild(hourSpan);
+    localLabel.appendChild(ampmSpan);
 
     container.appendChild(localLabel);
   }
