@@ -593,7 +593,7 @@
 
                 <div class="jbclass-margin">
                   <label class="jbcalc-label" for="balance">ACCOUNT BALANCE ($)</label>
-                  <input id="balance" placeholder="Account Balance ($)">
+                  <input id="balance" value="100" placeholder="Account Balance ($)">
                 </div>
 
                 <div class="jbclass-margin">
@@ -622,10 +622,19 @@
                   </div>
                 </div>
 
-                <div class="jbclass-margin">
-                  <label class="jbcalc-label" for="profit">TARGET PROFIT ($)</label>
-                  <input id="profit" placeholder="Target Profit ($)">
-                </div>
+         <div class="jbclass-margin">   
+ <label class="jbcalc-label">TARGET PROFIT</label>
+<div class="tp-input-wrapper">
+ 
+  <input id="profit" class="tp-input" value="1" placeholder="Target Profit">
+
+  <select id="profitType" class="tp-select">
+    <option value="usd" selected>USD</option>
+    <option value="percent">%</option>
+    <option value="pips">Pips</option>
+  </select>
+
+</div></div>
 
                 <div class="jbclass-margin">
                   <label class="jbcalc-label" for="lot">LOT SIZE</label>
@@ -674,7 +683,7 @@
 <!-- RISK MANAGEMENT -->
 <div class="jbcalc-panel jbcalc-risk">
 
-  <h3>Risk Management</h3>
+<h3 >Risk Management For <span id="riskTitle" class="risk-title"> BTC</span></h3>
 
   <div class="jbcalc-input-grid">
 

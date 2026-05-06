@@ -1,6 +1,5 @@
 const select = document.getElementById("pair");
 
-
 select.addEventListener("change", function () {
   if (this.value === "Gold") {
     select.classList.add("gold-mode");
@@ -8,6 +7,7 @@ select.addEventListener("change", function () {
     select.classList.remove("gold-mode");
   }
 });
+
 // ===== LOT GENERATION =====
 const lotSelect = document.getElementById("lot");
 
@@ -23,7 +23,10 @@ for (let i = 1; i <= 1000; i++) {
 const pair = document.getElementById("pair");
 const balance = document.getElementById("balance");
 const entry = document.getElementById("entry");
-const profit = document.getElementById("profit");
+
+const profitInput = document.getElementById("profit");
+const profitType = document.getElementById("profitType");
+
 const lot = document.getElementById("lot");
 const account = document.getElementById("account");
 
@@ -34,15 +37,59 @@ const tpd = document.getElementById("tpd");
 const sld = document.getElementById("sld");
 const commissionLabel = document.getElementById("commission");
 
-
 const tpSell = document.getElementById("tpSell");
 const slSell = document.getElementById("slSell");
-// ===== SPREAD OUTPUT =====
-const btcValueLabel = document.getElementById("btcValue");
 
-// ===== AFTER SPREAD FEE OUTPUT =====
+const btcValueLabel = document.getElementById("btcValue");
 const tpAfterFee = document.getElementById("tpAfterFee");
 const slAfterFee = document.getElementById("slAfterFee");
+
+// ======================
+// 🔥 PROFIT CONVERTER
+// ======================
+function convertProfitToUSD(prof, type, balance, entry, lotSize) {
+
+  let usdProfit = 0;
+
+  // ======================
+  // 1. USD
+  // ======================
+  if (type === "usd") {
+    usdProfit = prof;
+  }
+
+  // ======================
+  // 2. PERCENT
+  // ======================
+  else if (type === "percent") {
+    usdProfit = (balance * prof) / 100;
+  }
+
+  // ======================
+  // 3. PIPS (UPDATED 🔥)
+  // ======================
+  else if (type === "pips") {
+
+    let pipValue = 0;
+
+    // 🔥 YOUR BASE RULE
+    if (pair.value === "BTC") {
+      pipValue = 0.1;   // 1 lot → 10 pips = $1
+    }
+
+    else if (pair.value === "Gold") {
+      pipValue = 1;     // 1 lot → 1 pip = $1
+    }
+
+    else {
+      pipValue = 1; // fallback
+    }
+
+    usdProfit = prof * pipValue * lotSize;
+  }
+
+  return usdProfit;
+}
 
 // ===== COMMISSION =====
 function getBaseCommission() {
@@ -69,61 +116,85 @@ function calculate() {
 
   let bal = parseFloat(balance.value) || 0;
   let en = parseFloat(entry.value) || 0;
-  let prof = parseFloat(profit.value) || 0;
   let lotSize = parseFloat(lot.value) || 0;
+if (!en || en <= 0) {
+
+  // RESULT
+  tp.innerText = "0.00";
+  sl.innerText = "0.00";
+  tpSell.innerText = "0.00";
+  slSell.innerText = "0.00";
+
+  // DISTANCE
+  tpd.innerText = "0.00";
+  sld.innerText = "0.00";
+
+  // FEE
+  commissionLabel.innerText = "0.00";
+  btcValueLabel.innerText = "0";
+
+  // AFTER SPREAD
+  tpAfterFee.innerText = "0.00";
+  slAfterFee.innerText = "0.00";
+
+  // ENTRY SHOW
+  document.getElementById("entryShow").innerText = "0.00";
+
+  return; // ⛔ stop calculation
+}
+  // 🔥 UPDATED PROFIT SYSTEM
+  let profRaw = parseFloat(profitInput.value) || 0;
+  let type = profitType.value;
+  let prof = convertProfitToUSD(profRaw, type, bal, en, lotSize);
 
   let spreadFee = 0;
 
   // ======================
-  // 🟠 SPREAD FEE (BTC ONLY)
+  // SPREAD FEE
   // ======================
   if (pair.value === "BTC") {
 
-  let acc = account.value;
+    let acc = account.value;
 
-  if (acc === "Standard") spreadFee = 14;
-  else if (acc === "Pro") spreadFee = 9.6;
-  else if (acc === "Raw Spread") spreadFee = 8;
-  else if (acc === "Zero") spreadFee = 0;
+    if (acc === "Standard") spreadFee = 14;
+    else if (acc === "Pro") spreadFee = 9.6;
+    else if (acc === "Raw Spread") spreadFee = 8;
+    else if (acc === "Zero") spreadFee = 0;
 
-  btcValueLabel.innerText = spreadFee;
-
-} 
-
-else if (pair.value === "Gold") {
-
-  let acc = account.value;
-
-  if (acc === "Standard") spreadFee = 0.32;
-  else if (acc === "Pro") spreadFee = 0.22;
-  else if (acc === "Raw Spread") spreadFee = 0.05;
-  else if (acc === "Zero") spreadFee = 0;
-
-  btcValueLabel.innerText = spreadFee;
-
-} 
-
-else {
-  btcValueLabel.innerText = "-";
-  spreadFee = 0;
+    btcValueLabel.innerText = spreadFee;
   }
-  
-  // ===== STOP IF NO LOT =====
+
+  else if (pair.value === "Gold") {
+
+    let acc = account.value;
+
+    if (acc === "Standard") spreadFee = 0.32;
+    else if (acc === "Pro") spreadFee = 0.22;
+    else if (acc === "Raw Spread") spreadFee = 0.05;
+    else if (acc === "Zero") spreadFee = 0;
+
+    btcValueLabel.innerText = spreadFee;
+  }
+
+  else {
+    btcValueLabel.innerText = "-";
+    spreadFee = 0;
+  }
+
   if (lotSize === 0) return;
 
   // ======================
-  // 💰 COMMISSION
+  // COMMISSION
   // ======================
   let baseCommission = getBaseCommission();
   let commission = baseCommission * lotSize * 2;
-
   commissionLabel.innerText = commission.toFixed(2);
 
   let takeProfit = 0;
   let stopOut = 0;
 
   // ======================
-  // 🟡 GOLD MODEL
+  // GOLD
   // ======================
   if (pair.value === "Gold") {
 
@@ -134,73 +205,57 @@ else {
   }
 
   // ======================
-  // 🟠 BTC MODEL
+  // BTC
   // ======================
   else if (pair.value === "BTC") {
 
-    let equity = bal;
-    let priceMove = equity / lotSize;
+    let priceMove = bal / lotSize;
 
     takeProfit = en + (prof / lotSize);
     stopOut = en - priceMove;
   }
-/*for sale*/
-let takeProfitSell = 0;
-let stopOutSell = 0;
 
-if (pair.value === "Gold") {
+  // SELL
+  let takeProfitSell = 0;
+  let stopOutSell = 0;
 
-  let contractSize = 100;
+  if (pair.value === "Gold") {
 
-  takeProfitSell = en - (prof / (contractSize * lotSize));
-  stopOutSell = en + (bal / (contractSize * lotSize));
+    let contractSize = 100;
 
-}
+    takeProfitSell = en - (prof / (contractSize * lotSize));
+    stopOutSell = en + (bal / (contractSize * lotSize));
+  }
 
-else if (pair.value === "BTC") {
+  else if (pair.value === "BTC") {
 
-  let equity = bal;
-  let priceMove = equity / lotSize;
+    let priceMove = bal / lotSize;
 
-  takeProfitSell = en - (prof / lotSize);
-  stopOutSell = en + priceMove;
-}
+    takeProfitSell = en - (prof / lotSize);
+    stopOutSell = en + priceMove;
+  }
 
-  // ======================
-  // 📏 BASE DISTANCES
-  // ======================
+  // DISTANCE
   let tpDistance = takeProfit - en;
   let slDistance = en - stopOut;
 
-  // ======================
-  // OUTPUT (BASE)
-  // ======================
+  // OUTPUT
   tp.innerText = takeProfit.toFixed(2);
   sl.innerText = stopOut.toFixed(2);
 
-  tpd.innerText = tpDistance.toFixed(2);
-  sld.innerText = slDistance.toFixed(2);
   tpSell.innerText = takeProfitSell.toFixed(2);
   slSell.innerText = stopOutSell.toFixed(2);
-  
-  const entryShow = document.getElementById("entryShow");
-  entryShow.innerText = en.toFixed(2);
 
-  // ======================
-  // 📊 AFTER SPREAD FEE
-  // ======================
-  let tpAfter = tpDistance;
-let slAfter = slDistance;
+  tpd.innerText = tpDistance.toFixed(2);
+  sld.innerText = slDistance.toFixed(2);
 
-// ======================
-// APPLY SPREAD FEE EFFECT
-// ======================
-if (pair.value === "BTC" || pair.value === "Gold") {
-  tpAfter = tpDistance + spreadFee;
-  slAfter = slDistance - spreadFee;
+  document.getElementById("entryShow").innerText = en.toFixed(2);
+
+  // AFTER SPREAD
+  let tpAfter = tpDistance + spreadFee;
+  let slAfter = slDistance - spreadFee;
 
   if (slAfter < 0) slAfter = 0;
-}
 
   tpAfterFee.innerText = tpAfter.toFixed(2);
   slAfterFee.innerText = slAfter.toFixed(2);
@@ -211,8 +266,24 @@ document.querySelectorAll("input, select").forEach(el => {
   el.addEventListener("input", calculate);
 });
 
+
+
 // ===== AUTO INIT =====
 window.addEventListener("load", calculate);
+window.addEventListener("load", function () {
+
+  if (!balance.value) {
+    balance.value = 100;
+  }
+
+  if (!profitInput.value) {
+    profitInput.value = 1;
+  }
+
+  calculate(); // auto run
+});
+
+
 
 /*live price start*/
 
@@ -286,16 +357,61 @@ function stopLiveBTC() {
 // ======================
 toggleBtn.addEventListener("click", function () {
 
-   if (pair.value !== "BTC") return;
+  // ⛔ BLOCK IF OFFLINE
+  if (!navigator.onLine) {
+    showAlert("Your system is offline", "error");
+    return;
+  }
 
-   this.classList.toggle("active");
+  if (pair.value !== "BTC") return;
 
-   if (this.classList.contains("active")) {
-      startLiveBTC();
-   } else {
-      stopLiveBTC();
-   }
+  this.classList.toggle("active");
+
+  if (this.classList.contains("active")) {
+    startLiveBTC();
+  } else {
+    stopLiveBTC();
+  }
 });
+
+window.addEventListener("online", syncLiveToggleWithNetwork);
+window.addEventListener("offline", syncLiveToggleWithNetwork);
+
+window.addEventListener("load", function () {
+  syncLiveToggleWithNetwork();
+});
+
+function syncLiveToggleWithNetwork() {
+
+  if (!navigator.onLine) {
+
+    // ⛔ OFFLINE → FORCE OFF
+    toggleBtn.classList.remove("active");
+    stopLiveBTC();
+
+  } else {
+
+    // ✅ ONLINE → FORCE ON (only if BTC selected)
+    if (pair.value === "BTC") {
+      toggleBtn.classList.add("active");
+      startLiveBTC();
+    }
+  }
+}
+function showAlert(message, type = "error") {
+  const box = document.getElementById("alertBox");
+
+  box.style.display = "block";
+  box.innerText = message;
+
+  box.classList.remove("error", "success");
+  box.classList.add(type);
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 3000);
+}
+
 
 
 // ======================
@@ -350,3 +466,6 @@ function openCalcModal(){
 function closeCalcModal(){
   document.getElementById("calcModal").style.display = "none";
 }
+
+
+

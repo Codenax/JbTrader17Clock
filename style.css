@@ -1366,3 +1366,39 @@ select::-webkit-scrollbar-thumb:hover{
 .sl-label {
   color: #ff3b3b;
 }
+
+
+/* target profitdropdown options start */
+
+.tp-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #111;
+}
+
+/* input */
+.tp-input {
+  flex: 1;
+  padding: 10px !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent;
+  color: #fff;
+}
+
+/* dropdown right side */
+.tp-select {
+  width: 90px !important;
+  border: none !important;
+  outline: none !important;
+  background: #222;
+  color: #00ffb3;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px !important;
+  border-left: 1px solid #333 !important;
+}
+/* target profitdropdown options end */
