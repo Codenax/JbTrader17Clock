@@ -1,8 +1,51 @@
+// =========================
+// 🔥 GLOBAL FUNCTIONS (FIX)
+// =========================
+
+function showAlert(message, type = "error") {
+  const box = document.getElementById("alertBox");
+  if (!box) return;
+
+  box.style.display = "block";
+  box.innerText = message;
+
+  box.classList.remove("error", "success");
+  box.classList.add(type);
+
+  setTimeout(() => {
+    box.style.display = "none";
+  }, 3000);
+}
+
+function validateInputs() {
+
+  const balance = document.getElementById("balance")?.value;
+  const entry = document.getElementById("entry")?.value;
+  const risk = document.getElementById("riskBalance")?.value;
+  const reward = document.getElementById("rewardRatio")?.value;
+  const dynamic = document.getElementById("dynamicInput")?.value;
+  const priceType = document.getElementById("priceType")?.value;
+
+  if (!balance || balance <= 0) return "Account Balance is required!";
+  if (!entry || entry <= 0) return "Entry Price is required!";
+  if (!risk) return "Select Risk";
+  if (!reward) return "Select Reward";
+
+  if (!dynamic || dynamic.trim() === "") {
+    return priceType === "tp"
+      ? "Take Profit Required!"
+      : "Stop Loss Required!";
+  }
+
+  return null;
+}
+
+
+// =========================
+// MAIN DOM READY
+// =========================
 document.addEventListener("DOMContentLoaded", function () {
 
-  // =========================
-  // ELEMENTS
-  // =========================
   const pair = document.getElementById("pair");
   const riskTitle = document.getElementById("riskTitle");
 
@@ -85,50 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // =========================
-  // ALERT (SAFE)
-  // =========================
-function showAlert(message, type = "error") {
-  const box = document.getElementById("alertBox");
-
-  box.style.display = "block";
-  box.innerText = message;
-
-  box.classList.remove("error", "success");
-  box.classList.add(type);
-
-  setTimeout(() => {
-    box.style.display = "none";
-  }, 3000);
-}
-
-
-  // =========================
-  // VALIDATION
-  // =========================
-  function validateInputs() {
-
-    const balance = document.getElementById("balance")?.value;
-    const entry = document.getElementById("entry")?.value;
-    const risk = riskSelect?.value;
-    const reward = rewardSelect?.value;
-    const dynamic = dynamicInput?.value;
-
-    if (!balance || balance <= 0) return "Account Balance is required!";
-    if (!entry || entry <= 0) return "Entry Price is required!";
-    if (!risk) return "Select Risk";
-    if (!reward) return "Select Reward";
-
-    if (!dynamic || dynamic.trim() === "") {
-      return priceType.value === "tp"
-        ? "Take Profit Required!"
-        : "Stop Loss Required!";
-    }
-
-    return null;
-  }
-
-
-  // =========================
   // EVENTS
   // =========================
 
@@ -142,6 +141,9 @@ function showAlert(message, type = "error") {
     priceType.addEventListener("change", updateLabel);
   }
 
+  // =========================
+  // CALCULATE BUTTON (FIXED)
+  // =========================
   if (calcBtn) {
     calcBtn.addEventListener("click", function () {
 
@@ -152,9 +154,40 @@ function showAlert(message, type = "error") {
         return;
       }
 
+      calculate();          // existing function
+     // trade info update
+      calculateSLTPFromTradeInfo(); 
+       syncTradeInfo();   
+      updateTradeResult();  
+      // trade result update
+
       showAlert("Calculation Successful", "success");
     });
   }
+
+
+  // =========================
+  // CLEAR BUTTON
+  // =========================
+  function clearTradeInfo() {
+
+  document.getElementById("sumBalance").innerText = "0";
+  document.getElementById("entry2Show").innerText = "0";
+  document.getElementById("sumRisk").innerText = "0";
+  document.getElementById("sumRiskAmount").innerText = "0 $";
+  document.getElementById("sumRewardRatio").innerText = "1:0";
+}
+function clearTradeResult() {
+
+  document.getElementById("sumLot").innerText = "0";
+  document.getElementById("sumRewardUSD").innerText = "0 $";
+  document.getElementById("sumRewardPips").innerText = "0";
+   document.getElementById("profit").value = "";
+   document.getElementById("sumRewardPercent").innerText = "0 %";
+  document.getElementById("sumTP").innerText = "0";
+  document.getElementById("sumSL").innerText = "0";
+  document.getElementById("sumBreakeven").innerText = "0";
+}
 
   if (clearBtn) {
     clearBtn.addEventListener("click", function () {
@@ -165,21 +198,172 @@ function showAlert(message, type = "error") {
 
       riskSelect.selectedIndex = 0;
       rewardSelect.selectedIndex = 0;
-
+ clearTradeInfo();
+ clearTradeResult();
       showAlert("Cleared", "success");
     });
   }
 
 });
-/*minus sign block + numeric only + dot control*/
 
+/*Trade results update function*/
+function calculateSLTPFromTradeInfo() {
+
+  const balance = parseFloat(document.getElementById("balance").value) || 0;
+  const entry = parseFloat(document.getElementById("entry").value) || 0;
+
+  const riskPercent = parseFloat(document.getElementById("riskBalance").value) || 0;
+  const rewardRatio = parseFloat(document.getElementById("rewardRatio").value) || 1;
+
+  const priceType = document.getElementById("priceType").value;
+  const userInput = parseFloat(document.getElementById("dynamicInput").value) || 0;
+
+  // ✅ FIX: LOT FROM SELECT ONLY
+  const lotSize = parseFloat(document.getElementById("lot").value) || 0;
+
+  let SL = 0;
+  let TP = 0;
+
+  const riskAmount = (balance * riskPercent) / 100;
+
+  // =========================
+  // CASE 1: USER GIVES SL
+  // =========================
+  if (priceType === "sl") {
+
+    SL = userInput;
+
+    const stopDistance = Math.abs(entry - SL);
+
+    const rewardDistance = stopDistance * rewardRatio;
+    TP = entry + rewardDistance;
+  }
+
+  // =========================
+  // CASE 2: USER GIVES TP
+  // =========================
+  else if (priceType === "tp") {
+
+    TP = userInput;
+
+    const rewardDistance = Math.abs(TP - entry);
+
+    const stopDistance = rewardDistance / rewardRatio;
+
+    SL = entry - stopDistance;
+  }
+
+  // =========================
+  // OUTPUT
+  // =========================
+  document.getElementById("sumLot").innerText = lotSize.toFixed(2);
+  document.getElementById("sumTP").innerText = TP.toFixed(2);
+  document.getElementById("sumSL").innerText = SL.toFixed(2);
+  document.getElementById("entry2Show").innerText = entry.toFixed(2);
+}
+
+
+function updateTradeResult() {
+
+  const pair = document.getElementById("pair");
+
+const lotSizeText = document.getElementById("sumLot")?.innerText;
+const lotSize = parseFloat(lotSizeText) || 0;
+  const tp = parseFloat(document.getElementById("sumTP").innerText) || 0;
+  const sl = parseFloat(document.getElementById("sumSL").innerText) || 0;
+  const entry = parseFloat(document.getElementById("entry").value) || 0;
+
+  const rewardRatio = parseFloat(document.getElementById("rewardRatio").value) || 0;
+  const riskPercent = parseFloat(document.getElementById("riskBalance").value) || 0;
+  const balance = parseFloat(document.getElementById("balance").value) || 0;
+
+  const commission = parseFloat(document.getElementById("commission").innerText) || 0;
+  const spread = parseFloat(document.getElementById("btcValue").innerText) || 0;
+
+  // ======================
+  // RISK / REWARD USD
+  // ======================
+  const riskAmount = (balance * riskPercent) / 100;
+  const rewardUSD = riskAmount * rewardRatio;
+ // ======================
+  // 🔥 REWARD % OF BALANCE (NEW)
+  // ======================
+  let rewardPercent = 0;
+
+  if (balance > 0) {
+    rewardPercent = (rewardUSD / balance) * 100;
+  }
+  // ======================
+  // REAL PIP CALC
+  // ======================
+  let rewardPips = 0;
+
+  if (pair.value === "BTC") {
+    rewardPips = (rewardUSD * 10) / (lotSize || 1);
+  }
+
+  else if (pair.value === "Gold") {
+    rewardPips = rewardUSD / (lotSize || 1);
+  }
+
+  // ======================
+  // BREAKEVEN (FEE INCLUDED)
+  // ======================
+  // ======================
+// BREAKEVEN (UPDATED)
+// ======================
+const totalFee = commission + spread;
+
+let breakeven = entry;
+
+if (pair.value === "BTC") {
+
+  // 🔥 NEW SIMPLE LOGIC
+  breakeven = entry + totalFee;
+
+}
+
+else if (pair.value === "Gold") {
+
+  // OLD LOGIC (keep as is)
+  const contractSize = 100;
+  const breakevenMove = totalFee / (contractSize * (lotSize || 1));
+  breakeven = entry + breakevenMove;
+
+}
+
+  // ======================
+  // OUTPUT UI
+  // ======================
+  document.getElementById("sumLot").innerText = lotSize.toFixed(2);
+
+  document.getElementById("sumRewardUSD").innerText =
+    rewardUSD.toFixed(2) + " $";
+
+  document.getElementById("sumRewardPips").innerText =
+    rewardPips.toFixed(2);
+
+     document.getElementById("sumRewardPercent").innerText =
+    rewardPercent.toFixed(2) + " %";
+
+  document.getElementById("sumTP").innerText = tp.toFixed(2);
+  document.getElementById("sumSL").innerText = sl.toFixed(2);
+
+  document.getElementById("sumBreakeven").innerText =
+    breakeven.toFixed(2);
+}
+
+/*trade info update function end*/
+// =========================
+// 🔒 INPUT SECURITY (NO - / TEXT)
+// =========================
 document.addEventListener("DOMContentLoaded", function () {
 
   const fields = [
     document.getElementById("balance"),
     document.getElementById("entry"),
-    document.getElementById("dynamicInput"), 
-    document.getElementById("profit") 
+    document.getElementById("dynamicInput"),
+    document.getElementById("profit")
   ];
 
   fields.forEach(input => {
@@ -188,31 +372,56 @@ document.addEventListener("DOMContentLoaded", function () {
 
     input.addEventListener("input", function () {
 
-      // remove minus sign
-      if (this.value.includes("-")) {
-        this.value = this.value.replace("-", "");
-      }
-
-      // optional: prevent letters too
+      this.value = this.value.replace("-", "");
       this.value = this.value.replace(/[^0-9.]/g, "");
-
-      // prevent multiple dots
       this.value = this.value.replace(/(\..*)\./g, "$1");
 
     });
 
-    // extra safety (paste attack block)
-    input.addEventListener("paste", function (e) {
-
+    input.addEventListener("paste", function () {
       setTimeout(() => {
         this.value = this.value.replace(/[^0-9.]/g, "");
       }, 0);
-
     });
 
   });
 
 });
 
-/*This script ensures that the balance, entry price, and stop loss fields only accept numeric input, blocks minus signs, and prevents multiple decimal points. It also handles paste events to ensure invalid characters are not introduced.*/
 
+// =========================
+// 📊 TRADE INFO UPDATE
+// =========================
+function updateTradeInfo() {
+
+  const bal = parseFloat(document.getElementById("balance")?.value) || 0;
+  const en = parseFloat(document.getElementById("entry")?.value) || 0;
+
+  const riskPercent = parseFloat(document.getElementById("riskBalance")?.value) || 0;
+  const rewardRatio = document.getElementById("rewardRatio")?.value || 0;
+
+  const riskAmount = (bal * riskPercent) / 100;
+
+  document.getElementById("sumBalance").innerText = bal.toFixed(2);
+  document.getElementById("entry2Show").innerText = en.toFixed(2);
+  document.getElementById("sumRisk").innerText = riskPercent;
+  document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
+  document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
+}
+
+function syncTradeInfo() {
+
+  const bal = parseFloat(document.getElementById("balance")?.value) || 0;
+  const riskPercent = parseFloat(document.getElementById("riskBalance")?.value) || 0;
+  const rewardRatio = document.getElementById("rewardRatio")?.value || 0;
+  const entry = parseFloat(document.getElementById("entry")?.value) || 0;
+
+  const riskAmount = (bal * riskPercent) / 100;
+
+  document.getElementById("sumBalance").innerText = bal.toFixed(2);
+  document.getElementById("sumRisk").innerText = riskPercent;
+  document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
+  document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
+
+  document.getElementById("entry2Show").innerText = entry.toFixed(2);
+}
