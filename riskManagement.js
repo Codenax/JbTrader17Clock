@@ -370,18 +370,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!input) return;
 
+    // ✅ typing control
     input.addEventListener("input", function () {
 
-      this.value = this.value.replace("-", "");
-      this.value = this.value.replace(/[^0-9.]/g, "");
-      this.value = this.value.replace(/(\..*)\./g, "$1");
+      let val = this.value;
 
+      // remove minus
+      val = val.replace(/-/g, "");
+
+      // allow only number + dot
+      val = val.replace(/[^0-9.]/g, "");
+
+      // prevent multiple dots
+      val = val.replace(/(\..*)\./g, "$1");
+
+      this.value = val;
     });
 
-    input.addEventListener("paste", function () {
-      setTimeout(() => {
-        this.value = this.value.replace(/[^0-9.]/g, "");
-      }, 0);
+    // ✅ paste FIX (IMPORTANT)
+    input.addEventListener("paste", function (e) {
+
+      e.preventDefault(); // stop raw paste
+
+      let paste = (e.clipboardData || window.clipboardData).getData("text");
+
+      // clean pasted value
+      paste = paste.replace(/-/g, "");
+      paste = paste.replace(/[^0-9.]/g, "");
+      paste = paste.replace(/(\..*)\./g, "$1");
+
+      // insert cleaned value
+      document.execCommand("insertText", false, paste);
     });
 
   });
