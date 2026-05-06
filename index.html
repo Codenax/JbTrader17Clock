@@ -166,9 +166,8 @@
 
 
 
-
   <!-- RIGHT SIDE MENU Trading Calculator start-->
-  <!-- RIGHT SIDE MENU Trading Calculator end-->
+
 
 
   <!-- MODALS START -->
@@ -669,38 +668,61 @@
 
             </div>
 
+            <div Class="JbDividedLine"></div>
             <!-- RISK MANAGEMENT -->
-            <div class="jbcalc-panel jbcalc-risk">
+         <!-- RISK & REWARD PANEL -->
+<!-- RISK MANAGEMENT -->
+<div class="jbcalc-panel jbcalc-risk">
 
-              <h3>Risk Management</h3>
+  <h3>Risk Management</h3>
 
-              <div class="jbcalc-input-grid">
+  <div class="jbcalc-input-grid">
 
-                <div class="jbclass-margin">
-                  <label class="jbcalc-label" for="riskBalance">RISK OF BALANCE</label>
-                  <select id="riskBalance">
-                    <option value="1">1%</option>
-                    <option value="5">5%</option>
-                    <option value="10">10%</option>
-                    <option value="20" selected>20%</option>
-                    <option value="30">30%</option>
-                  </select>
-                </div>
+    <!-- Risk -->
+    <div class="jbclass-margin">
+      <label class="jbcalc-label">RISK OF BALANCE</label>
+      <select id="riskBalance"></select>
+    </div>
 
-                <div class="jbclass-margin">
-                  <label class="jbcalc-label" for="rewardRatio">REWARD</label>
-                  <select id="rewardRatio">
-                    <option value="1">1:1</option>
-                    <option value="2" selected>1:2</option>
-                    <option value="3">1:3</option>
-                    <option value="5">1:5</option>
-                    <option value="10">1:10</option>
-                  </select>
-                </div>
+    <!-- Reward -->
+    <div class="jbclass-margin">
+      <label class="jbcalc-label">REWARD</label>
+      <select id="rewardRatio"></select>
+    </div>
 
-              </div>
+    <!-- Select Type -->
+    <div class="jbclass-margin">
+      <label class="jbcalc-label">SELECT TYPE</label>
+      <select id="priceType">
+        <option value="tp">Take Profit Price</option>
+        <option value="sl" selected>Stop Loss Price</option>
+      </select>
+    </div>
 
-            </div>
+    <!-- Dynamic Input -->
+    <div class="jbclass-margin">
+      <label class="jbcalc-label" id="dynamicLabel">Stop Loss Price</label>
+      <input id="dynamicInput" placeholder="Enter Stop Loss Price">
+    </div>
+
+  
+    <!-- ALERT BOX (NOW ABOVE BUTTONS) -->
+
+
+</div>
+<!-- ALERT -->
+<!-- ROW 1: ALERT -->
+<div id="alertBox" class="jb-alert-box"></div>
+
+<!-- ROW 2: BUTTONS -->
+<div class="jbcalc-btn-row">
+  <button id="calcBtn" class="btn-calc">Calculate</button>
+  <button id="clearBtn" class="btn-clear">Clear</button>
+</div>
+
+  </div>
+
+<!-- ALERT BOX -->
 
             <!-- SUMMARY -->
             <div class="jbcalc-summary">
@@ -709,6 +731,7 @@
                 <h3>Trade Info</h3>
                 <div>Balance: <span id="sumBalance">0</span></div>
                 <div>Risk: <span id="sumRisk">0</span>%</div>
+                <div>Risk Of Balance: <span id="sumRiskAmount">0 $</span></div>
                 <div>Entry: <span id="sumEntry">0</span></div>
                 <div>Reward: <span id="sumRewardRatio">1:0</span></div>
               </div>
@@ -716,6 +739,7 @@
               <div class="jbcalc-panel jbcalc-summary-right jbcalc-highlight">
                 <h3>Trade Result</h3>
                 <div>Lot: <span id="sumLot">0</span></div>
+                 <div>Target Reward: <span id="sumRewardUSD">0 $</span></div>
                 <div>TP: <span id="sumTP">0</span></div>
                 <div>SL: <span id="sumSL">0</span></div>
                 <div>Breakeven: <span id="sumBreakeven">0</span></div>
@@ -733,6 +757,10 @@
     <!-- calculator MODALS END -->
   </div>
 </div>
+  
+<!-- Calculator MODAL end -->
+
+
   <div class="jbcalc-backdrop" id="jbcalcBackdrop"></div>
   /*right side panal*/
   <div class="app-backdrop" id="appBackdrop"></div>
@@ -745,6 +773,7 @@
   <script src="app.js"></script>
   <script src="sideMenu-Modal.js"></script>
   <script src="calculator.js"></script>
+  <script src="riskManagement.js"></script>
 
 
 </body>

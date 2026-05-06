@@ -1267,3 +1267,102 @@ select::-webkit-scrollbar-thumb:hover{
   opacity: 1;
   visibility: visible;
 }
+
+.tp-label {
+  color: #00ffb3; /* Green (your theme primary) */
+}
+
+.sl-label {
+  color: #ff3b3b; /* Red */
+}
+.JbDividedLine{
+  height: 1px;
+  background:#00ffb3; /* Green (your theme primary) */
+ margin-bottom: 8px;
+
+  z-index:1;
+}
+
+
+/* =========================
+   ALERT ROW (FULL WIDTH)
+========================= */
+.jb-alert-box {
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  display: none;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ERROR */
+.jb-alert-box.error {
+  background: rgba(255, 59, 59, 0.15);
+  color: #ff3b3b;
+  border: 1px solid #ff3b3b;
+}
+
+/* SUCCESS */
+.jb-alert-box.success {
+  background: rgba(0, 255, 179, 0.15);
+  color: #00ffb3;
+  border: 1px solid #00ffb3;
+}
+
+
+/* =========================
+   BUTTON ROW (SECOND ROW)
+========================= */
+.jbcalc-btn-row {
+  display: flex;
+  justify-content: center;   /* center buttons */
+  gap: 12px;
+  width: 100%;
+  margin-top: 5px;
+}
+
+/* BUTTON STYLE */
+.btn-calc,
+.btn-clear {
+  width: 100px;
+  padding: 4px 6px;
+  border: none;
+  cursor: pointer;
+  font-size:10px;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+/* GREEN */
+.btn-calc {
+  background: #00ffb3;
+  color: #ffffff;
+}
+
+/* RED */
+.btn-clear {
+  background: #ff3b3b;
+  color: #fff;
+}
+
+/* hover */
+.btn-calc:hover,
+.btn-clear:hover {
+  opacity: 0.85;
+}
+
+
+/* =========================
+   LABEL COLORS (TP/SL)
+========================= */
+.tp-label {
+  color: #00ffb3;
+}
+
+.sl-label {
+  color: #ff3b3b;
+}
