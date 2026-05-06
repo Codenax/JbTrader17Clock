@@ -165,9 +165,28 @@ document.getElementById("calcBtn").addEventListener("click", function () {
 // =========================
 document.getElementById("clearBtn").addEventListener("click", function () {
 
+  // text inputs clear
   document.getElementById("balance").value = "";
   document.getElementById("entry").value = "";
   document.getElementById("profit").value = "";
+
+  // dynamic SL/TP field clear (IMPORTANT FIX)
+  document.getElementById("dynamicInput").value = "";
+
+  // reset select (optional but pro)
+  document.getElementById("riskBalance").selectedIndex = 0;
+  document.getElementById("rewardRatio").selectedIndex = 0;
+  document.getElementById("priceType").selectedIndex = 1; // SL default
+
+  // reset label
+  const label = document.getElementById("dynamicLabel");
+  label.innerText = "Stop Loss Price";
+  label.classList.remove("tp-label");
+  label.classList.add("sl-label");
+
+  // hide alert
+  const box = document.getElementById("alertBox");
+  box.style.display = "none";
 
   showAlert("All fields cleared", "success");
 });
