@@ -1008,7 +1008,7 @@ font-weight: bold;
   width: 35px;
   height: 15px;
   background: #111;
-  border: 1px solid #333;
+  border: 1px solid #ff0000;
   border-radius: 20px;
   position: relative;
   cursor: pointer;
@@ -1024,10 +1024,10 @@ font-weight: bold;
 .jb-toggle-knob {
   width: 12px;
   height: 12px;
-  background: #555;
+  background: #ff0000;
   border-radius: 50%;
   position: absolute;
-  top: 1px;
+  top: 0px;
   left: 3px;
   transition: 0.2s;
   z-index: 2;
@@ -1430,3 +1430,22 @@ select::-webkit-scrollbar-thumb:hover{
 }
 
 /*risk header option end*/
+
+/*byl/sell change color*/
+#tradeType {
+  border: 1px solid #ccc;
+
+  outline: none;
+}
+
+/* BUY */
+#tradeType.buy-mode {
+  border-color: #00ff9d;
+  color: #00ff9d;
+}
+
+/* SELL */
+#tradeType.sell-mode {
+  border-color: #ff3b3b;
+  color: #ff3b3b;
+}

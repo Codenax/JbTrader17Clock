@@ -1,6 +1,21 @@
 // =========================
 // 🔥 GLOBAL FUNCTIONS (FIX)
 // =========================
+const tradeType = document.getElementById("tradeType");
+
+function updateTradeSelectColor() {
+
+  if (!tradeType) return;
+
+  tradeType.classList.remove("buy-mode", "sell-mode");
+
+  if (tradeType.value === "buy") {
+    tradeType.classList.add("buy-mode");
+  } else {
+    tradeType.classList.add("sell-mode");
+  }
+}
+
 let isBuy = true;
 
 function showAlert(message, type = "error") {
@@ -72,6 +87,13 @@ const tradeType = document.getElementById("tradeType");
   }
   /*End of buy/sell dropdown logic*/
 
+if (tradeType) {
+
+    updateTradeSelectColor(); // first load
+
+    tradeType.addEventListener("change", updateTradeSelectColor);
+
+  }
 
 
   // =========================
