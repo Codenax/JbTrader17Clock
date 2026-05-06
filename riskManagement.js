@@ -171,5 +171,47 @@ function showAlert(message, type = "error") {
   }
 
 });
+/*minus sign block + numeric only + dot control*/
 
+document.addEventListener("DOMContentLoaded", function () {
+
+  const fields = [
+    document.getElementById("balance"),
+    document.getElementById("entry"),
+    document.getElementById("dynamicInput") 
+  ];
+
+  fields.forEach(input => {
+
+    if (!input) return;
+
+    input.addEventListener("input", function () {
+
+      // remove minus sign
+      if (this.value.includes("-")) {
+        this.value = this.value.replace("-", "");
+      }
+
+      // optional: prevent letters too
+      this.value = this.value.replace(/[^0-9.]/g, "");
+
+      // prevent multiple dots
+      this.value = this.value.replace(/(\..*)\./g, "$1");
+
+    });
+
+    // extra safety (paste attack block)
+    input.addEventListener("paste", function (e) {
+
+      setTimeout(() => {
+        this.value = this.value.replace(/[^0-9.]/g, "");
+      }, 0);
+
+    });
+
+  });
+
+});
+
+/*This script ensures that the balance, entry price, and stop loss fields only accept numeric input, blocks minus signs, and prevents multiple decimal points. It also handles paste events to ensure invalid characters are not introduced.*/
 
