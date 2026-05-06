@@ -1391,14 +1391,42 @@ select::-webkit-scrollbar-thumb:hover{
 
 /* dropdown right side */
 .tp-select {
-  width: 90px !important;
+  width:auto !important;
   border: none !important;
   outline: none !important;
   background: #222;
   color: #00ffb3;
   font-weight: bold;
   cursor: pointer;
-  padding: 10px !important;
+  padding: 10px 0px !important;
   border-left: 1px solid #333 !important;
 }
 /* target profitdropdown options end */
+
+/*risk heder option +label start*/
+.risk-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.trade-type-box{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.trade-Type{
+  color:yellow !important;
+  font-weight:600;
+}
+.trade-type-box select{
+  cursor:pointer;
+}
+
+#tradeType{
+  border:solid 1px  yellow;
+  font-weight:600 !important;
+  padding: 4px 6px !important;
+}
+
+/*risk header option end*/

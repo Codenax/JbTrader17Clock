@@ -1,6 +1,7 @@
 // =========================
 // 🔥 GLOBAL FUNCTIONS (FIX)
 // =========================
+let isBuy = true;
 
 function showAlert(message, type = "error") {
   const box = document.getElementById("alertBox");
@@ -58,6 +59,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const calcBtn = document.getElementById("calcBtn");
   const clearBtn = document.getElementById("clearBtn");
+
+/*Buy/sell dropdown logic (NEW)*/
+const tradeType = document.getElementById("tradeType");
+
+  if (tradeType) {
+    isBuy = tradeType.value === "buy";
+
+    tradeType.addEventListener("change", function () {
+      isBuy = this.value === "buy";
+    });
+  }
+  /*End of buy/sell dropdown logic*/
+
 
 
   // =========================
@@ -204,6 +218,9 @@ function clearTradeResult() {
     });
   }
 
+
+
+
 });
 
 /*Trade results update function*/
@@ -218,8 +235,12 @@ function calculateSLTPFromTradeInfo() {
   const priceType = document.getElementById("priceType").value;
   const userInput = parseFloat(document.getElementById("dynamicInput").value) || 0;
 
-  // ✅ FIX: LOT FROM SELECT ONLY
+  // ✅ LOT FROM SELECT
   const lotSize = parseFloat(document.getElementById("lot").value) || 0;
+
+  // ✅ NEW: TRADE TYPE
+  const tradeType = document.getElementById("tradeType")?.value || "buy";
+  const isBuy = tradeType === "buy";
 
   let SL = 0;
   let TP = 0;
@@ -234,9 +255,13 @@ function calculateSLTPFromTradeInfo() {
     SL = userInput;
 
     const stopDistance = Math.abs(entry - SL);
-
     const rewardDistance = stopDistance * rewardRatio;
-    TP = entry + rewardDistance;
+
+    if (isBuy) {
+      TP = entry + rewardDistance;
+    } else {
+      TP = entry - rewardDistance;
+    }
   }
 
   // =========================
@@ -247,10 +272,13 @@ function calculateSLTPFromTradeInfo() {
     TP = userInput;
 
     const rewardDistance = Math.abs(TP - entry);
-
     const stopDistance = rewardDistance / rewardRatio;
 
-    SL = entry - stopDistance;
+    if (isBuy) {
+      SL = entry - stopDistance;
+    } else {
+      SL = entry + stopDistance;
+    }
   }
 
   // =========================
@@ -316,22 +344,33 @@ const totalFee = commission + spread;
 
 let breakeven = entry;
 
+// ======================
+// BTC
+// ======================
 if (pair.value === "BTC") {
 
-  // 🔥 NEW SIMPLE LOGIC
-  breakeven = entry + totalFee;
+  if (isBuy) {
+    breakeven = entry + totalFee;
+  } else {
+    breakeven = entry - totalFee;
+  }
 
 }
 
+// ======================
+// GOLD
+// ======================
 else if (pair.value === "Gold") {
 
-  // OLD LOGIC (keep as is)
   const contractSize = 100;
   const breakevenMove = totalFee / (contractSize * (lotSize || 1));
-  breakeven = entry + breakevenMove;
 
+  if (isBuy) {
+    breakeven = entry + breakevenMove;
+  } else {
+    breakeven = entry - breakevenMove;
+  }
 }
-
   // ======================
   // OUTPUT UI
   // ======================
