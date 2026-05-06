@@ -178,7 +178,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const fields = [
     document.getElementById("balance"),
     document.getElementById("entry"),
-    document.getElementById("dynamicInput") 
+    document.getElementById("dynamicInput"), 
+    document.getElementById("profit") 
   ];
 
   fields.forEach(input => {
