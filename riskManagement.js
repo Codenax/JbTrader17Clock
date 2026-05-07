@@ -1,6 +1,19 @@
 // =========================
 // 🔥 GLOBAL FUNCTIONS (FIX)
 // =========================
+function smartFormat(value, decimals = 5) {
+  if (value === null || value === undefined || isNaN(value)) return "0";
+
+  let num = parseFloat(value);
+
+  let fixed = num.toFixed(decimals);
+
+  fixed = fixed.replace(/\.?0+$/, "");
+
+  return fixed;
+}
+
+
 const tradeType = document.getElementById("tradeType");
 
 function updateTradeSelectColor() {
@@ -135,19 +148,25 @@ if (tradeType) {
   // =========================
   // RISK TITLE
   // =========================
-  function updateRiskTitle() {
+function updateRiskTitle() {
 
-    if (!riskTitle || !pair) return;
+  if (!riskTitle || !pair) return;
 
- if (pair.value === "BTC" || pair.value === "ETH") {
-  riskTitle.innerText = "(" + pair.value + ")";
-  riskTitle.style.color = "#00c3ff";
-} else {
-      riskTitle.innerText = "(GOLD)";
-      riskTitle.style.color = "#ffd400";
-    }
+  if (pair.value === "BTC" || pair.value === "ETH") {
+    riskTitle.innerText = "(" + pair.value + ")";
+    riskTitle.style.color = "#00c3ff";
   }
 
+  else if (pair.value === "XAG") {
+    riskTitle.innerText = "(XAG)";
+    riskTitle.style.color = "#c0c0c0";
+  }
+
+  else {
+    riskTitle.innerText = "(GOLD)";
+    riskTitle.style.color = "#ffd400";
+  }
+}
 
   // =========================
   // RISK DROPDOWN
@@ -343,9 +362,9 @@ function calculateSLTPFromTradeInfo() {
   // OUTPUT
   // =========================
   document.getElementById("sumLot").innerText = lotSize.toFixed(2);
-  document.getElementById("sumTP").innerText = TP.toFixed(2);
-  document.getElementById("sumSL").innerText = SL.toFixed(2);
-  document.getElementById("entry2Show").innerText = entry.toFixed(2);
+document.getElementById("sumTP").innerText = smartFormat(TP);
+document.getElementById("sumSL").innerText = smartFormat(SL);
+document.getElementById("entry2Show").innerText = smartFormat(entry);
 }
 
 
@@ -391,6 +410,15 @@ if (pair.value === "BTC" || pair.value === "ETH") {
   else if (pair.value === "Gold") {
     rewardPips = rewardUSD / (lotSize || 1);
   }
+  // =========================
+// XAG (SILVER)
+// =========================
+else if (pair.value === "XAG") {
+
+  const pipValuePerLot = 50; // 1 lot = $50 per pip
+
+  rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
 
   // ======================
   // BREAKEVEN (FEE INCLUDED)
@@ -418,36 +446,38 @@ if (pair.value === "BTC" || pair.value === "ETH") {
 // ======================
 // GOLD
 // ======================
-else if (pair.value === "Gold") {
 
-  const contractSize = 100;
-  const breakevenMove = totalFee / (contractSize * (lotSize || 1));
+// ======================
+// XAG (SILVER)
+// ======================
+else if (pair.value === "Gold" || pair.value === "XAG") {
 
   if (isBuy) {
-    breakeven = entry + breakevenMove;
+    breakeven = entry + totalFee;
   } else {
-    breakeven = entry - breakevenMove;
+    breakeven = entry - totalFee;
   }
+
 }
   // ======================
   // OUTPUT UI
   // ======================
-  document.getElementById("sumLot").innerText = lotSize.toFixed(2);
+  document.getElementById("sumLot").innerText = smartFormat(lotSize, 2);
 
-  document.getElementById("sumRewardUSD").innerText =
-    rewardUSD.toFixed(2) + " $";
+document.getElementById("sumRewardUSD").innerText =
+  smartFormat(rewardUSD, 2) + " $";
 
-  document.getElementById("sumRewardPips").innerText =
-    rewardPips.toFixed(2);
+ document.getElementById("sumRewardPips").innerText =
+  smartFormat(rewardPips, 2);
 
-     document.getElementById("sumRewardPercent").innerText =
-    rewardPercent.toFixed(2) + " %";
+document.getElementById("sumRewardPercent").innerText =
+  smartFormat(rewardPercent, 2) + " %";
 
-  document.getElementById("sumTP").innerText = tp.toFixed(2);
-  document.getElementById("sumSL").innerText = sl.toFixed(2);
+document.getElementById("sumTP").innerText = smartFormat(tp);
+document.getElementById("sumSL").innerText = smartFormat(sl);
 
-  document.getElementById("sumBreakeven").innerText =
-    breakeven.toFixed(2);
+ document.getElementById("sumBreakeven").innerText =
+  smartFormat(breakeven);
 }
 
 /*trade info update function end*/

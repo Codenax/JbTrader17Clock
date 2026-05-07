@@ -1,3 +1,13 @@
+function formatPrice(num) {
+
+  let n = parseFloat(num);
+
+  if (isNaN(n)) return "0";
+
+  // max 5 decimal + remove trailing zeros
+  return parseFloat(n.toFixed(5)).toString();
+}
+
 const select = document.getElementById("pair");
 
 select.addEventListener("change", function () {
@@ -83,6 +93,10 @@ function convertProfitToUSD(prof, type, balance, entry, lotSize) {
     else if (pair.value === "Gold") {
       pipValue = 1;     // 1 lot → 1 pip = $1
     }
+    // ===== XAG =====
+else if (pair.value === "XAG") {
+  pipValue = 50; // 0.01 lot → 100 pips = $50
+}
 
     else {
       pipValue = 1; // fallback
@@ -102,6 +116,13 @@ function getBaseCommission() {
   if (pr === "Gold") {
     if (acc === "Raw Spread") return 7;
     if (acc === "Zero") return 11;
+    return 0;
+  }
+
+    // ===== XAG =====
+  if (pr === "XAG") {
+    if (acc === "Raw Spread") return 7.00;
+    if (acc === "Zero") return 95.00;
     return 0;
   }
 
@@ -128,25 +149,25 @@ function calculate() {
 if (!en || en <= 0) {
 
   // RESULT
-  tp.innerText = "0.00";
-  sl.innerText = "0.00";
-  tpSell.innerText = "0.00";
-  slSell.innerText = "0.00";
+  tp.innerText = "0";
+  sl.innerText = "0";
+  tpSell.innerText = "0";
+  slSell.innerText = "0";
 
   // DISTANCE
-  tpd.innerText = "0.00";
-  sld.innerText = "0.00";
+  tpd.innerText = "0";
+  sld.innerText = "0";
 
   // FEE
-  commissionLabel.innerText = "0.00";
+  commissionLabel.innerText = "0";
   btcValueLabel.innerText = "0";
 
   // AFTER SPREAD
-  tpAfterFee.innerText = "0.00";
-  slAfterFee.innerText = "0.00";
+  tpAfterFee.innerText = "0";
+  slAfterFee.innerText = "0";
 
   // ENTRY SHOW
-  document.getElementById("entryShow").innerText = "0.00";
+  document.getElementById("entryShow").innerText = "0";
 
   return; // ⛔ stop calculation
 }
@@ -160,6 +181,7 @@ if (!en || en <= 0) {
   // ======================
   // SPREAD FEE
   // ======================
+
   if (pair.value === "BTC") {
 
     let acc = account.value;
@@ -171,6 +193,7 @@ if (!en || en <= 0) {
 
     btcValueLabel.innerText = spreadFee;
   }
+  // ===== ETH =====
   else if (pair.value === "ETH") {
 
   let acc = account.value;
@@ -182,7 +205,7 @@ if (!en || en <= 0) {
 
   btcValueLabel.innerText = spreadFee;
 }
-
+// ===== GOLD =====
   else if (pair.value === "Gold") {
 
     let acc = account.value;
@@ -194,7 +217,18 @@ if (!en || en <= 0) {
 
     btcValueLabel.innerText = spreadFee;
   }
+// ===== XAG =====
+else if (pair.value === "XAG") {
 
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.033;
+  else if (acc === "Pro") spreadFee = 0.023;
+  else if (acc === "Raw Spread") spreadFee = 0.019;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
   else {
     btcValueLabel.innerText = "-";
     spreadFee = 0;
@@ -207,7 +241,7 @@ if (!en || en <= 0) {
   // ======================
   let baseCommission = getBaseCommission();
   let commission = baseCommission * lotSize * 2;
-  commissionLabel.innerText = commission.toFixed(2);
+ commissionLabel.innerText = formatPrice(commission);
 
   let takeProfit = 0;
   let stopOut = 0;
@@ -215,13 +249,16 @@ if (!en || en <= 0) {
   // ======================
   // GOLD
   // ======================
-  if (pair.value === "Gold") {
+// ======================
+// GOLD + XAG
+// ======================
+if (pair.value === "Gold" || pair.value === "XAG") {
 
-    let contractSize = 100;
+   let contractSize = pair.value === "XAG" ? 5000 : 100;
 
-    takeProfit = en + (prof / (contractSize * lotSize));
-    stopOut = en - (bal / (contractSize * lotSize));
-  }
+  takeProfit = en + (prof / (contractSize * lotSize));
+  stopOut = en - (bal / (contractSize * lotSize));
+}
 
   // ======================
   // BTC & ETH
@@ -238,9 +275,9 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
   let takeProfitSell = 0;
   let stopOutSell = 0;
 
-  if (pair.value === "Gold") {
+  if (pair.value === "Gold" || pair.value === "XAG") {
 
-    let contractSize = 100;
+   let contractSize = pair.value === "XAG" ? 5000 : 100;
 
     takeProfitSell = en - (prof / (contractSize * lotSize));
     stopOutSell = en + (bal / (contractSize * lotSize));
@@ -259,27 +296,29 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
   let slDistance = en - stopOut;
 
   // OUTPUT
-  tp.innerText = takeProfit.toFixed(2);
-  sl.innerText = stopOut.toFixed(2);
+  // OUTPUT
+tp.innerText = formatPrice(takeProfit);
+sl.innerText = formatPrice(stopOut);
 
-  tpSell.innerText = takeProfitSell.toFixed(2);
-  slSell.innerText = stopOutSell.toFixed(2);
+tpSell.innerText = formatPrice(takeProfitSell);
+slSell.innerText = formatPrice(stopOutSell);
 
-  tpd.innerText = tpDistance.toFixed(2);
-  sld.innerText = slDistance.toFixed(2);
+tpd.innerText = formatPrice(tpDistance);
+sld.innerText = formatPrice(slDistance);
 
-  document.getElementById("entryShow").innerText = en.toFixed(2);
-  document.getElementById("sumResultBalance").innerText =
-  bal.toFixed(2) + " $";
+document.getElementById("entryShow").innerText = formatPrice(en);
 
-  // AFTER SPREAD
-  let tpAfter = tpDistance + spreadFee;
-  let slAfter = slDistance - spreadFee;
+document.getElementById("sumResultBalance").innerText =
+formatPrice(bal) + " $";
 
-  if (slAfter < 0) slAfter = 0;
+// AFTER SPREAD
+let tpAfter = tpDistance + spreadFee;
+let slAfter = slDistance - spreadFee;
 
-  tpAfterFee.innerText = tpAfter.toFixed(2);
-  slAfterFee.innerText = slAfter.toFixed(2);
+if (slAfter < 0) slAfter = 0;
+
+tpAfterFee.innerText = formatPrice(tpAfter);
+slAfterFee.innerText = formatPrice(slAfter);
 }
 
 // ===== EVENTS =====
@@ -373,7 +412,7 @@ function startLivePrice() {
       const price = await getLivePrice();
 
       if (price > 0) {
-         document.getElementById("entry").value = price.toFixed(2);
+         document.getElementById("entry").value = formatPrice(price);
          calculate();
       }
 
@@ -511,5 +550,20 @@ function closeCalcModal(){
   document.getElementById("calcModal").style.display = "none";
 }
 
+// ======================
+// NUMBER INPUT FIX
+// ======================
+document.querySelectorAll('input[type="number"]').forEach(input => {
+
+  input.addEventListener("input", function () {
+
+    // allow only numbers and single decimal point
+    this.value = this.value
+      .replace(/[^0-9.]/g, "")
+      .replace(/(\..*?)\..*/g, "$1");
+
+  });
+
+});
 
 

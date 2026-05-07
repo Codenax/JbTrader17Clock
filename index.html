@@ -576,9 +576,12 @@
                 <div class="jbclass-margin">
                   <label class="jbcalc-label" for="pair">PAIR</label>
                   <select id="pair">
-                    <option value="Gold">Gold</option>
+                  
                     <option value="BTC" selected>BTC</option>
                     <option value="ETH">ETH</option>
+                      <option value="Gold">Gold</option>
+                      <option value="XAG">XAG</option>
+
                   </select>
                 </div>
 
@@ -594,14 +597,14 @@
 
                 <div class="jbclass-margin">
                   <label class="jbcalc-label" for="balance" >ACCOUNT BALANCE ($)</label>
-                  <input id="balance" value="100" type="number"  step="any" placeholder="Account Balance ($)">
+                  <input id="balance" value="100" type="text" inputmode="decimal"placeholder="Account Balance ($)">
                 </div>
 
                 <div class="jbclass-margin">
                   <label class="jbcalc-label" for="entry">ENTRY PRICE (USD)</label>
 
                   <div class="entry-box">
-                    <input id="entry"  type="number" step="any" placeholder="Entry Price">
+                    <input id="entry"  type="text" inputmode="decimal" placeholder="Entry Price">
 
                     <!-- LIVE BOX (RESTORED) -->
                     <div id="liveBox" class="jb-live-box">
@@ -627,7 +630,7 @@
  <label class="jbcalc-label">TARGET PROFIT</label>
 <div class="tp-input-wrapper">
  
-  <input id="profit" class="tp-input" type="number" step="any" value="1" placeholder="Target Profit">
+  <input id="profit" class="tp-input" type="text" inputmode="decimal" value="1" placeholder="Target Profit">
 
   <select id="profitType" class="tp-select">
     <option value="usd" selected>USD</option>
@@ -724,7 +727,7 @@
     <!-- Dynamic Input -->
     <div class="jbclass-margin">
       <label class="jbcalc-label" id="dynamicLabel">Stop Loss Price</label>
-      <input id="dynamicInput"  type="number" step="any" placeholder="Enter Stop Loss Price">
+      <input id="dynamicInput"  type="text" inputmode="decimal" placeholder="Enter Stop Loss Price">
     </div>
 
   
