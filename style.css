@@ -963,8 +963,8 @@ font-weight: bold;
   font-size:10px;
   margin:0;
   text-transform:uppercase;
-  color:#00ff62;
-  font-weight:400;
+  color:#53f993;
+  font-weight:600;
 }
 
 /* =========================
@@ -1452,7 +1452,26 @@ select::-webkit-scrollbar-thumb:hover{
   color: #ff3b3b;
 }
 
-.jbMarginTop{
-  margin-top:3px;
-  color:#edf0f2;
+.jb-margin-top {
+  margin-top:3px !important;
+}
+
+/*my color Start*/
+
+
+.jb-label-text-primary{
+  color:#94A3B8 !important;
+}
+.jb-label-text-White{
+  color:#FFFFFF !important;
+}
+.jb-label-text-strong{
+  font-weight: bold !important;
+}
+.jb-label-text-red{
+  color:#F87171 !important;
+}
+
+.jb-label-text-green{
+  color:#4ADE80  !important;
 }

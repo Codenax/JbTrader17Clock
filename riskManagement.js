@@ -207,9 +207,9 @@ if (tradeType) {
   // =========================
   function clearTradeInfo() {
 
-  document.getElementById("sumBalance").innerText = "0";
+  document.getElementById("sumBalance").innerText = "0 $";
   document.getElementById("entry2Show").innerText = "0";
-  document.getElementById("sumRisk").innerText = "0";
+  document.getElementById("sumRisk").innerText = "0 %";
   document.getElementById("sumRiskAmount").innerText = "0 $";
   document.getElementById("sumRewardRatio").innerText = "1:0";
 }
@@ -482,9 +482,9 @@ function updateTradeInfo() {
 
   const riskAmount = (bal * riskPercent) / 100;
 
-  document.getElementById("sumBalance").innerText = bal.toFixed(2);
+  document.getElementById("sumBalance").innerText = bal.toFixed(2) + " $";
   document.getElementById("entry2Show").innerText = en.toFixed(2);
-  document.getElementById("sumRisk").innerText = riskPercent;
+  document.getElementById("sumRisk").innerText = riskPercent + " %";
   document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
   document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
 }
@@ -498,8 +498,8 @@ function syncTradeInfo() {
 
   const riskAmount = (bal * riskPercent) / 100;
 
-  document.getElementById("sumBalance").innerText = bal.toFixed(2);
-  document.getElementById("sumRisk").innerText = riskPercent;
+  document.getElementById("sumBalance").innerText = bal.toFixed(2) + " $";
+  document.getElementById("sumRisk").innerText = riskPercent + " %";
   document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
   document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
 
