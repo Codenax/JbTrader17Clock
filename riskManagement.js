@@ -191,10 +191,14 @@ function updateRiskTitle() {
     rewardSelect.innerHTML = "";
 
     for (let i = 2; i <= 20; i++) {
-      let v = (i / 2).toFixed(1);
-      const opt = document.createElement("option");
-      opt.value = v;
-      opt.textContent = "1:" + v;
+     let v = (i / 2);
+
+// format like 2 decimals max but remove trailing zeros
+v = parseFloat(v.toFixed(2));
+
+const opt = document.createElement("option");
+opt.value = v;
+opt.textContent = "1:" + v;
       if (v == 2) opt.selected = true;
       rewardSelect.appendChild(opt);
     }
@@ -426,38 +430,15 @@ else if (pair.value === "XAG") {
   // ======================
 // BREAKEVEN (UPDATED)
 // ======================
-const totalFee = commission + spread;
+const totalCommission = commission;
 
-let breakeven = entry;
+// ALL ASSETS (BTC, ETH, GOLD, XAG)
+// Entry already includes spread (Exness style)
 
-// ======================
-// BTC
-// ======================
-if (pair.value === "BTC" || pair.value === "ETH") {
-
-  if (isBuy) {
-    breakeven = entry + totalFee;
-  } else {
-    breakeven = entry - totalFee;
-  }
-
-}
-
-// ======================
-// GOLD
-// ======================
-
-// ======================
-// XAG (SILVER)
-// ======================
-else if (pair.value === "Gold" || pair.value === "XAG") {
-
-  if (isBuy) {
-    breakeven = entry + totalFee;
-  } else {
-    breakeven = entry - totalFee;
-  }
-
+if (isBuy) {
+  breakeven = entry + totalCommission;
+} else {
+  breakeven = entry - totalCommission;
 }
   // ======================
   // OUTPUT UI
