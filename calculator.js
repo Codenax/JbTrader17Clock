@@ -76,6 +76,9 @@ function convertProfitToUSD(prof, type, balance, entry, lotSize) {
     if (pair.value === "BTC") {
       pipValue = 0.1;   // 1 lot → 10 pips = $1
     }
+    else if (pair.value === "ETH") {
+  pipValue = 0.1;
+}
 
     else if (pair.value === "Gold") {
       pipValue = 1;     // 1 lot → 1 pip = $1
@@ -108,6 +111,11 @@ function getBaseCommission() {
     return 0;
   }
 
+ if (pr === "ETH") {
+    if (acc === "Raw Spread") return 0.50;
+    if (acc === "Zero") return 1.00;
+    return 0;
+  }
   return 0;
 }
 
@@ -163,6 +171,17 @@ if (!en || en <= 0) {
 
     btcValueLabel.innerText = spreadFee;
   }
+  else if (pair.value === "ETH") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 1.40;
+  else if (acc === "Pro") spreadFee = 0.98;
+  else if (acc === "Raw Spread") spreadFee = 0.33;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
 
   else if (pair.value === "Gold") {
 
@@ -205,15 +224,15 @@ if (!en || en <= 0) {
   }
 
   // ======================
-  // BTC
+  // BTC & ETH
   // ======================
-  else if (pair.value === "BTC") {
+else if (pair.value === "BTC" || pair.value === "ETH") {
 
-    let priceMove = bal / lotSize;
+  let priceMove = bal / lotSize;
 
-    takeProfit = en + (prof / lotSize);
-    stopOut = en - priceMove;
-  }
+  takeProfit = en + (prof / lotSize);
+  stopOut = en - priceMove;
+}
 
   // SELL
   let takeProfitSell = 0;
@@ -227,13 +246,13 @@ if (!en || en <= 0) {
     stopOutSell = en + (bal / (contractSize * lotSize));
   }
 
-  else if (pair.value === "BTC") {
+  else if (pair.value === "BTC" || pair.value === "ETH") {
 
-    let priceMove = bal / lotSize;
+  let priceMove = bal / lotSize;
 
-    takeProfitSell = en - (prof / lotSize);
-    stopOutSell = en + priceMove;
-  }
+  takeProfitSell = en - (prof / lotSize);
+  stopOutSell = en + priceMove;
+}
 
   // DISTANCE
   let tpDistance = takeProfit - en;
@@ -297,13 +316,36 @@ window.addEventListener("load", function () {
 
 
 // ======================
-// 🟣 BTC PRICE
+// 🟣 LIVE PRICE API
 // ======================
-async function getBTCPrice() {
+async function getLivePrice() {
+
    try {
-      const res = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT");
+
+      let symbol = "";
+
+      // BTC
+      if (pair.value === "BTC") {
+         symbol = "BTCUSDT";
+      }
+
+      // ETH
+      else if (pair.value === "ETH") {
+         symbol = "ETHUSDT";
+      }
+
+      else {
+         return 0;
+      }
+
+      const res = await fetch(
+         `https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`
+      );
+
       const data = await res.json();
+
       return parseFloat(data.price);
+
    } catch (err) {
       return 0;
    }
@@ -322,13 +364,13 @@ const liveBox = document.getElementById("liveBox");
 // ======================
 // START LIVE
 // ======================
-function startLiveBTC() {
+function startLivePrice() {
 
-   stopLiveBTC();
+   stopLivePrice();
 
    liveInterval = setInterval(async () => {
 
-      const price = await getBTCPrice();
+      const price = await getLivePrice();
 
       if (price > 0) {
          document.getElementById("entry").value = price.toFixed(2);
@@ -342,7 +384,7 @@ function startLiveBTC() {
 // ======================
 // STOP LIVE
 // ======================
-function stopLiveBTC() {
+function stopLivePrice() {
 
    if (liveInterval) {
       clearInterval(liveInterval);
@@ -365,14 +407,14 @@ toggleBtn.addEventListener("click", function () {
     return;
   }
 
-  if (pair.value !== "BTC") return;
+  if (pair.value !== "BTC" && pair.value !== "ETH") return;
 
   this.classList.toggle("active");
 
   if (this.classList.contains("active")) {
-    startLiveBTC();
+    startLivePrice();
   } else {
-    stopLiveBTC();
+ stopLivePrice();
   }
 });
 
@@ -389,14 +431,14 @@ function syncLiveToggleWithNetwork() {
 
     // ⛔ OFFLINE → FORCE OFF
     toggleBtn.classList.remove("active");
-    stopLiveBTC();
+stopLivePrice();
 
   } else {
 
-    // ✅ ONLINE → FORCE ON (only if BTC selected)
-    if (pair.value === "BTC") {
+    // ✅ ONLINE → FORCE ON (only if BTC or ETH selected)
+    if (pair.value === "BTC" || pair.value === "ETH") {
       toggleBtn.classList.add("active");
-      startLiveBTC();
+      startLivePrice();
     }
   }
 }
@@ -421,13 +463,13 @@ function showAlert(message, type = "error") {
 // ======================
 pair.addEventListener("change", function () {
 
-   if (this.value === "BTC") {
-      liveBox.style.display = "flex";
-   } else {
+ if (this.value === "BTC" || this.value === "ETH") {
+  liveBox.style.display = "flex";
+} else {
       liveBox.style.display = "none";
 
       toggleBtn.classList.remove("active");
-      stopLiveBTC();
+      stopLivePrice();
    }
 });
 

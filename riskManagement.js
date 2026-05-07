@@ -139,10 +139,10 @@ if (tradeType) {
 
     if (!riskTitle || !pair) return;
 
-    if (pair.value === "BTC") {
-      riskTitle.innerText = "(BTC)";
-      riskTitle.style.color = "#00c3ff";
-    } else {
+ if (pair.value === "BTC" || pair.value === "ETH") {
+  riskTitle.innerText = "(" + pair.value + ")";
+  riskTitle.style.color = "#00c3ff";
+} else {
       riskTitle.innerText = "(GOLD)";
       riskTitle.style.color = "#ffd400";
     }
@@ -384,9 +384,9 @@ const lotSize = parseFloat(lotSizeText) || 0;
   // ======================
   let rewardPips = 0;
 
-  if (pair.value === "BTC") {
-    rewardPips = (rewardUSD * 10) / (lotSize || 1);
-  }
+if (pair.value === "BTC" || pair.value === "ETH") {
+  rewardPips = (rewardUSD * 10) / (lotSize || 1);
+}
 
   else if (pair.value === "Gold") {
     rewardPips = rewardUSD / (lotSize || 1);
@@ -405,7 +405,7 @@ let breakeven = entry;
 // ======================
 // BTC
 // ======================
-if (pair.value === "BTC") {
+if (pair.value === "BTC" || pair.value === "ETH") {
 
   if (isBuy) {
     breakeven = entry + totalFee;

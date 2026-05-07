@@ -1475,3 +1475,12 @@ select::-webkit-scrollbar-thumb:hover{
 .jb-label-text-green{
   color:#4ADE80  !important;
 }
+
+/* Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
