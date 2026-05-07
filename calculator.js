@@ -97,6 +97,10 @@ function convertProfitToUSD(prof, type, balance, entry, lotSize) {
 else if (pair.value === "XAG") {
   pipValue = 50; // 0.01 lot → 100 pips = $50
 }
+  // ===== USOIL =====
+  else if (pair.value === "USOIL") {
+    pipValue = 10;
+  }
 
     else {
       pipValue = 1; // fallback
@@ -137,6 +141,13 @@ function getBaseCommission() {
     if (acc === "Zero") return 1.00;
     return 0;
   }
+// ===== USOIL =====
+if (pr === "USOIL") {
+  if (acc === "Raw Spread") return 7.00;
+  if (acc === "Zero") return 12.5;
+  return 0;
+}
+
   return 0;
 }
 
@@ -229,6 +240,18 @@ else if (pair.value === "XAG") {
 
   btcValueLabel.innerText = spreadFee;
 }
+// ===== USOIL =====
+else if (pair.value === "USOIL") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.02;
+  else if (acc === "Pro") spreadFee = 0.014;
+  else if (acc === "Raw Spread") spreadFee = 0.005;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
   else {
     btcValueLabel.innerText = "-";
     spreadFee = 0;
@@ -252,9 +275,12 @@ else if (pair.value === "XAG") {
 // ======================
 // GOLD + XAG
 // ======================
-if (pair.value === "Gold" || pair.value === "XAG") {
+if (pair.value === "Gold" || pair.value === "XAG" || pair.value === "USOIL") {
 
-   let contractSize = pair.value === "XAG" ? 5000 : 100;
+  let contractSize =
+  pair.value === "XAG" ? 5000 :
+  pair.value === "USOIL" ? 1000 :
+  100;
 
   takeProfit = en + (prof / (contractSize * lotSize));
   stopOut = en - (bal / (contractSize * lotSize));
@@ -275,9 +301,12 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
   let takeProfitSell = 0;
   let stopOutSell = 0;
 
-  if (pair.value === "Gold" || pair.value === "XAG") {
+  if (pair.value === "Gold" || pair.value === "XAG" || pair.value === "USOIL") {
 
-   let contractSize = pair.value === "XAG" ? 5000 : 100;
+   let contractSize =
+  pair.value === "XAG" ? 5000 :
+  pair.value === "USOIL" ? 1000 :
+  100;
 
     takeProfitSell = en - (prof / (contractSize * lotSize));
     stopOutSell = en + (bal / (contractSize * lotSize));

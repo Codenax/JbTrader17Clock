@@ -161,6 +161,10 @@ function updateRiskTitle() {
     riskTitle.innerText = "(XAG)";
     riskTitle.style.color = "#c0c0c0";
   }
+    else if (pair.value === "USOIL") {
+    riskTitle.innerText = "(USOIL)";
+    riskTitle.style.color = "#ff7b00";
+  }
 
   else {
     riskTitle.innerText = "(GOLD)";
@@ -422,6 +426,13 @@ else if (pair.value === "XAG") {
   const pipValuePerLot = 50; // 1 lot = $50 per pip
 
   rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
+else if (pair.value === "USOIL") {
+
+  const pipValuePerLot = 1000; 
+  // because 1 lot = $1000 per 100 pips scale (0.01 = $10 per 100 pips)
+
+  rewardPips = rewardUSD / ((pipValuePerLot / 100) * (lotSize || 1));
 }
 
   // ======================
