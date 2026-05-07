@@ -53,6 +53,42 @@ function validateInputs() {
       : "Stop Loss Required!";
   }
 
+  const entryNum = parseFloat(entry);
+const dynamicNum = parseFloat(dynamic);
+
+const tradeType = document.getElementById("tradeType")?.value || "buy";
+
+// =========================
+// BUY VALIDATION
+// =========================
+if (tradeType === "buy") {
+
+  // BUY + SL
+  if (priceType === "sl" && dynamicNum >= entryNum) {
+    return "Buy SL must be below Entry Price!";
+  }
+
+  // BUY + TP
+  if (priceType === "tp" && dynamicNum <= entryNum) {
+    return "Buy TP must be above Entry Price!";
+  }
+
+}
+
+if (tradeType === "sell") {
+
+  // SELL + SL
+  if (priceType === "sl" && dynamicNum <= entryNum) {
+    return "Sell SL must be above Entry Price!";
+  }
+
+  // SELL + TP
+  if (priceType === "tp" && dynamicNum >= entryNum) {
+    return "Sell TP must be below Entry Price!";
+  }
+
+}
+
   return null;
 }
 
