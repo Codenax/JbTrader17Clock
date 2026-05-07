@@ -250,6 +250,8 @@ if (!en || en <= 0) {
   sld.innerText = slDistance.toFixed(2);
 
   document.getElementById("entryShow").innerText = en.toFixed(2);
+  document.getElementById("sumResultBalance").innerText =
+  bal.toFixed(2) + " $";
 
   // AFTER SPREAD
   let tpAfter = tpDistance + spreadFee;

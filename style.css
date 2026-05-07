@@ -738,7 +738,7 @@ font-weight: bold;
 .calc-modal-content{
   width:99%;
   max-width:900px;
-  height:700px;
+  max-height:700px;
   background:#111;
   margin:5% auto;
   border-radius:10px;
@@ -960,9 +960,11 @@ font-weight: bold;
 }
 /* headings */
 .jbcalc h3{
-  font-size:11px;
+  font-size:10px;
   margin:0;
+  text-transform:uppercase;
   color:#00ff62;
+  font-weight:400;
 }
 
 /* =========================
@@ -1448,4 +1450,9 @@ select::-webkit-scrollbar-thumb:hover{
 #tradeType.sell-mode {
   border-color: #ff3b3b;
   color: #ff3b3b;
+}
+
+.jbMarginTop{
+  margin-top:3px;
+  color:#edf0f2;
 }
