@@ -105,6 +105,10 @@ else if (pair.value === "XAG") {
   else if (pair.value === "USOIL") {
     pipValue = 10;
   }
+  // ===== FOREX =====
+else if (pair.value === "EURUSD") {
+  pipValue = 10;
+}
 
     else {
       pipValue = 1; // fallback
@@ -156,7 +160,12 @@ if (pr === "USOIL") {
   if (acc === "Zero") return 12.5;
   return 0;
 }
-
+// ===== EUR/USD =====
+if (pr === "EURUSD") {
+  if (acc === "Raw Spread") return 5;
+  if (acc === "Zero") return 5;
+  return 0;
+}
   return 0;
 }
 
@@ -273,6 +282,18 @@ else if (pair.value === "USOIL") {
 
   btcValueLabel.innerText = spreadFee;
 }
+// ===== EUR/USD =====
+else if (pair.value === "EURUSD") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.00008;
+  else if (acc === "Pro") spreadFee = 0.00006;
+  else if (acc === "Raw Spread") spreadFee = 0;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
   else {
     btcValueLabel.innerText = "-";
     spreadFee = 0;
@@ -322,6 +343,18 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
 
   takeProfit = en + (prof / lotSize);
   stopOut = en - priceMove;
+}// ======================
+// FOREX
+// ======================
+else if (pair.value === "EURUSD") {
+
+  let pipSize = 0.0001;
+
+  let targetPips = prof / (10 * lotSize);
+
+  takeProfit = en + (targetPips * pipSize);
+
+  stopOut = en - ((bal / (10 * lotSize)) * pipSize);
 }
 
   // SELL
@@ -351,6 +384,19 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
 
   takeProfitSell = en - (prof / lotSize);
   stopOutSell = en + priceMove;
+}
+// ======================
+// FOREX SELL
+// ======================
+else if (pair.value === "EURUSD") {
+
+  let pipSize = 0.0001;
+
+  let targetPips = prof / (10 * lotSize);
+
+  takeProfitSell = en - (targetPips * pipSize);
+
+  stopOutSell = en + ((bal / (10 * lotSize)) * pipSize);
 }
 
   // DISTANCE

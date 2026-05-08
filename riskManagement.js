@@ -168,6 +168,14 @@ function updateRiskTitle() {
     else if (pair.value === "USOIL") {
     riskTitle.innerText = "(USOIL)";
     riskTitle.style.color = "#ff7b00";
+  }  
+  // =========================
+  // EURUSD (FOREX)
+  // =========================
+  else if (pair.value === "EURUSD") {
+
+    riskTitle.innerText = "(EUR/USD)";
+    riskTitle.style.color = "#00ffb3";
   }
 
   else {
@@ -376,7 +384,7 @@ function calculateSLTPFromTradeInfo() {
   document.getElementById("sumLot").innerText = lotSize.toFixed(2);
 document.getElementById("sumTP").innerText = smartFormat(TP);
 document.getElementById("sumSL").innerText = smartFormat(SL);
-document.getElementById("entry2Show").innerText = smartFormat(entry);
+document.getElementById("entry2Show").innerText = smartFormat(entry,5);
 }
 
 
@@ -448,6 +456,12 @@ else if (pair.value === "USOIL") {
   rewardPips = rewardUSD / ((pipValuePerLot / 100) * (lotSize || 1));
 }
 
+else if (pair.value === "EURUSD") {
+
+  const pipValuePerLot = 10;
+
+  rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
   // ======================
   // BREAKEVEN (FEE INCLUDED)
   // ======================
@@ -554,7 +568,7 @@ function updateTradeInfo() {
   const riskAmount = (bal * riskPercent) / 100;
 
   document.getElementById("sumBalance").innerText = bal.toFixed(2) + " $";
-  document.getElementById("entry2Show").innerText = en.toFixed(2);
+ document.getElementById("entry2Show").innerText = smartFormat(en, 5);
   document.getElementById("sumRisk").innerText = riskPercent + " %";
   document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
   document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
@@ -574,5 +588,5 @@ function syncTradeInfo() {
   document.getElementById("sumRiskAmount").innerText = riskAmount.toFixed(2) + " $";
   document.getElementById("sumRewardRatio").innerText = "1:" + rewardRatio;
 
-  document.getElementById("entry2Show").innerText = entry.toFixed(2);
+ document.getElementById("entry2Show").innerText = smartFormat(entry, 5);
 }
