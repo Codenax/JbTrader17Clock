@@ -161,6 +161,10 @@ function updateRiskTitle() {
     riskTitle.innerText = "(XAG)";
     riskTitle.style.color = "#c0c0c0";
   }
+    else if (pair.value === "XCU") {
+    riskTitle.innerText = "(XCU)";
+    riskTitle.style.color = "#ff7b00";
+  }
     else if (pair.value === "USOIL") {
     riskTitle.innerText = "(USOIL)";
     riskTitle.style.color = "#ff7b00";
@@ -424,6 +428,15 @@ if (pair.value === "BTC" || pair.value === "ETH") {
 else if (pair.value === "XAG") {
 
   const pipValuePerLot = 50; // 1 lot = $50 per pip
+
+  rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
+// =========================
+// XCU (Coper)
+// =========================
+else if (pair.value === "XCU") {
+
+  const pipValuePerLot = 0.1;
 
   rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
 }

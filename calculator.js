@@ -93,6 +93,10 @@ function convertProfitToUSD(prof, type, balance, entry, lotSize) {
     else if (pair.value === "Gold") {
       pipValue = 1;     // 1 lot → 1 pip = $1
     }
+ // ===== XCU =====
+    else if (pair.value === "XCU") {
+  pipValue = 0.1;
+}
     // ===== XAG =====
 else if (pair.value === "XAG") {
   pipValue = 50; // 0.01 lot → 100 pips = $50
@@ -121,7 +125,12 @@ function getBaseCommission() {
     if (acc === "Raw Spread") return 7;
     if (acc === "Zero") return 11;
     return 0;
-  }
+  }// ===== XCU =====
+if (pr === "XCU") {
+  if (acc === "Raw Spread") return 4;
+  if (acc === "Zero") return 11.5;
+  return 0;
+}
 
     // ===== XAG =====
   if (pr === "XAG") {
@@ -228,6 +237,18 @@ if (!en || en <= 0) {
 
     btcValueLabel.innerText = spreadFee;
   }
+  // ===== XCU =====
+else if (pair.value === "XCU") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 10.5;
+  else if (acc === "Pro") spreadFee = 7.40;
+  else if (acc === "Raw Spread") spreadFee = 2.10;
+  else if (acc === "Zero") spreadFee = 0.07;
+
+  btcValueLabel.innerText = spreadFee;
+}
 // ===== XAG =====
 else if (pair.value === "XAG") {
 
@@ -263,7 +284,7 @@ else if (pair.value === "USOIL") {
   // COMMISSION
   // ======================
   let baseCommission = getBaseCommission();
-  let commission = baseCommission * lotSize * 2;
+  let commission = baseCommission * lotSize;
  commissionLabel.innerText = formatPrice(commission);
 
   let takeProfit = 0;
@@ -275,11 +296,17 @@ else if (pair.value === "USOIL") {
 // ======================
 // GOLD + XAG
 // ======================
-if (pair.value === "Gold" || pair.value === "XAG" || pair.value === "USOIL") {
+if (
+  pair.value === "Gold" ||
+  pair.value === "XAG" ||
+  pair.value === "USOIL" ||
+  pair.value === "XCU"
+){
 
-  let contractSize =
+let contractSize =
   pair.value === "XAG" ? 5000 :
   pair.value === "USOIL" ? 1000 :
+  pair.value === "XCU" ? 1 :
   100;
 
   takeProfit = en + (prof / (contractSize * lotSize));
@@ -301,11 +328,17 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
   let takeProfitSell = 0;
   let stopOutSell = 0;
 
-  if (pair.value === "Gold" || pair.value === "XAG" || pair.value === "USOIL") {
+ if (
+  pair.value === "Gold" ||
+  pair.value === "XAG" ||
+  pair.value === "USOIL" ||
+  pair.value === "XCU"
+) {
 
-   let contractSize =
+  let contractSize =
   pair.value === "XAG" ? 5000 :
   pair.value === "USOIL" ? 1000 :
+  pair.value === "XCU" ? 1 :
   100;
 
     takeProfitSell = en - (prof / (contractSize * lotSize));
