@@ -935,7 +935,7 @@ font-weight: bold;
 /* labels */
 .jbcalc-label{
   font-size:9px;
-  color:#ffd400;
+  color:#f6da53;
   margin-bottom:3px;
   display:block;
 }
@@ -963,7 +963,7 @@ font-weight: bold;
   font-size:10px;
   margin:0;
   text-transform:uppercase;
-  color:#53f993;
+  color:#7dffaf;
   font-weight:600;
 }
 
@@ -1340,16 +1340,15 @@ select::-webkit-scrollbar-thumb:hover{
 }
 
 /* GREEN */
-.btn-calc {
-  background: #00996b;
-  color: #ffffff;
+.btn-calc,
+.btn-clear {
+    background: #454c55;
+    color: #c7c6c6;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.5), 0px 4px 6px -2px rgba(0, 0, 0, 0.3);
 }
 
 /* RED */
-.btn-clear {
-  background: #ff3b3b;
-  color: #fff;
-}
+
 
 /* hover */
 .btn-calc:hover,
