@@ -1482,4 +1482,93 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
+/*calculator info modal start*/
+/* =========================
+   PANEL TITLE ROW
+========================= */
+
+.panel-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.info-modal{
+  z-index:10000000;
+}
+
+/* INFO BUTTON */
+
+/* =========================
+   PREMIUM INFO BUTTON
+========================= */
+
+.info-btn{
+  width:15px;
+  height:15px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:10px;
+  font-weight:700;
+
+  color:#00ffb3;
+
+  border:1px solid rgba(0,255,179,0.6);
+  border-radius:50%;
+
+  background:rgba(0,255,179,0.05);
+
+  cursor:pointer;
+  position:relative;
+
+  transition:0.25s ease;
+
+  -webkit-app-region:no-drag;
+}
+
+/* glow ring */
+.info-btn::before{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:50%;
+background:#00ffb3;
+  border:1px solid rgba(0,255,179,0.2);
+
+  animation:pulseInfo 1.8s infinite;
+}
+
+/* hover effect */
+.info-btn:hover{
+  background:#00ffb3;
+  color:#000;
+  transform:scale(1.1);
+  box-shadow:0 0 12px rgba(0,255,179,0.6);
+}
+
+/* click effect */
+.info-btn:active{
+  transform:scale(0.95);
+}
+
+/* animation */
+@keyframes pulseInfo{
+  0%{
+    transform:scale(0.8);
+    opacity:0.6;
+  }
+  70%{
+    transform:scale(1.2);
+    opacity:0;
+  }
+  100%{
+    opacity:0;
+  }
+}
+
+
+/*calcu;ator info modal end*/
 

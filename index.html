@@ -262,7 +262,7 @@
     </div>
   </div>
 
-  <!-- DONATE MODAL -->
+  <!-- DONATE Support MODAL  -->
   <div id="donateModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
@@ -569,7 +569,17 @@
 
             <!-- INPUT PANEL -->
             <div class="jbcalc-panel">
-              <h3>Inputs <span class="jbcalc-accent">exness</span></h3>
+             <div class="panel-title-row">
+
+  <h3>
+    Inputs <span class="jbcalc-accent">exness</span>
+  </h3>
+
+  <div class="info-btn" onclick="openModal('brokerInfoModal')">
+    i
+  </div>
+
+</div>
 
               <div class="jbcalc-input-grid">
 
@@ -579,7 +589,7 @@
                   
                     <option value="BTC" selected>BTC/USD</option>
                     <option value="ETH">ETH/USD</option>
-                      <option value="Gold">GOLD/USD</option>
+                      <option value="Gold">GOLD/USD</option>   
                       <option value="XCU">XCU/USD</option>
                       <option value="XAG">XAG/USD</option>
                       <option value="USOIL">USOIL/USD</option>
@@ -788,6 +798,24 @@
   </div>
 </div>
   
+<!-- BROKER INFO MODAL -->
+<div id="brokerInfoModal" class="modal info-modal">
+  <div class="modal-box">
+
+    <div class="modal-header">
+      <span>Broker Info</span>
+      <div class="modal-close" onclick="closeModal('brokerInfoModal')"></div>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Keep Blank -->
+
+    </div>
+
+  </div>
+</div>
+
 <!-- Calculator MODAL end -->
 
 
