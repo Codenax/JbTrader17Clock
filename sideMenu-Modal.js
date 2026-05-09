@@ -130,54 +130,13 @@ document.querySelectorAll(".year").forEach(el => {
 /* =========================
    DONATION + CONTACT DATA
 ========================= */
-const donationData = {
-  bkash: "01XXXXXXXX1",
-  nagad: "01XXXXXXXX2",
-  rocket: "01XXXXXXXX3",
-  crypto: "0xa2931e62f7715603938c45a377f1b70afa8b4438",
-  whatsapp: "+8801XXXXXXXXX"
-};
 
-
-/* =========================
-   COPY FUNCTION (ALL)
-========================= */
-function copyText(el, type, event) {
-  const text = donationData[type];
-  if (!text) return;
-
-  navigator.clipboard.writeText(text);
-
-  // change icon to tick
-  el.textContent = "✔";
-
-  setTimeout(() => {
-    el.textContent = "⧉";
-  }, 1500);
-
-  // show toast near cursor
-  if (event) {
-    showCursorToast(event.pageX, event.pageY);
-  }
-}
 
 
 /* =========================
    CURSOR TOAST
 ========================= */
-function showCursorToast(x, y) {
-  const toast = document.getElementById("cursorToast");
-  if (!toast) return;
 
-  toast.style.left = x + "px";
-  toast.style.top = y + "px";
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1000);
-}
 
 
 /* =========================

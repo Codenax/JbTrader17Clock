@@ -41,45 +41,7 @@ function createMobileBanking(data) {
 
 
 /* =========================
-   COPY SYSTEM
-========================= */
-
-function copyText(el, type, event) {
-
-  event.stopPropagation();
-
-  let value = "";
-
-  if (type === "bkash") {
-    value = el.previousElementSibling.innerText.split(":")[1].trim();
-  }
-
-  if (type === "nagad") {
-    value = el.previousElementSibling.innerText.split(":")[1].trim();
-  }
-
-  if (type === "rocket") {
-    value = el.previousElementSibling.innerText.split(":")[1].trim();
-  }
-
-  navigator.clipboard.writeText(value).then(() => {
-
-    el.innerText = "✔";
-
-    // show mouse toast
-    showToast();
-
-    setTimeout(() => {
-      el.innerText = "⧉";
-    }, 800);
-
-  });
-
-}
-
-
-/* =========================
-   GLOBAL PAYMENT DATA
+   GLOBAL DATA
 ========================= */
 
 const bankingData = {
@@ -88,12 +50,63 @@ const bankingData = {
   rocket: "019XXXXXXX5"
 };
 
+const donationData = {
+  crypto: "0xa2931e62f7715603938c45a377f1b70afa8b4438"
+};
+
 
 /* =========================
-   CREATE ALL PAYMENT BOXES
+   CREATE PAYMENT BOXES
 ========================= */
 
 createMobileBanking(bankingData);
+
+
+/* =========================
+   GLOBAL COPY SYSTEM
+========================= */
+
+function copyText(el, type, event) {
+
+  event.stopPropagation();
+
+  let value = "";
+
+  // banking
+  if (type === "bkash") {
+    value = bankingData.bkash;
+  }
+
+  if (type === "nagad") {
+    value = bankingData.nagad;
+  }
+
+  if (type === "rocket") {
+    value = bankingData.rocket;
+  }
+
+  // donation
+  if (type === "crypto") {
+    value = donationData.crypto;
+  }
+
+  if (!value) return;
+
+  navigator.clipboard.writeText(value).then(() => {
+
+    // icon change
+    el.innerText = "✔";
+
+    setTimeout(() => {
+      el.innerText = "⧉";
+    }, 800);
+
+    // toast
+    showToast();
+
+  });
+
+}
 
 
 /* =========================

@@ -1190,11 +1190,12 @@ select::-webkit-scrollbar-thumb:hover{
   transform: translate(-50%, -120%);
 
   transition: 0.2s ease;
-  z-index: 999999;
+  z-index: 19999999999 !important;
 }
 
 .cursor-toast.show {
   opacity: 1;
+ 
   transform: translate(-50%, -140%);
 }
 
