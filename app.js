@@ -309,3 +309,89 @@ createHourRuler();
 createMinuteRuler();
 createSecondRuler();
 tick();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".doc-item");
+
+  // =========================
+  // INIT: set height for open item
+  // =========================
+  items.forEach((item) => {
+    const content = item.querySelector(".doc-content");
+
+    if (item.classList.contains("open")) {
+      content.style.height = content.scrollHeight + "px";
+    } else {
+      content.style.height = "0px";
+    }
+  });
+
+  // =========================
+  // CLICK HANDLER
+  // =========================
+  document.querySelectorAll(".doc-item summary").forEach((summary) => {
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const item = this.parentElement;
+      const content = item.querySelector(".doc-content");
+
+      const isOpen = item.classList.contains("open");
+
+      // =========================
+      // CLOSE if already open
+      // =========================
+      if (isOpen) {
+        closeItem(item, content);
+        return;
+      }
+
+      // =========================
+      // CLOSE ALL FIRST
+      // =========================
+      items.forEach((el) => {
+        closeItem(
+          el,
+          el.querySelector(".doc-content")
+        );
+      });
+
+      // =========================
+      // OPEN CLICKED
+      // =========================
+      openItem(item, content);
+    });
+  });
+});
+
+// =========================
+// OPEN FUNCTION
+// =========================
+function openItem(item, content) {
+  item.classList.add("open");
+
+  content.style.transition = "height 0.25s ease";
+  content.style.height = content.scrollHeight + "px";
+
+  setTimeout(() => {
+    content.style.height = "auto";
+  }, 250);
+}
+
+// =========================
+// CLOSE FUNCTION
+// =========================
+function closeItem(item, content) {
+  if (!item.classList.contains("open")) return;
+
+  item.classList.remove("open");
+
+  content.style.transition = "height 0.25s ease";
+
+  // force current height first
+  content.style.height = content.scrollHeight + "px";
+
+  requestAnimationFrame(() => {
+    content.style.height = "0px";
+  });
+}

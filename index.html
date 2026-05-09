@@ -803,13 +803,136 @@
   <div class="modal-box">
 
     <div class="modal-header">
-      <span>Broker Info</span>
+      <span>Calculator Info</span>
       <div class="modal-close" onclick="closeModal('brokerInfoModal')"></div>
     </div>
 
     <div class="modal-body">
 
-      <!-- Keep Blank -->
+      <div class="jb-doc">
+
+  <h2 class="doc-title">📘 Calculator Guide</h2>
+
+  <!-- ================= OVERVIEW ================= -->
+  <div class="doc-item open">
+    <summary>📌 Overview</summary>
+    <div class="doc-content">
+      This is a multi-asset trading calculator designed for Forex, CFD, and Crypto markets.<br><br>
+
+      It supports professional trading calculations similar to brokers like Exness, including:
+      risk management, lot sizing, fees, TP/SL, and Stop Out (Account Wepout) levels.<br><br>
+
+      Crypto prices are powered by <b>live Binance market data</b> for real-time accuracy.<br><br>
+
+      Helps traders control risk and make better decisions before entering a trade.
+    </div>
+  </div>
+
+  <!-- ================= INPUTS ================= -->
+  <div class="doc-item">
+    <summary>1️⃣ Inputs (Exness Trading Inputs)</summary>
+    <div class="doc-content">
+
+      <b>📊 PAIR</b><br>
+      BTC/USD: Bitcoin vs US Dollar<br>
+      ETH/USD: Ethereum vs US Dollar<br>
+      GOLD/USD: Gold vs US Dollar<br>
+      XCU/USD: Copper vs US Dollar<br>
+      XAG/USD: Silver vs US Dollar<br>
+      USOIL/USD: US Oil vs US Dollar<br>
+      EUR/USD: Euro vs US Dollar<br><br>
+
+      <b>🏦 ACCOUNT TYPE</b><br>
+      Standard / Raw Spread / Pro<br><br>
+
+      <b>💰 ACCOUNT BALANCE ($)</b><br>
+      Total trading capital<br><br>
+
+      <b>📍 ENTRY PRICE (USD)</b><br>
+      Trade entry price
+    </div>
+  </div>
+
+  <!-- ================= RESULT ================= -->
+  <div class="doc-item">
+    <summary>2️⃣ Result</summary>
+    <div class="doc-content">
+
+      <b>💰 Balance</b> – Updated capital<br>
+      <b>📍 Entry Price</b> – Trade entry level<br><br>
+
+      <span class="tp">🟢 Buy TP</span> – Take Profit (BUY)<br>
+      <span class="sl">🔴 Buy SO</span> – Stop Out / Wepout (BUY)<br><br>
+
+      <span class="tp">🟢 Sell TP</span> – Take Profit (SELL)<br>
+      <span class="sl">🔴 Sell SO</span> – Stop Out / Wepout (SELL)
+    </div>
+  </div>
+
+  <!-- ================= FEE ================= -->
+  <div class="doc-item">
+    <summary>3️⃣ Fee</summary>
+    <div class="doc-content">
+
+      <b>💸 Commission</b> – Broker fee<br>
+      <b>📉 Spread Fee</b> – Price difference<br><br>
+
+      <b>📏 TP Distance</b> – Entry → TP<br>
+      <b>📏 SO Distance</b> – Entry → Stop Out<br><br>
+
+      <b>📊 TP Dist (Fee)</b> – With fees included<br>
+      <b>📊 SO Dist (Fee)</b> – With fees included
+    </div>
+  </div>
+
+  <!-- ================= RISK ================= -->
+  <div class="doc-item">
+    <summary>4️⃣ Risk Management</summary>
+    <div class="doc-content">
+
+      <b>⚠️ Risk %</b> – Balance risk percentage<br>
+      <b>📈 Trade Type</b> – BUY / SELL<br><br>
+
+      <b>🎯 Reward</b> – Risk:Reward ratio<br>
+      <b>⚙️ Select Type</b> – SL / TP based mode<br><br>
+
+      <b>📍 SL / TP Price</b> – Manual price input
+    </div>
+  </div>
+
+  <!-- ================= INFO ================= -->
+  <div class="doc-item">
+    <summary>5️⃣ Trade Info</summary>
+    <div class="doc-content">
+
+      <b>💰 Balance</b> – Capital<br>
+      <b>📍 Entry Price</b> – Entry level<br><br>
+
+      <b>⚠️ Risk %</b> – Risk level<br>
+      <b>💸 Risk $</b> – Money risked<br><br>
+
+      <b>🎯 Reward</b> – RR ratio<br>
+      <b>📦 Lot Size</b> – Auto calculated volume
+    </div>
+  </div>
+
+  <!-- ================= RESULT FINAL ================= -->
+  <div class="doc-item">
+    <summary>6️⃣ Trade Result</summary>
+    <div class="doc-content">
+
+      <span class="tp">🟢 Target Profit (%)</span><br>
+      <span class="tp">🟢 Target Profit ($)</span><br>
+      <span class="tp">🟢 Target Profit (Pips)</span><br><br>
+
+      <span class="tp">🟢 Take Profit</span> – Final TP price<br>
+      <span class="sl">🔴 Stop Loss</span> – Final SL price<br><br>
+
+      <b>⚖️ Breakeven</b> – No profit / no loss (includes fees)
+    </div>
+  </div>
+
+</div>
 
     </div>
 

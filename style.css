@@ -1569,6 +1569,96 @@ background:#00ffb3;
   }
 }
 
+/*ducumantation Start*/
+/* =========================
+   INFO MODA L
+========================= */
+
+
+
+
+
+
+
+
+
+
+/* ACCORDION */
+/* =========================
+   DOC STYLE
+========================= */
+
+.jb-doc{
+  color:#ccc;
+  font-size:10px;
+}
+
+.doc-title{
+  text-align:center;
+  color:#00ffb3;
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+/* ACCORDION ITEM */
+.doc-item{
+  border:1px solid #222;
+  margin-bottom:6px;
+  border-radius:6px;
+  overflow:hidden;
+  background:#000000d3;
+}
+
+/* HEADER */
+.doc-item summary{
+  padding:6px;
+  cursor:pointer;
+  color:#00ffb3;
+  font-weight:bold;
+  list-style:none;
+  position:relative;
+  background:#151515;
+}
+
+/* remove default arrow */
+.doc-item summary::-webkit-details-marker{
+  display:none;
+}
+
+/* CONTENT */
+.doc-content {
+  overflow: hidden;
+  height: 0;
+   padding: 0 5px;
+  box-sizing: border-box;
+  transition: 0.25s ease;
+}
+
+
+
+.doc-item.open .doc-content {
+  padding: 8px 5px !important;
+}
+
+/* OPEN STATE (SMOOTH ANIMATION) */
+.doc-item[open] .doc-content{
+  max-height:500px;
+  padding:8px 5px;
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* COLORS */
+.tp{
+  color:#00ffb3;
+  font-weight:600;
+}
+
+.sl{
+  color:#ff3b3b;
+  font-weight:600;
+}
+/*ducumantation End*/
 
 /*calcu;ator info modal end*/
 
