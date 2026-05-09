@@ -32,12 +32,12 @@ async function createWindow() {
   const savedBounds = store.get("windowBounds");
 
   win = new BrowserWindow({
-    width: savedBounds?.width || 260,
-    height: savedBounds?.height || 360,
+    width: savedBounds?.width || 300,
+    height: savedBounds?.height || 460,
     x: savedBounds?.x,
     y: savedBounds?.y,
 
-    minWidth: 220,
+    minWidth: 280,
     minHeight: 230,
 
     frame: false,

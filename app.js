@@ -395,3 +395,8 @@ function closeItem(item, content) {
     content.style.height = "0px";
   });
 }
+
+/*taital ber show hide*/
+
+
+/*taital ber show hide end*/

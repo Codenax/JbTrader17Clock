@@ -27,12 +27,23 @@ html, body {
       backdrop-filter: blur(14px);
       padding: 0px;
      
+      overflow: hidden;
     
-      border: solid 0.5px #00ffb3;
       -webkit-app-region: drag;
        z-index: 1;
            user-select: none !important;
+             pointer-events: auto !important;
+            
     }
+ .window::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid #00ffb3aa;
+  z-index: 100000000;
+   pointer-events: none !important;
+ 
+}
 
     /* TITLE BAR */
     .titlebar {
@@ -43,6 +54,7 @@ html, body {
       padding: 0 6px;
         color: #fff;
       -webkit-app-region: drag;
+       
     }
 
     .titlebar::before {
@@ -698,7 +710,9 @@ font-weight: bold;
    TRADING BUTTON
 ========================= */
 .trading-btn {
+  margin: auto;
   margin-top: 5px;
+  width: 97%;
   padding: 6px;
   font-size: 10px;
   text-align: center;
@@ -737,10 +751,12 @@ font-weight: bold;
 
 .calc-modal-content{
   width:99%;
-  max-width:900px;
-  max-height:700px;
+  height: 96%;
+  max-width:600px;
+  max-height:607px;
   background:#111;
-  margin:5% auto;
+  margin: auto auto;
+  margin-top: 22px;
   border-radius:10px;
   overflow:hidden;
   border:1px solid #00ffb3;
@@ -815,7 +831,7 @@ font-weight: bold;
 
 /* scrollbar */
 .calc-modal-body::-webkit-scrollbar{
-  width:6px;
+  width: 3px;
 }
 
 .calc-modal-body::-webkit-scrollbar-thumb{
@@ -922,7 +938,7 @@ font-weight: bold;
 .jbcalc input,
 .jbcalc select{
   width:100%;
-  padding:8px;
+  padding:5px 8px;
   background:#000;
   border:1px solid #333333;
   color:#00ffb3;
@@ -1104,7 +1120,9 @@ font-weight: bold;
 ========================= */
 
 .download-btn{
+  margin: auto;
   margin-top:5px;
+  width: 97%;
   padding:6px;
   font-size:10px;
   text-align:center;
@@ -1384,7 +1402,7 @@ select::-webkit-scrollbar-thumb:hover{
 /* input */
 .tp-input {
   flex: 1;
-  padding: 10px !important;
+  padding: 5px 8px !important;
   border: none !important;
   outline: none !important;
   background: transparent;
@@ -1400,7 +1418,7 @@ select::-webkit-scrollbar-thumb:hover{
   color: #00ffb3;
   font-weight: bold;
   cursor: pointer;
-  padding: 10px 0px !important;
+  padding: 5px 0px !important;
   border-left: 1px solid #333 !important;
 }
 /* target profitdropdown options end */

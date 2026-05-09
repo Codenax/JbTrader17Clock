@@ -45,9 +45,9 @@ function createMobileBanking(data) {
 ========================= */
 
 const bankingData = {
-  bkash: "017XXXXXXXX7",
-  nagad: "018XXXXXXXX12",
-  rocket: "019XXXXXXX5"
+  bkash: "01722466597",
+  nagad: "01722466597",
+  rocket: "017224665977"
 };
 
 const donationData = {
