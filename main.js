@@ -56,6 +56,12 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
+  /*link open outside*/
+win.webContents.on("will-navigate", (e, url) => {
+  e.preventDefault();
+  require("electron").shell.openExternal(url);
+});
+ /*link open outside end*/
 
   win.loadFile("index.html");
 
@@ -129,6 +135,23 @@ app.whenReady().then(async () => {
   });
 
   createWindow();
+
+  /*link open outside start*/
+
+const { shell } = require("electron");
+
+app.on("web-contents-created", (_, contents) => {
+
+  contents.setWindowOpenHandler(({ url }) => {
+
+    shell.openExternal(url); // 👈 open in system browser
+
+    return { action: "deny" };
+
+  });
+
+});
+  /*link open outside end*/
 
   /* =========================
      SYSTEM TRAY

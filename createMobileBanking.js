@@ -143,3 +143,23 @@ function showToast() {
   }, 600);
 
 }
+
+/*open acc*/
+function copyBrokerCode(el, code, event){
+
+  event.stopPropagation();
+
+  navigator.clipboard.writeText(code).then(() => {
+
+    el.innerText = "✔";
+
+    showToast(); // your existing toast
+
+    setTimeout(() => {
+      el.innerText = "⧉";
+    }, 800);
+
+  });
+
+}
+/*open acc end*/

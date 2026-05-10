@@ -1681,3 +1681,70 @@ background:#00ffb3;
 
 /*calcu;ator info modal end*/
 
+.contact-support .suggestions{
+  text-align: center !important;
+  color:#00ffb3;
+}
+
+.contact-support .contact-desc{
+  text-align: center !important;
+
+}
+
+/*open acc*/
+.open-acc-row{
+  margin-top:5px;
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  gap:8px;
+}
+
+/* DOWNLOAD STYLE BUTTON */
+.broker-name-btn{
+  flex:1;
+
+  padding:4px 6px;
+
+  font-size:9px;
+  text-align:center;
+
+  background:#002b22;
+  color:#00ffb3;
+
+  border:1px solid #00ffb3;
+  border-radius:6px;
+
+  text-decoration:none;
+
+  transition:0.2s;
+}
+
+.broker-name-btn:hover{
+  background:#00ffb3;
+  color:#000;
+}
+
+/* CODE BOX */
+.broker-code-box{
+  display:flex;
+  align-items:center;
+  gap:4px;
+
+  padding:4px 6px;
+
+  border:1px solid #333;
+  border-radius:6px;
+
+  background:#111;
+}
+
+.broker-code{
+  font-size:9px;
+  color:yellow;
+  font-weight:bold;
+}
+
+/*open acc end*/

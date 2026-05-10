@@ -1,6 +1,9 @@
 {
   "name": "jbtrader17-clock",
   "version": "1.0.0",
+  "description": "Professional Trading Clock",
+  "author": "JbTrader17",
+
   "main": "main.js",
 
   "scripts": {
@@ -28,8 +31,8 @@
     ],
  
     "win": {
-      "target": "nsis"
-        
+      "target": "nsis",
+      "icon": "iconRound2.ico"
     },
 
     "nsis": {
