@@ -184,14 +184,7 @@ async function openDownload() {
   });
 
   // 📦 GitHub release download
-  const url = "https://github.com/USERNAME/REPO/releases/download/v1.0.0/JbTrader17.zip";
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "JbTrader17.zip";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  
 }
 
 

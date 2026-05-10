@@ -1748,3 +1748,9 @@ background:#00ffb3;
 }
 
 /*open acc end*/
+#jbDownload-btn{
+  text-decoration: none !important;
+
+  display: block;
+
+}
