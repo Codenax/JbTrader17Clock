@@ -106,9 +106,14 @@ else if (pair.value === "XAG") {
     pipValue = 10;
   }
   // ===== FOREX =====
-else if (pair.value === "EURUSD") {
+else if (
+  pair.value === "EURUSD" ||
+    pair.value === "GBPUSD" ||
+  pair.value === "AUDUSD"
+) {
   pipValue = 10;
 }
+
 
     else {
       pipValue = 1; // fallback
@@ -161,7 +166,12 @@ if (pr === "USOIL") {
   return 0;
 }
 // ===== EUR/USD =====
-if (pr === "EURUSD") {
+// ===== EUR/USD + GBP/USD =====
+if (
+  pr === "EURUSD" ||
+  pr === "GBPUSD" ||
+  pr === "AUDUSD"
+) {
   if (acc === "Raw Spread") return 5;
   if (acc === "Zero") return 5;
   return 0;
@@ -294,6 +304,30 @@ else if (pair.value === "EURUSD") {
 
   btcValueLabel.innerText = spreadFee;
 }
+
+// ===== GBP/USD =====
+else if (pair.value === "GBPUSD") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.00010;
+  else if (acc === "Pro") spreadFee = 0.00007;
+  else if (acc === "Raw Spread") spreadFee = 0;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}// ===== AUD/USD =====
+else if (pair.value === "AUDUSD") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.00009;
+  else if (acc === "Pro") spreadFee = 0.00006;
+  else if (acc === "Raw Spread") spreadFee = 0;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
   else {
     btcValueLabel.innerText = "-";
     spreadFee = 0;
@@ -344,9 +378,13 @@ else if (pair.value === "BTC" || pair.value === "ETH") {
   takeProfit = en + (prof / lotSize);
   stopOut = en - priceMove;
 }// ======================
-// FOREX
+// FOREX BUY
 // ======================
-else if (pair.value === "EURUSD") {
+else if (
+  pair.value === "EURUSD" ||
+    pair.value === "GBPUSD" ||
+  pair.value === "AUDUSD"
+) {
 
   let pipSize = 0.0001;
 
@@ -388,7 +426,11 @@ else if (pair.value === "EURUSD") {
 // ======================
 // FOREX SELL
 // ======================
-else if (pair.value === "EURUSD") {
+else if (
+  pair.value === "EURUSD" ||
+  pair.value === "GBPUSD" ||
+  pair.value === "AUDUSD"
+) {
 
   let pipSize = 0.0001;
 

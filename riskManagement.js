@@ -177,6 +177,14 @@ function updateRiskTitle() {
     riskTitle.innerText = "(EUR/USD)";
     riskTitle.style.color = "#00ffb3";
   }
+  else if (pair.value === "GBPUSD") {
+  riskTitle.innerText = "(GBP/USD)";
+  riskTitle.style.color = "#00ffb3";
+}
+else if (pair.value === "AUDUSD") {
+  riskTitle.innerText = "(AUD/USD)";
+  riskTitle.style.color = "#00ffb3";
+}
 
   else {
     riskTitle.innerText = "(GOLD)";
@@ -462,21 +470,75 @@ else if (pair.value === "EURUSD") {
 
   rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
 }
+else if (pair.value === "GBPUSD") {
+
+  // GBPUSD:
+  // 1 lot = $10 per pip
+  // same structure as EURUSD
+
+  const pipValuePerLot = 10;
+
+  rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
+else if (pair.value === "AUDUSD") {
+
+  // AUDUSD:
+  // 1 lot = $10 per pip
+  // same as EURUSD / GBPUSD system
+
+  const pipValuePerLot = 10;
+
+  rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
+}
   // ======================
   // BREAKEVEN (FEE INCLUDED)
   // ======================
   // ======================
 // BREAKEVEN (UPDATED)
 // ======================
-const totalCommission = commission;
 
-// ALL ASSETS (BTC, ETH, GOLD, XAG)
-// Entry already includes spread (Exness style)
+let breakeven = 0;
 
-if (isBuy) {
-  breakeven = entry + totalCommission;
-} else {
-  breakeven = entry - totalCommission;
+// ======================
+// FOREX (REAL PRICE MOVE)
+// ======================
+if (
+  pair.value === "EURUSD" ||
+  pair.value === "GBPUSD" ||
+  pair.value === "AUDUSD"
+)  {
+
+  // EURUSD:
+  // 1 pip = 0.0001
+  // 1 lot = $10 per pip
+
+  const pipValuePerLot = 10;
+
+  // convert USD commission → pips
+  const pipMove = commission / (pipValuePerLot * (lotSize || 1));
+
+  // convert pips → actual forex price movement
+  const priceMove = pipMove * 0.0001;
+
+  if (isBuy) {
+    breakeven = entry + priceMove;
+  } else {
+    breakeven = entry - priceMove;
+  }
+}
+
+// ======================
+// OTHER ASSETS (OLD LOGIC)
+// ======================
+else {
+
+  const totalCommission = commission;
+
+  if (isBuy) {
+    breakeven = entry + totalCommission;
+  } else {
+    breakeven = entry - totalCommission;
+  }
 }
   // ======================
   // OUTPUT UI
