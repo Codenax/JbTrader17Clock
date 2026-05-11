@@ -223,7 +223,7 @@ async function getGeoData() {
         ip:      data.query   || "unknown",
         country: data.country || "unknown",
         city:    data.city    || "unknown",
-        isp:     data.isp     || "unknown"
+        isp:     data.isp     || "unknown"    
       };
     }
   } catch (e) { console.log("ip-api failed:", e.message); }
