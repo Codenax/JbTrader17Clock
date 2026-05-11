@@ -199,28 +199,51 @@ async function trackDownload() {
 /* =========================
    🌍 GEO DATA
 ========================= */
-
 async function getGeoData() {
+  // Try 1: ipwho.is (unlimited free, HTTPS)
   try {
-    const res = await fetch("https://ip-api.com/json/");
+    const res = await fetch("http://ipwho.is/");
     const data = await res.json();
+    if (data.success) {
+      return {
+        ip:      data.ip              || "unknown",
+        country: data.country         || "unknown",
+        city:    data.city            || "unknown",
+        isp:     data.connection?.isp || "unknown"
+      };
+    }
+  } catch (e) { console.log("ipwho failed:", e.message); }
 
-    return {
-      ip:      data.query   || "unknown",
-      country: data.country || "unknown",
-      city:    data.city    || "unknown",
-      isp:     data.isp     || "unknown"
-    };
+  // Try 2: ip-api.com HTTPS fallback
+  try {
+    const res = await fetch("http://ip-api.com/json/");
+    const data = await res.json();
+    if (data.status === "success") {
+      return {
+        ip:      data.query   || "unknown",
+        country: data.country || "unknown",
+        city:    data.city    || "unknown",
+        isp:     data.isp     || "unknown"
+      };
+    }
+  } catch (e) { console.log("ip-api failed:", e.message); }
 
-  } catch (e) {
-    console.log("Geo error:", e);
-    return {
-      ip:      "unknown",
-      country: "unknown",
-      city:    "unknown",
-      isp:     "unknown"
-    };
-  }
+  // Try 3: ipapi.co
+  try {
+    const res = await fetch("http://ipapi.co/json/");
+    const data = await res.json();
+    if (!data.error) {
+      return {
+        ip:      data.ip           || "unknown",
+        country: data.country_name || "unknown",
+        city:    data.city         || "unknown",
+        isp:     data.org          || "unknown"
+      };
+    }
+  } catch (e) { console.log("ipapi.co failed:", e.message); }
+
+  // All failed
+  return { ip: "unknown", country: "unknown", city: "unknown", isp: "unknown" };
 }
 
 
