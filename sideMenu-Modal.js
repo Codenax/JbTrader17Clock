@@ -150,46 +150,54 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 /*download page start*/
+/*download page start*/
+const downloadBtn = document.getElementById("jbDownload-btn");
+downloadBtn.addEventListener("click", openDownload);
 
+async function openDownload(e) {
+  if (e) e.preventDefault();
 
+  const url = downloadBtn.href;
 
-document.getElementById("jbDownload-btn").addEventListener("click", openDownload);
+  // ✅ Open download INSTANTLY, don't wait for geo
+  window.open(url, "_blank");
 
-async function openDownload() {
+  // ✅ Track in background (user won't notice)
+  trackDownload().catch(err => console.log("Track error:", err));
+}
 
-  // 🔥 Unique download ID
-  const downloadId = "J17-" + Math.random().toString(36).substr(2, 6) + "-" + Date.now();
+async function trackDownload() {
+  const downloadId =
+    "J17-" +
+    Math.random().toString(36).substring(2, 8) +
+    "-" +
+    Date.now();
 
-  // 💻 Device info
   const deviceInfo = getDeviceInfo();
-
-  // 🌍 Geo info (ip-api.com)
   const geo = await getGeoData();
 
-  // 📊 Send to Google Sheet
-  await fetch("https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      downloadId: downloadId,
-      app: "JbTrader17",
-      device: deviceInfo,
-      ip: geo.ip,
-      country: geo.country,
-      city: geo.city,
-      isp: geo.isp
-    })
+  const params = new URLSearchParams({
+    downloadId,
+    app: "JbTrader17",
+    device: deviceInfo,
+    ip: geo.ip,
+    country: geo.country,
+    city: geo.city,
+    isp: geo.isp
   });
 
-  // 📦 GitHub release download
-  
+  await fetch(
+    "https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec?" + params.toString(),
+    {
+      method: "GET",
+      mode: "no-cors"
+    }
+  );
 }
 
 
 /* =========================
-   🌍 GEO FUNCTION (IP-API)
+   🌍 GEO DATA
 ========================= */
 
 async function getGeoData() {
@@ -198,20 +206,19 @@ async function getGeoData() {
     const data = await res.json();
 
     return {
-      ip: data.query || "unknown",
+      ip:      data.query   || "unknown",
       country: data.country || "unknown",
-      city: data.city || "unknown",
-      isp: data.isp || "unknown"
+      city:    data.city    || "unknown",
+      isp:     data.isp     || "unknown"
     };
 
   } catch (e) {
     console.log("Geo error:", e);
-
     return {
-      ip: "unknown",
+      ip:      "unknown",
       country: "unknown",
-      city: "unknown",
-      isp: "unknown"
+      city:    "unknown",
+      isp:     "unknown"
     };
   }
 }
@@ -225,20 +232,21 @@ function getDeviceInfo() {
   const ua = navigator.userAgent;
 
   let browser = "Unknown";
-  if (ua.includes("Chrome")) browser = "Chrome";
-  else if (ua.includes("Firefox")) browser = "Firefox";
+  if (ua.includes("Edg"))                              browser = "Edge";
+  else if (ua.includes("Chrome"))                      browser = "Chrome";
+  else if (ua.includes("Firefox"))                     browser = "Firefox";
   else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
-  else if (ua.includes("Edge")) browser = "Edge";
 
   let os = "Unknown";
-  if (ua.includes("Windows")) os = "Windows";
-  else if (ua.includes("Mac")) os = "Mac";
-  else if (ua.includes("Linux")) os = "Linux";
-  else if (ua.includes("Android")) os = "Android";
-  else if (ua.includes("iPhone")) os = "iOS";
+  if (ua.includes("Windows"))                          os = "Windows";
+  else if (ua.includes("Android"))                     os = "Android";
+  else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+  else if (ua.includes("Mac"))                         os = "Mac";
+  else if (ua.includes("Linux"))                       os = "Linux";
 
   return os + " / " + browser;
 }
+/*download page end*/
 
 
 
