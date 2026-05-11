@@ -202,7 +202,7 @@ async function trackDownload() {
 
 async function getGeoData() {
   try {
-    const res = await fetch("http://ip-api.com/json/");
+    const res = await fetch("https://ip-api.com/json/");
     const data = await res.json();
 
     return {
