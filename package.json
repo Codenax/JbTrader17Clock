@@ -48,6 +48,9 @@
       "uninstallerIcon": "iconRound2.ico",
       "artifactName": "JbTrader17-Setup-${version}.exe"
     },
+    "portable": {
+     "artifactName": "JbTrader17-Portable-${version}.exe"
+    },
 
     "compression": "maximum"
   }
