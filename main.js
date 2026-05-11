@@ -49,7 +49,7 @@ async function createWindow() {
 
     skipTaskbar: true,
 
-    icon: require("path").join(__dirname, "icon10.ico"),
+    icon: require("path").join(__dirname, "iconRound2.ico"),
 
     webPreferences: {
       nodeIntegration: true,
@@ -158,7 +158,7 @@ app.on("web-contents-created", (_, contents) => {
   ========================= */
   const path = require("path");
 
-  tray = new Tray(path.join(__dirname, "icon10.ico"));
+  tray = new Tray(path.join(__dirname, "iconRound2.ico"));
 
   function buildMenu() {
     return Menu.buildFromTemplate([
@@ -190,7 +190,7 @@ app.on("web-contents-created", (_, contents) => {
       },
 
       {
-        label: "Uninstall Clock",
+        label: "Quit",
         click: () => {
           app.isQuiting = true;
           app.quit();

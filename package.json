@@ -31,8 +31,11 @@
     ],
  
     "win": {
-      "target": "nsis",
-      "icon": "iconRound2.ico"
+      "target": [
+        "nsis",
+        "portable"
+        ],
+       "icon": "iconRound2.ico"
     },
 
     "nsis": {
@@ -41,8 +44,8 @@
       "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "installerIcon": "icon2.ico",
-      "uninstallerIcon": "icon2.ico",
+      "installerIcon": "iconRound2.ico",
+      "uninstallerIcon": "iconRound2.ico",
       "artifactName": "JbTrader17-Setup-${version}.exe"
     },
 
