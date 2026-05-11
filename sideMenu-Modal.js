@@ -201,10 +201,9 @@ async function trackDownload() {
 ========================= */
 async function getGeoData() {
   try {
-    // ✅ Calls YOUR Apps Script — no CORS, no HTTP block, no rate limit issue
     const res = await fetch(
-      "https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec?action=geo",
-      { method: "GET", mode: "no-cors" }
+      "https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec?action=geo"
+      // ✅ No mode: "no-cors" here — we need to READ the response
     );
 
     const data = await res.json();
