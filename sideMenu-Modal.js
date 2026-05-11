@@ -200,50 +200,26 @@ async function trackDownload() {
    🌍 GEO DATA
 ========================= */
 async function getGeoData() {
-  // Try 1: ipwho.is (unlimited free, HTTPS)
   try {
-    const res = await fetch("http://ipwho.is/");
-    const data = await res.json();
-    if (data.success) {
-      return {
-        ip:      data.ip              || "unknown",
-        country: data.country         || "unknown",
-        city:    data.city            || "unknown",
-        isp:     data.connection?.isp || "unknown"
-      };
-    }
-  } catch (e) { console.log("ipwho failed:", e.message); }
+    // ✅ Calls YOUR Apps Script — no CORS, no HTTP block, no rate limit issue
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec?action=geo",
+      { method: "GET", mode: "no-cors" }
+    );
 
-  // Try 2: ip-api.com HTTPS fallback
-  try {
-    const res = await fetch("http://ip-api.com/json/");
     const data = await res.json();
-    if (data.status === "success") {
-      return {
-        ip:      data.query   || "unknown",
-        country: data.country || "unknown",
-        city:    data.city    || "unknown",
-        isp:     data.isp     || "unknown"    
-      };
-    }
-  } catch (e) { console.log("ip-api failed:", e.message); }
 
-  // Try 3: ipapi.co
-  try {
-    const res = await fetch("http://ipapi.co/json/");
-    const data = await res.json();
-    if (!data.error) {
-      return {
-        ip:      data.ip           || "unknown",
-        country: data.country_name || "unknown",
-        city:    data.city         || "unknown",
-        isp:     data.org          || "unknown"
-      };
-    }
-  } catch (e) { console.log("ipapi.co failed:", e.message); }
+    return {
+      ip:      data.ip      || "unknown",
+      country: data.country || "unknown",
+      city:    data.city    || "unknown",
+      isp:     data.isp     || "unknown"
+    };
 
-  // All failed
-  return { ip: "unknown", country: "unknown", city: "unknown", isp: "unknown" };
+  } catch (e) {
+    console.log("Geo error:", e);
+    return { ip: "unknown", country: "unknown", city: "unknown", isp: "unknown" };
+  }
 }
 
 
