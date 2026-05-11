@@ -199,17 +199,14 @@ async function trackDownload() {
 /* =========================
    🌍 GEO DATA
 ========================= */
+
 async function getGeoData() {
   try {
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycby6sb8zXj7HMWVahj8OGFOs69lI9oVzhgpY0N-wu49h1hVS9xCocX_woJbr6bU6Sd1M/exec?action=geo"
-      // ✅ No mode: "no-cors" here — we need to READ the response
-    );
-
+    const res = await fetch("http://ip-api.com/json/");
     const data = await res.json();
 
     return {
-      ip:      data.ip      || "unknown",
+      ip:      data.query   || "unknown",
       country: data.country || "unknown",
       city:    data.city    || "unknown",
       isp:     data.isp     || "unknown"
@@ -217,7 +214,12 @@ async function getGeoData() {
 
   } catch (e) {
     console.log("Geo error:", e);
-    return { ip: "unknown", country: "unknown", city: "unknown", isp: "unknown" };
+    return {
+      ip:      "unknown",
+      country: "unknown",
+      city:    "unknown",
+      isp:     "unknown"
+    };
   }
 }
 
