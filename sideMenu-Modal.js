@@ -282,16 +282,20 @@ function openFacebook() {
 /*live status animetion start*/
 const statusList = [
   {
-    text: "All calculation results are estimated",
+    text: "Results are simulated & for estimation only",
     color: "#F87171"
   },
   {
-    text: "Live price works only for crypto (BTC, ETH)",
+    text: "Live price enabled only for BTC & ETH",
     color: "#4ADE80"
   },
   {
-    text: "All calculations based on CFDs (Like Exness)",
+    text: "CFD-based calculation model (broker-standard)",
     color: "#f6da53"
+  },
+    {
+    text: "Live price data is provided by Binance exchange.",
+    color: "#51faec"
   }
 ];
 
