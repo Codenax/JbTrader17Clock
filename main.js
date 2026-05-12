@@ -38,7 +38,7 @@ async function createWindow() {
     y: savedBounds?.y,
 
     minWidth: 275,
-    minHeight: 200,
+    minHeight: 120,
 
     frame: false,
     alwaysOnTop: true,

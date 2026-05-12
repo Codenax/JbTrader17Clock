@@ -46,16 +46,39 @@ html, body {
 }
 
     /* TITLE BAR */
-    .titlebar {
-      height: 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 6px;
-        color: #fff;
-      -webkit-app-region: drag;
-       
-    }
+ /* TITLE BAR BASE */
+.titlebar{
+  position: relative;
+
+  height: 22px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 6px;
+
+  opacity: 0;
+
+  transform: translateY(-12px);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  will-change: opacity, transform;
+}
+
+/* SHOW STATE */
+.titlebar.show{
+  opacity: 1;
+
+  transform: translateY(0);
+
+  pointer-events: auto;
+}
 
     .titlebar::before {
       content: "";
@@ -110,6 +133,7 @@ html, body {
       flex-direction: column;
       justify-content: center;
       padding: 5px 10px;
+      padding-top:0px;
     }
 
     .time-display {
@@ -1803,3 +1827,23 @@ background:#00ffb3;
 
 /*side scollber end*/
 
+/*taitel ber show hide start*/
+/* default = no drag */
+.window{
+  -webkit-app-region: no-drag;
+}
+
+/* hover = drag enable */
+.window.drag-mode{
+  -webkit-app-region: drag;
+}
+
+.time-group{
+  transition: 0.25s ease;
+}
+
+.time-group.active{
+  opacity: 0.7;
+  filter: blur(1px);
+}
+/*taitel ber show hide end*/

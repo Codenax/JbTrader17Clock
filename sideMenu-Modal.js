@@ -358,3 +358,51 @@ el.style.color = statusList[0].color;
 setInterval(rotateStatus, 6000);
 
 /*live status animetion end*/
+
+/*taitel ber show hide start*/
+const windowEl = document.querySelector(".window");
+const titlebar = document.querySelector(".titlebar");
+const timeGroup = document.querySelector(".time-group");
+
+let hideTimer;
+
+/* =========================
+   SHOW
+========================= */
+windowEl.addEventListener("mouseenter", () => {
+
+  // 🔥 stop previous timer
+  clearTimeout(hideTimer);
+
+  // 🔥 show titlebar
+  titlebar.classList.add("show");
+
+  // 🔥 enable drag
+  windowEl.classList.add("drag-mode");
+
+  // 🔥 optional class
+  timeGroup?.classList.add("active");
+
+});
+
+/* =========================
+   HIDE AFTER 5 SEC
+========================= */
+windowEl.addEventListener("mouseleave", () => {
+
+  // 🔥 clear old timer
+  clearTimeout(hideTimer);
+
+  // 🔥 wait 5 seconds
+  hideTimer = setTimeout(() => {
+
+    titlebar.classList.remove("show");
+
+    windowEl.classList.remove("drag-mode");
+
+    timeGroup?.classList.remove("active");
+
+  }, 5000);
+
+});
+/*taitel ber show hide end*/
