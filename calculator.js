@@ -113,6 +113,9 @@ else if (
 ) {
   pipValue = 10;
 }
+else if (pair.value === "USDJPY") {
+  pipValue = 6.35;
+}
 
 
     else {
@@ -170,7 +173,8 @@ if (pr === "USOIL") {
 if (
   pr === "EURUSD" ||
   pr === "GBPUSD" ||
-  pr === "AUDUSD"
+    pr === "AUDUSD" ||
+  pr === "USDJPY"
 ) {
   if (acc === "Raw Spread") return 5;
   if (acc === "Zero") return 5;
@@ -328,6 +332,18 @@ else if (pair.value === "AUDUSD") {
 
   btcValueLabel.innerText = spreadFee;
 }
+// ===== USD/JPY =====
+else if (pair.value === "USDJPY") {
+
+  let acc = account.value;
+
+  if (acc === "Standard") spreadFee = 0.01;
+  else if (acc === "Pro") spreadFee = 0.007;
+  else if (acc === "Raw Spread") spreadFee = 0;
+  else if (acc === "Zero") spreadFee = 0;
+
+  btcValueLabel.innerText = spreadFee;
+}
   else {
     btcValueLabel.innerText = "-";
     spreadFee = 0;
@@ -386,13 +402,34 @@ else if (
   pair.value === "AUDUSD"
 ) {
 
-  let pipSize = 0.0001;
+let pipSize = 0.0001;
 
   let targetPips = prof / (10 * lotSize);
 
   takeProfit = en + (targetPips * pipSize);
 
   stopOut = en - ((bal / (10 * lotSize)) * pipSize);
+}
+// ======================
+// USDJPY BUY
+// ======================
+else if (pair.value === "USDJPY") {
+
+  // 🔥 BASE MODEL
+  // 0.01 lot
+  // 1 USD profit
+  // distance = 0.157
+
+  let baseDistance = 0.157;
+
+  // scale by lot size
+  let tpDistancePrice = (baseDistance * prof) / (lotSize / 0.01);
+
+  // BUY TP
+  takeProfit = en + tpDistancePrice;
+
+  // SL
+  stopOut = en - ((baseDistance * bal) / (lotSize / 0.01));
 }
 
   // SELL
@@ -432,7 +469,7 @@ else if (
   pair.value === "AUDUSD"
 ) {
 
-  let pipSize = 0.0001;
+ let pipSize = 0.0001;
 
   let targetPips = prof / (10 * lotSize);
 
@@ -440,6 +477,29 @@ else if (
 
   stopOutSell = en + ((bal / (10 * lotSize)) * pipSize);
 }
+
+// ======================
+// USDJPY SELL
+// ======================
+else if (pair.value === "USDJPY") {
+
+  // 🔥 BASE MODEL
+  // 0.01 lot
+  // 1 USD profit
+  // distance = 0.157
+
+  let baseDistance = 0.157;
+
+  // scale by lot size
+  let tpDistancePrice = (baseDistance * prof) / (lotSize / 0.01);
+
+  // SELL TP
+  takeProfitSell = en - tpDistancePrice;
+
+  // SL
+  stopOutSell = en + ((baseDistance * bal) / (lotSize / 0.01));
+}
+
 
   // DISTANCE
   let tpDistance = takeProfit - en;
@@ -469,6 +529,7 @@ if (slAfter < 0) slAfter = 0;
 
 tpAfterFee.innerText = formatPrice(tpAfter);
 slAfterFee.innerText = formatPrice(slAfter);
+
 }
 
 // ===== EVENTS =====
@@ -489,6 +550,8 @@ window.addEventListener("load", function () {
   if (!profitInput.value) {
     profitInput.value = 1;
   }
+
+
 
   calculate(); // auto run
 });

@@ -185,6 +185,10 @@ else if (pair.value === "AUDUSD") {
   riskTitle.innerText = "(AUD/USD)";
   riskTitle.style.color = "#00ffb3";
 }
+else if (pair.value === "USDJPY") {
+  riskTitle.innerText = "(USD/JPY)";
+  riskTitle.style.color = "#ed54f8";
+}
 
   else {
     riskTitle.innerText = "(GOLD)";
@@ -490,6 +494,19 @@ else if (pair.value === "AUDUSD") {
 
   rewardPips = rewardUSD / (pipValuePerLot * (lotSize || 1));
 }
+else if (pair.value === "USDJPY") {
+
+  // =========================
+  // USDJPY FIXED PIP MODEL
+  // =========================
+
+  const priceMove = Math.abs(tp - entry);
+
+  // 🔥 FIXED: 1 pip = 0.01 (JPY standard)
+  const pipSize = 0.01;
+
+  rewardPips = priceMove / pipSize;
+}
   // ======================
   // BREAKEVEN (FEE INCLUDED)
   // ======================
@@ -506,25 +523,33 @@ if (
   pair.value === "EURUSD" ||
   pair.value === "GBPUSD" ||
   pair.value === "AUDUSD"
-)  {
+) {
 
-  // EURUSD:
-  // 1 pip = 0.0001
-  // 1 lot = $10 per pip
-
+  // NON-JPY PAIRS
   const pipValuePerLot = 10;
 
-  // convert USD commission → pips
   const pipMove = commission / (pipValuePerLot * (lotSize || 1));
-
-  // convert pips → actual forex price movement
   const priceMove = pipMove * 0.0001;
 
-  if (isBuy) {
-    breakeven = entry + priceMove;
-  } else {
-    breakeven = entry - priceMove;
-  }
+  if (isBuy) breakeven = entry + priceMove;
+  else breakeven = entry - priceMove;
+}
+
+
+// ======================
+// USDJPY (SPECIAL CASE)
+// ======================
+else if (pair.value === "USDJPY") {
+
+  // 1 pip = 0.01 (IMPORTANT)
+  const pipValuePerLot = 10;
+
+  const pipMove = commission / (pipValuePerLot * (lotSize || 1));
+
+  const priceMove = pipMove * 0.01;
+
+  if (isBuy) breakeven = entry + priceMove;
+  else breakeven = entry - priceMove;
 }
 
 // ======================
