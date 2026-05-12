@@ -1777,3 +1777,29 @@ background:#00ffb3;
   filter: blur(6px);
 }
 /*live status end*/
+
+/*side scollber start*/
+/* SCROLL AREA */
+.side-menu-scroll{
+  height: calc(100% - 0px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* CUSTOM SCROLLBAR */
+.side-menu-scroll::-webkit-scrollbar{
+  width: 4px;
+}
+
+.side-menu-scroll::-webkit-scrollbar-thumb{
+  background: #00ffb3;
+  border-radius: 10px;
+}
+
+.side-menu-scroll::-webkit-scrollbar-track{
+  background: transparent;
+}
+
+/*side scollber end*/
+

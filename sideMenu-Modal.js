@@ -39,6 +39,32 @@ document.getElementById("fundingToggle")?.addEventListener("change", (e) => {
   const el = document.getElementById("jbFundingRullar");
   if (el) el.style.display = e.target.checked ? "block" : "none";
 });
+/* HOURS RULER */
+document.getElementById("toggleHours")?.addEventListener("change", (e) => {
+  const el = document.getElementById("hourRulerWrap");
+
+  if (el) {
+    el.style.display = e.target.checked ? "block" : "none";
+  }
+});
+
+/* MINUTES RULER */
+document.getElementById("toggleMinutes")?.addEventListener("change", (e) => {
+  const el = document.getElementById("minuteRulerWrap");
+
+  if (el) {
+    el.style.display = e.target.checked ? "block" : "none";
+  }
+});
+
+/* SECOND RULER */
+document.getElementById("toggleSeconds")?.addEventListener("change", (e) => {
+  const el = document.getElementById("secondRulerWrap");
+
+  if (el) {
+    el.style.display = e.target.checked ? "block" : "none";
+  }
+});
 
 document.getElementById("nylondonToggle")?.addEventListener("change", (e) => {
   const el = document.getElementById("jbNyLondonRullar");
