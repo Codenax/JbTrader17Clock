@@ -892,6 +892,7 @@ font-weight: bold;
 /* BODY */
 .right-body{
   padding:10px;
+  padding-top: 0px;
   color:#ccc;
   font-size:10px;
 }
@@ -1754,3 +1755,25 @@ background:#00ffb3;
   display: block;
 
 }
+
+/*live status start*/
+
+.status-info{
+  text-align:center;
+  padding:4px 0;
+  font-size:9px;
+}
+
+.status-rotator{
+  opacity:1;
+  filter: blur(0px);
+  transition: opacity 0.6s ease, filter 0.6s ease;
+  font-weight: 500;
+}
+
+/* fade + blur out */
+.hide{
+  opacity: 0;
+  filter: blur(6px);
+}
+/*live status end*/

@@ -277,3 +277,54 @@ function openFacebook() {
   }
 }
 /*facebook group end*/
+
+
+/*live status animetion start*/
+const statusList = [
+  {
+    text: "All calculation results are estimated",
+    color: "#F87171"
+  },
+  {
+    text: "Live price works only for crypto (BTC, ETH)",
+    color: "#4ADE80"
+  },
+  {
+    text: "All calculations based on CFDs (Like Exness)",
+    color: "#f6da53"
+  }
+];
+
+let i = 0;
+const el = document.getElementById("statusText");
+
+function rotateStatus() {
+
+  // fade + blur out
+  el.classList.add("hide");
+
+  setTimeout(() => {
+
+    // change content while hidden
+    i = (i + 1) % statusList.length;
+
+    el.textContent = statusList[i].text;
+    el.style.color = statusList[i].color;
+
+    // force reflow (ensures smooth animation restart)
+    void el.offsetWidth;
+
+    // fade + blur in
+    el.classList.remove("hide");
+
+  }, 600); // must match CSS transition
+}
+
+// initial state
+el.textContent = statusList[0].text;
+el.style.color = statusList[0].color;
+
+// loop
+setInterval(rotateStatus, 6000);
+
+/*live status animetion end*/
