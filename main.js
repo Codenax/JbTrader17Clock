@@ -33,7 +33,7 @@ async function createWindow() {
 
   win = new BrowserWindow({
     width: savedBounds?.width || 300,
-    height: savedBounds?.height || 460,
+    height: savedBounds?.height || 535,
     x: savedBounds?.x,
     y: savedBounds?.y,
 
