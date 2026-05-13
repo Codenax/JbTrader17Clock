@@ -322,6 +322,14 @@ const statusList = [
     {
     text: "Live price data is provided by Binance exchange.",
     color: "#51faec"
+  },
+    {
+    text: "Breakeven = commission only (spread already included).",
+    color: "#f75bf7"
+  },
+   {
+    text: "For better view, resize the calculator window wider.",
+    color: "#b3f75b"
   }
 ];
 

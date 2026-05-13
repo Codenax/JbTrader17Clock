@@ -551,7 +551,56 @@ else if (pair.value === "USDJPY") {
   if (isBuy) breakeven = entry + priceMove;
   else breakeven = entry - priceMove;
 }
+// ======================
+// GOLD (REAL PRICE MOVE)
+// ======================
+else if (pair.value === "Gold") {
 
+  // GOLD MODEL
+  // 1 lot = $1 per 0.01 move
+  // 0.01 lot = $0.01 per 0.01 move
+
+  const pipValuePerLot = 1;
+
+  // convert commission USD → gold price move
+  const pipMove =
+    commission / (pipValuePerLot * (lotSize || 1));
+
+  // Gold:
+  // 1 pip = 0.01 price move
+  const priceMove = pipMove * 0.01;
+
+  if (isBuy) {
+    breakeven = entry + priceMove;
+  } else {
+    breakeven = entry - priceMove;
+  }
+}
+
+// ======================
+// BTC / ETH (REAL PRICE MOVE)
+// ======================
+else if (
+  pair.value === "BTC" ||
+  pair.value === "ETH"
+) {
+
+  // MODEL:
+  // 1 lot = $1 per $1 move
+  // 0.01 lot = $0.01 per $1 move
+
+  const pipValuePerLot = 1;
+
+  // commission USD → real price movement
+  const priceMove =
+    commission / (pipValuePerLot * (lotSize || 1));
+
+  if (isBuy) {
+    breakeven = entry + priceMove;
+  } else {
+    breakeven = entry - priceMove;
+  }
+}
 // ======================
 // OTHER ASSETS (OLD LOGIC)
 // ======================
